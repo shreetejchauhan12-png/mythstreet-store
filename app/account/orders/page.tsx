@@ -7,6 +7,8 @@ export default function OrdersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (typeof window === "undefined") return; // ✅ FIX
+
     const fetchOrders = async () => {
       try {
         const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -19,16 +21,24 @@ export default function OrdersPage() {
 
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/order", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        let data = { orders: [] };
 
-        const data = await res.json();
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/order`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-        // 🔥 NOW BACKEND ALREADY FILTERS
-        setOrders(data.orders);
+          data = await res.json();
+        } catch (err) {
+          console.log("Backend not reachable");
+        }
+
+        setOrders(data.orders || []);
 
       } catch (error) {
         console.error(error);
@@ -88,7 +98,7 @@ export default function OrdersPage() {
             </div>
 
             <div className="space-y-3">
-              {order.items.map((item: any) => (
+              {order.items?.map((item: any) => (
                 <div key={item.id} className="flex gap-4">
 
                   <img
