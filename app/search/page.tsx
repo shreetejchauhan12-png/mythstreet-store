@@ -1,11 +1,11 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { getProducts, Product } from "@/app/data/products";
 import ProductCard from "@/app/components/ui/ProductCard";
 
-export default function SearchPage() {
+function SearchContent() {
   const params = useSearchParams();
   const query = params.get("q")?.toLowerCase() || "";
 
@@ -39,19 +39,22 @@ export default function SearchPage() {
       </h1>
 
       {filtered.length === 0 && (
-        <p className="text-gray-500">
-          No products found
-        </p>
+        <p className="text-gray-500">No products found</p>
       )}
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {filtered.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-          />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </main>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="p-10">Loading...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }
