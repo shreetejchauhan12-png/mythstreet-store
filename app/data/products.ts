@@ -48,16 +48,11 @@ export async function getProducts(): Promise<Product[]> {
 
           design: item.design ?? "",
 
-          // ✅ FIX IMAGE PATH (IMPORTANT)
-          image: item.image || `/p${item.id}.jpg`,
-
-          hoverLeft:
-            item.hover_left || `/p${item.id}-left.jpg`,
-
-          hoverRight:
-            item.hover_right || `/p${item.id}-right.jpg`,
-
-          banner: item.banner ?? "",
+          // 🔥 FORCE LOCAL IMAGES (NO BACKEND DEPENDENCY)
+          image: `/p${item.id}.jpg`,
+          hoverLeft: `/p${item.id}-left.jpg`,
+          hoverRight: `/p${item.id}-right.jpg`,
+          banner: `/p${item.id}.jpg`,
 
           createdAt: item.created_at ?? "",
         }))

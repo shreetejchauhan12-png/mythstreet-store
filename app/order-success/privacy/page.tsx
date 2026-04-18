@@ -1,49 +1,40 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 export default function OrderSuccess() {
-  const params = useSearchParams();
-  const orderIdParam = params.get("order_id");
-
-  const [order, setOrder] = useState<any>(null);
-  const [items, setItems] = useState<any[]>([]);
+  const [orderId, setOrderId] = useState("");
   const [show, setShow] = useState(false);
+  const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
 
   useEffect(() => {
-    if (!orderIdParam) return;
+    const orders =
+      JSON.parse(localStorage.getItem("myth_orders") || "[]");
 
-    const fetchOrder = async () => {
-      try {
-        const res = await fetch(
-          `http://localhost:5000/api/order/${orderIdParam}`
-        );
-        const data = await res.json();
+    const latest = orders[0];
 
-        setOrder(data.order);
-        setItems(data.items);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    if (latest) {
+      setPaymentType(latest.payment || "online");
+    }
 
-    fetchOrder();
+    const id =
+      "MYTH-" +
+      Math.floor(100000 + Math.random() * 900000);
+
+    setOrderId(id);
+
     setTimeout(() => setShow(true), 300);
-  }, [orderIdParam]);
+  }, []);
 
-  if (!order) {
-    return <p className="p-10 text-center">Loading...</p>;
-  }
-
-  const isCOD = order.payment_method === "cod";
+  const isCOD = paymentType === "cod";
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-24 text-center">
 
-      {/* animation */}
+      {/* success animation */}
       <div className="flex justify-center mb-8">
+
         <div className="relative">
 
           <div className={`
@@ -66,9 +57,14 @@ export default function OrderSuccess() {
           `}/>
 
         </div>
+
       </div>
 
-      <h1 className="text-3xl font-semibold mb-2">
+      <h1 className={`
+        text-3xl font-semibold mb-2
+        transition-all duration-700
+        ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
+      `}>
         {isCOD ? "Order Placed (COD)" : "Order Confirmed"}
       </h1>
 
@@ -78,46 +74,60 @@ export default function OrderSuccess() {
           : "Your payment was successful and order is confirmed"}
       </p>
 
-      {/* REAL ORDER ID */}
+      {/* order id */}
       <div className="border rounded-xl p-6 mb-8 bg-white shadow-sm">
-        <p className="text-sm text-gray-500 mb-1">Order ID</p>
-        <p className="text-xl font-semibold mb-2">{order.id}</p>
+
+        <p className="text-sm text-gray-500 mb-1">
+          Order ID
+        </p>
+
+        <p className="text-xl font-semibold mb-2">
+          {orderId}
+        </p>
 
         <p className="text-sm text-gray-600">
-          Payment: {order.payment_method} | Status: {order.payment_status}
+          {isCOD
+            ? "Payment method: Cash on Delivery"
+            : "Payment received successfully"}
         </p>
+
       </div>
 
-      {/* ITEMS */}
-      <div className="text-left mb-8">
-        <h2 className="font-semibold mb-3">Items</h2>
+      {/* payment status */}
+      <div className={`border rounded-xl p-6 mb-8 ${
+        isCOD
+          ? "bg-yellow-50 border-yellow-200"
+          : "bg-green-50 border-green-200"
+      }`}>
 
-        {items.map((item) => (
-          <div key={item.id} className="border p-3 rounded mb-2">
-            <p>{item.title}</p>
-            <p className="text-sm text-gray-600">
-              Qty: {item.quantity} | Size: {item.size}
-            </p>
-            <p>₹{item.price}</p>
-          </div>
-        ))}
+        <p className="font-medium mb-2">
+          {isCOD ? "Cash on Delivery" : "Payment Successful"}
+        </p>
+
+        <p className="text-sm text-gray-600">
+          {isCOD
+            ? "Pay at your doorstep when product arrives"
+            : "Paid securely via Razorpay"}
+        </p>
+
       </div>
 
-      {/* TOTAL */}
-      <div className="mb-8 font-semibold">
-        Total: ₹{order.total_amount}
+      {/* info */}
+      <div className="text-sm text-gray-600 space-y-1 mb-10">
+        <p>📦 Shipping in 4-6 days</p>
+        <p>🚚 Tracking will be shared soon</p>
+        <p>🔒 Secure checkout</p>
       </div>
 
-      {/* buttons */}
-      <Link href="/">
-        <button className="w-full bg-[#680000] text-white py-3 mb-3">
-          Continue Shopping
+      <Link href="/account/orders">
+        <button className="w-full border py-3 mb-3 hover:bg-gray-50 transition">
+          View My Orders
         </button>
       </Link>
 
-      <Link href="/account/orders">
-        <button className="w-full border py-3">
-          View My Orders
+      <Link href="/">
+        <button className="w-full bg-[#680000] text-white py-3 hover:opacity-90 transition">
+          Continue Shopping
         </button>
       </Link>
 
