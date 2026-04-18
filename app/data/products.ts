@@ -36,26 +36,31 @@ export async function getProducts(): Promise<Product[]> {
     const data = await res.json();
 
     return Array.isArray(data)
-      ? data.map((item: any): Product => ({
-          id: Number(item.id),
+      ? data.map((item: any): Product => {
+          // ✅ FIX: map ANY backend id to 1–8 range
+          const index = ((Number(item.id) - 1) % 8) + 1;
 
-          title: item.title ?? "",
-          price: Number(item.price ?? item.base_price ?? 0),
+          return {
+            id: Number(item.id),
 
-          category: item.category ?? "",
-          type: item.type ?? "",
-          collection: item.collection ?? "",
+            title: item.title ?? "",
+            price: Number(item.price ?? item.base_price ?? 0),
 
-          design: item.design ?? "",
+            category: item.category ?? "",
+            type: item.type ?? "",
+            collection: item.collection ?? "",
 
-          // 🔥 FORCE LOCAL IMAGES (NO BACKEND DEPENDENCY)
-          image: `/p${item.id}.jpg`,
-          hoverLeft: `/p${item.id}-left.jpg`,
-          hoverRight: `/p${item.id}-right.jpg`,
-          banner: `/banner${item.id}.jpg`,
+            design: item.design ?? "",
 
-          createdAt: item.created_at ?? "",
-        }))
+            // ✅ LOCAL IMAGES (FIXED)
+            image: `/p${index}.jpg`,
+            hoverLeft: `/p${index}-left.jpg`,
+            hoverRight: `/p${index}-right.jpg`,
+            banner: `/banner${index}.jpg`,
+
+            createdAt: item.created_at ?? "",
+          };
+        })
       : [];
   } catch (error) {
     console.error("❌ Fetch error:", error);

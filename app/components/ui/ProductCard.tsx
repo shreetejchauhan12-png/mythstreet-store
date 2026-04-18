@@ -31,12 +31,21 @@ export default function ProductCard({ product }: { product: Product }) {
   );
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
-    const { left, width } = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - left;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = e.clientX - rect.left;
 
-    if (x < width / 2) setHoverSide("left");
-    else setHoverSide("right");
+  const percentage = x / rect.width;
+
+  let newSide: "left" | "right" | null = null;
+
+  if (percentage < 0.4) newSide = "left";
+  else if (percentage > 0.6) newSide = "right";
+  else newSide = null; // center → main image
+
+  if (newSide !== hoverSide) {
+    setHoverSide(newSide);
   }
+}
 
   function handleLeave() {
     setHoverSide(null);
@@ -70,32 +79,37 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className="relative w-full pt-[120%]">
 
             {/* BASE IMAGE */}
-            <img
-              src={product.image}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-                hoverSide ? "opacity-0 scale-105" : "opacity-100 scale-100"
-              }`}
-            />
+<img
+  src={product.image || "/placeholder.jpg"}
+  onError={(e) => {
+    (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
+  }}
+  className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
+    hoverSide ? "opacity-0 scale-105" : "opacity-100 scale-100"
+  }`}
+/>
 
-            {/* LEFT IMAGE */}
-            <img
-              src={product.hoverLeft}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-                hoverSide === "left"
-                  ? "opacity-100 scale-105"
-                  : "opacity-0"
-              }`}
-            />
+{/* LEFT IMAGE */}
+<img
+  src={product.hoverLeft || product.image}
+  onError={(e) => {
+    (e.currentTarget as HTMLImageElement).src = product.image;
+  }}
+  className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
+    hoverSide === "left" ? "opacity-100 scale-105" : "opacity-0"
+  }`}
+/>
 
-            {/* RIGHT IMAGE */}
-            <img
-              src={product.hoverRight}
-              className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-                hoverSide === "right"
-                  ? "opacity-100 scale-105"
-                  : "opacity-0"
-              }`}
-            />
+{/* RIGHT IMAGE */}
+<img
+  src={product.hoverRight || product.image}
+  onError={(e) => {
+    (e.currentTarget as HTMLImageElement).src = product.image;
+  }}
+  className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
+    hoverSide === "right" ? "opacity-100 scale-105" : "opacity-0"
+  }`}
+/>
 
             {/* wishlist */}
             <button
