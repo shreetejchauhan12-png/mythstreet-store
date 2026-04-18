@@ -52,7 +52,7 @@ export async function getProducts(): Promise<Product[]> {
           image: `/p${item.id}.jpg`,
           hoverLeft: `/p${item.id}-left.jpg`,
           hoverRight: `/p${item.id}-right.jpg`,
-          banner: `/p${item.id}.jpg`,
+          banner: `/banner${item.id}.jpg`,
 
           createdAt: item.created_at ?? "",
         }))
