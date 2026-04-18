@@ -3,6 +3,11 @@
 import { useEffect, useState } from "react";
 import ProductCard from "@/app/components/ui/ProductCard";
 
+// ✅ SAFE BASE URL (fallback added)
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mythstreet-backend.onrender.com";
+
 export default function NewArrivals() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -10,24 +15,23 @@ export default function NewArrivals() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await fetch("http://127.0.0.1:5000/api/products/new");
+        const res = await fetch(`${BASE_URL}/api/products/new`);
 
         if (!res.ok) {
           console.error("❌ API FAILED:", res.status);
+          setProducts([]);
           return;
         }
 
         const data = await res.json();
 
-        console.log("🔥 DATA:", data);
-
-        // ✅ FORCE SAFE ARRAY
+        // ✅ SAFETY CHECK
         const clean = Array.isArray(data) ? data : [];
 
         setProducts(clean);
-
       } catch (error) {
         console.error("❌ FETCH ERROR:", error);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
@@ -38,7 +42,6 @@ export default function NewArrivals() {
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-12">
-
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl md:text-3xl font-semibold">
           New Arrivals
@@ -60,8 +63,8 @@ export default function NewArrivals() {
               key={product.id}
               product={{
                 ...product,
-                hoverLeft: product.hover_left,
-                hoverRight: product.hover_right,
+                hoverLeft: product.hover_left || product.image,
+                hoverRight: product.hover_right || product.image,
               }}
             />
           ))}

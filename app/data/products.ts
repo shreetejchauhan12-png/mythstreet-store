@@ -13,11 +13,14 @@ export type Product = {
   hoverLeft: string;
   hoverRight: string;
 
-  banner: string;        // ✅ NEW
-  createdAt: string;     // ✅ NEW
+  banner: string;
+  createdAt: string;
 };
 
-const BASE_URL = "http://localhost:5000";
+// ✅ SAFE BASE URL
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mythstreet-backend.onrender.com";
 
 export async function getProducts(): Promise<Product[]> {
   try {
@@ -35,21 +38,28 @@ export async function getProducts(): Promise<Product[]> {
     return Array.isArray(data)
       ? data.map((item: any): Product => ({
           id: Number(item.id),
-          title: item.title || "",
-          price: Number(item.price) || 0,
 
-          category: item.category || "",
-          type: item.type || "",
-          collection: item.collection || "",
+          title: item.title ?? "",
+          price: Number(item.price ?? item.base_price ?? 0),
 
-          design: item.design || "",
+          category: item.category ?? "",
+          type: item.type ?? "",
+          collection: item.collection ?? "",
 
-          image: item.image || "/fallback.jpg",
-          hoverLeft: item.hover_left || item.image,
-          hoverRight: item.hover_right || item.image,
+          design: item.design ?? "",
 
-          banner: item.banner || item.image,      // ✅ FIX
-          createdAt: item.created_at || "",       // ✅ FIX
+          // ✅ FIX IMAGE PATH (IMPORTANT)
+          image: item.image || `/p${item.id}.jpg`,
+
+          hoverLeft:
+            item.hover_left || `/p${item.id}-left.jpg`,
+
+          hoverRight:
+            item.hover_right || `/p${item.id}-right.jpg`,
+
+          banner: item.banner ?? "",
+
+          createdAt: item.created_at ?? "",
         }))
       : [];
   } catch (error) {

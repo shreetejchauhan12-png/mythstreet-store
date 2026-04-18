@@ -56,7 +56,7 @@ export default function LatestDropSlider() {
 
             <Link href={`/product/${current.id}`}>
               <img
-                src={current.banner}
+                src={current.banner || `/p${current.id}.jpg`}
                 className="absolute inset-0 w-full h-full object-cover cursor-pointer"
               />
             </Link>
