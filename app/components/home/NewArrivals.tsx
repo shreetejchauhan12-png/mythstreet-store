@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ProductCard from "@/app/components/ui/ProductCard";
 
-// ✅ SAFE BASE URL (fallback added)
+// ✅ SAFE BASE URL
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://mythstreet-backend.onrender.com";
@@ -15,7 +15,9 @@ export default function NewArrivals() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await fetch(`${BASE_URL}/api/products/new`);
+        const res = await fetch(`${BASE_URL}/api/products`, {
+          cache: "no-store",
+        });
 
         if (!res.ok) {
           console.error("❌ API FAILED:", res.status);
@@ -25,7 +27,6 @@ export default function NewArrivals() {
 
         const data = await res.json();
 
-        // ✅ SAFETY CHECK
         const clean = Array.isArray(data) ? data : [];
 
         setProducts(clean);
@@ -48,14 +49,12 @@ export default function NewArrivals() {
         </h2>
       </div>
 
-      {/* LOADING */}
       {loading && (
         <p className="text-center text-gray-500">
           Loading products...
         </p>
       )}
 
-      {/* PRODUCTS */}
       {!loading && products.length > 0 && (
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products.map((product) => (
@@ -63,15 +62,15 @@ export default function NewArrivals() {
               key={product.id}
               product={{
                 ...product,
-                hoverLeft: product.hover_left || product.image,
-                hoverRight: product.hover_right || product.image,
+                hoverLeft: product.hover_left || `/p${product.id}.jpg`,
+                hoverRight: product.hover_right || `/p${product.id}.jpg`,
+                image: `/p${product.id}.jpg`,
               }}
             />
           ))}
         </div>
       )}
 
-      {/* EMPTY */}
       {!loading && products.length === 0 && (
         <p className="text-center text-gray-500">
           No products found
