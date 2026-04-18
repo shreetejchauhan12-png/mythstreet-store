@@ -1,12 +1,19 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { products } from "@/app/data/products";
+import { useEffect, useState } from "react";
+import { getProducts, Product } from "@/app/data/products";
 import ProductCard from "@/app/components/ui/ProductCard";
 
 export default function SearchPage() {
   const params = useSearchParams();
   const query = params.get("q")?.toLowerCase() || "";
+
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    getProducts().then(setProducts);
+  }, []);
 
   const filtered = products.filter((p) => {
     const q = query.toLowerCase();
@@ -27,7 +34,6 @@ export default function SearchPage() {
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-10">
-
       <h1 className="text-xl font-semibold mb-6">
         Search: {query}
       </h1>
@@ -46,7 +52,6 @@ export default function SearchPage() {
           />
         ))}
       </div>
-
     </main>
   );
 }
