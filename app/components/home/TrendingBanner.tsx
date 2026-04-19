@@ -9,10 +9,16 @@ export default function TrendingBanner() {
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
-  // ✅ FETCH LATEST 10 PRODUCTS
+  // ✅ FETCH LATEST 8 PRODUCTS (ID BASED - MOST RELIABLE)
   useEffect(() => {
     getProducts().then((data) => {
-      setSlides(data.slice(0, 10));
+      const clean = Array.isArray(data) ? data : [];
+
+      // 🔥 SORT BY ID (NEWEST FIRST)
+      const sorted = clean.sort((a, b) => b.id - a.id);
+
+      // 🔥 TAKE ONLY LATEST 8
+      setSlides(sorted.slice(0, 8));
     });
   }, []);
 
@@ -57,7 +63,7 @@ export default function TrendingBanner() {
         <Link href={`/product/${current.id}`}>
           <div className="relative overflow-hidden rounded-xl cursor-pointer">
 
-            {/* ✅ FIXED RATIO (37.5%) */}
+            {/* ✅ FIXED RATIO */}
             <div className="relative w-full pt-[37.5%]">
 
               <img

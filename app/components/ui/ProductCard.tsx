@@ -31,20 +31,18 @@ export default function ProductCard({ product }: { product: Product }) {
   );
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
-  const rect = e.currentTarget.getBoundingClientRect();
-  const x = e.clientX - rect.left;
+  const { left, width } = e.currentTarget.getBoundingClientRect();
+  const x = e.clientX - left;
 
-  const percentage = x / rect.width;
+  const leftZone = width * 0.4;
+  const rightZone = width * 0.6;
 
-  let newSide: "left" | "right" | null = null;
-
-  if (percentage < 0.4) newSide = "left";
-  else if (percentage > 0.6) newSide = "right";
-  else newSide = null; // center → main image
-
-  if (newSide !== hoverSide) {
-    setHoverSide(newSide);
+  if (x < leftZone) {
+    setHoverSide("left");
+  } else if (x > rightZone) {
+    setHoverSide("right");
   }
+  // 👇 center does NOTHING → keeps last hover
 }
 
   function handleLeave() {
@@ -85,8 +83,8 @@ export default function ProductCard({ product }: { product: Product }) {
     (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
   }}
   className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-    hoverSide ? "opacity-0 scale-105" : "opacity-100 scale-100"
-  }`}
+  hoverSide === null ? "opacity-100 scale-100" : "opacity-0 scale-105"
+}`}
 />
 
 {/* LEFT IMAGE */}

@@ -29,7 +29,15 @@ export default function NewArrivals() {
 
         const clean = Array.isArray(data) ? data : [];
 
-        setProducts(clean);
+// ✅ sort by latest (using created_at from your backend)
+const sorted = clean.sort(
+  (a, b) =>
+    new Date(b.created_at || b.createdAt).getTime() -
+    new Date(a.created_at || a.createdAt).getTime()
+);
+
+// ✅ take only latest 8
+setProducts(sorted.slice(0, 8));
       } catch (error) {
         console.error("❌ FETCH ERROR:", error);
         setProducts([]);
@@ -59,14 +67,15 @@ export default function NewArrivals() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {products.map((product) => (
             <ProductCard
-              key={product.id}
-              product={{
-                ...product,
-                hoverLeft: product.hover_left || `/p${product.id}.jpg`,
-                hoverRight: product.hover_right || `/p${product.id}.jpg`,
-                image: `/p${product.id}.jpg`,
-              }}
-            />
+  key={product.id}
+  product={{
+    ...product,
+
+    image: `/p${product.id}.jpg`,
+    hoverLeft: `/p${product.id}-left.jpg`,
+    hoverRight: `/p${product.id}-right.jpg`,
+  }}
+/>
           ))}
         </div>
       )}

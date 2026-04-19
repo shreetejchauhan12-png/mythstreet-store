@@ -11,10 +11,16 @@ export default function LatestDropSlider() {
 
   // ✅ FETCH LATEST 3 PRODUCTS
   useEffect(() => {
-    getProducts().then((data) => {
-      setSlides(data.slice(0, 3)); // 🔥 NEWEST 3
-    });
-  }, []);
+  getProducts().then((data) => {
+    // ✅ SORT LATEST FIRST
+    const sorted = data.sort(
+      (a, b) => Number(b.id) - Number(a.id)
+    );
+
+    // ✅ TAKE ONLY 3
+    setSlides(sorted.slice(0, 3));
+  });
+}, []);
 
   function prev() {
     setIndex((prev) =>
