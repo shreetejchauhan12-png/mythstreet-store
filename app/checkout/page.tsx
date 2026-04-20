@@ -63,7 +63,7 @@ export default function CheckoutPage() {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/api/order", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default function CheckoutPage() {
 
         handler: async function (response: any) {
           // ✅ VERIFY PAYMENT
-          await fetch("http://localhost:5000/api/order/verify", {
+          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/verify`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
