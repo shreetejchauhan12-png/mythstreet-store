@@ -147,201 +147,130 @@ products.filter((p: any) =>
     <>
   <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b">
 
-    <div className="w-full px-3 md:px-8 h-16 grid grid-cols-3 items-center">
+    <div className="w-full px-3 md:px-8">
 
+  {/* TOP ROW */}
+  <div className="h-14 flex items-center justify-between">
 
-          {/* LEFT */}
-          <div className="flex items-center justify-start gap-3 md:gap-6">
+    {/* LEFT */}
+    <div className="flex items-center gap-3">
+      <Menu
+        className="w-6 h-6 cursor-pointer"
+        onClick={() => setOpen(true)}
+      />
+    </div>
 
-            <Menu
-              className="w-6 h-6 cursor-pointer hover:scale-110 transition"
-              onClick={() => setOpen(true)}
-            />
-
-            <div className="hidden md:flex gap-8 text-sm font-semibold relative">
-
-              {/* MEN */}
-              <div
-                onMouseEnter={() => setHover("men")}
-                onMouseLeave={() => setHover(null)}
-              >
-                <Link href="/shop/men">
-                  <p className={`pb-1 border-b-2 transition ${
-                      isMen
-                        ? "border-[#680000]"
-                        : "border-transparent hover:border-gray-300"
-                    }`}>
-                    MEN
-                  </p>
-                </Link>
-
-                {hover === "men" && (
-  <div className="absolute top-full left-0 bg-white shadow-xl p-6 grid grid-cols-4 gap-10 w-162.5">
-
-    <Link href="/shop/men/oversized">Oversized</Link>
-    <Link href="/shop/men/tshirt">T-Shirts</Link>
-    <Link href="/shop/men/hoodie">Hoodies</Link>
-    <Link href="/shop/men/sweatshirt">Sweatshirts</Link>
-
-  </div>
-)}
-              </div>              {/* WOMEN */}
-              <div
-                onMouseEnter={() => setHover("women")}
-                onMouseLeave={() => setHover(null)}
-              >
-                <Link href="/shop/women">
-                  <p
-                    className={`pb-1 border-b-2 transition ${
-                      isWomen
-                        ? "border-[#680000]"
-                        : "border-transparent hover:border-gray-300"
-                    }`}
-                  >
-                    WOMEN
-                  </p>
-                </Link>
-
-                {hover === "women" && (
-  <div className="absolute top-full left-20 bg-white shadow-xl p-6 grid grid-cols-4 gap-10 w-162.5">
-    <Link href="/shop/women/oversized">
-      Oversized
+    {/* CENTER */}
+    <Link href="/" className="flex justify-center">
+      <img src="/logo.png" className="h-8 md:h-10" />
     </Link>
-    <Link href="/shop/women/tshirt">
-      T-Shirts
-    </Link>
-    <Link href="/shop/women/hoodie">
-      Hoodies
-    </Link>
-    <Link href="/shop/women/sweatshirt">
-      Sweatshirts
-    </Link>
-  </div>
-)}
-              </div>
 
+    {/* RIGHT */}
+    <div className="flex items-center gap-3">
+
+      <Search
+        className="w-5 h-5 cursor-pointer"
+        onClick={() => setSearchOpen(true)}
+      />
+
+      {/* ACCOUNT */}
+      <div className="relative">
+        <div
+          onClick={() => setAccountOpen(!accountOpen)}
+          className="cursor-pointer"
+        >
+          {user ? (
+            <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
+              {user.name?.charAt(0)}
             </div>
-          </div>
-
-          {/* LOGO */}
-          <Link
-            href="/"
-            className="flex justify-center"
-          >
-            <img
-              src="/logo.png"
-              className="h-8 md:h-10"
-            />
-          </Link>
-
-          {/* RIGHT */}
-          <div className="flex items-center justify-end gap-3 md:gap-5">
-
-            <Search
-              className="w-5 h-5 cursor-pointer hover:scale-110 transition"
-              onClick={() => setSearchOpen(true)}
-            />
-
-            {/* ACCOUNT */}
-            <div className="relative">
-
-              <div
-                onClick={() =>
-                  setAccountOpen(!accountOpen)
-                }
-                className="cursor-pointer hover:scale-110 transition"
-              >
-                {user ? (
-                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
-                    {user.name?.charAt(0)}
-                  </div>
-                ) : (
-                  <User className="w-5 h-5" />
-                )}
-              </div>
-                            {accountOpen && (
-                <div className="absolute right-0 top-8 w-56 bg-white shadow-xl border p-4 z-50">
-
-                  {!user ? (
-                    <>
-                      <button
-                        onClick={() => {
-                          setAuthMode("login");
-                          setAuthOpen(true);
-                          setAccountOpen(false);
-                        }}
-                        className="block w-full text-left py-2 hover:opacity-60"
-                      >
-                        Login
-                      </button>
-
-                      <button
-                        onClick={() => {
-                          setAuthMode("register");
-                          setAuthOpen(true);
-                          setAccountOpen(false);
-                        }}
-                        className="block w-full text-left py-2 hover:opacity-60"
-                      >
-                        Create Account
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <p className="font-medium mb-3">
-                        Hello {user.name}
-                      </p>
-
-                      <Link href="/account">
-                        <p className="py-2 cursor-pointer hover:opacity-60">
-                          My Account
-                        </p>
-                      </Link>
-
-                      <button
-                        onClick={logout}
-                        className="py-2 text-red-500"
-                      >
-                        Logout
-                      </button>
-                    </>
-                  )}
-
-                </div>
-              )}
-
-            </div>
-
-            {/* wishlist */}
-            <div
-              className="relative cursor-pointer hover:scale-110 transition"
-              onClick={() => setWishlistOpen(true)}
-            >
-              <Heart className="w-5 h-5" />
-
-              {wishlist.length > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {wishlist.length}
-                </span>
-              )}
-            </div>
-
-            {/* cart */}
-            <div
-              className="relative cursor-pointer hover:scale-110 transition"
-              onClick={() => setCartOpen(true)}
-            >
-              <ShoppingBag className="w-5 h-5" />
-
-              {totalItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </div>
-
-          </div>
+          ) : (
+            <User className="w-5 h-5" />
+          )}
         </div>
+
+        {accountOpen && (
+          <div className="absolute right-0 top-8 w-56 bg-white shadow-xl border p-4 z-50">
+
+            {!user ? (
+              <>
+                <button
+                  onClick={() => {
+                    setAuthMode("login");
+                    setAuthOpen(true);
+                    setAccountOpen(false);
+                  }}
+                  className="block w-full text-left py-2"
+                >
+                  Login
+                </button>
+
+                <button
+                  onClick={() => {
+                    setAuthMode("register");
+                    setAuthOpen(true);
+                    setAccountOpen(false);
+                  }}
+                  className="block w-full text-left py-2"
+                >
+                  Create Account
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="font-medium mb-3">
+                  Hello {user.name}
+                </p>
+
+                <Link href="/account">
+                  <p className="py-2 cursor-pointer">
+                    My Account
+                  </p>
+                </Link>
+
+                <button
+                  onClick={logout}
+                  className="py-2 text-red-500"
+                >
+                  Logout
+                </button>
+              </>
+            )}
+
+          </div>
+        )}
+      </div>
+
+      {/* WISHLIST */}
+      <div
+        className="relative cursor-pointer"
+        onClick={() => setWishlistOpen(true)}
+      >
+        <Heart className="w-5 h-5" />
+        {wishlist.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+            {wishlist.length}
+          </span>
+        )}
+      </div>
+
+      {/* CART */}
+      <div
+        className="relative cursor-pointer"
+        onClick={() => setCartOpen(true)}
+      >
+        <ShoppingBag className="w-5 h-5" />
+        {totalItems > 0 && (
+          <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+            {totalItems}
+          </span>
+        )}
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
       
 {/* announcement bar */}
 <div className="bg-[#680000] text-white text-sm text-center py-2">
