@@ -147,11 +147,11 @@ products.filter((p: any) =>
     <>
   <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b">
 
-    <div className="w-full px-4 md:px-8 h-16 flex items-center justify-between">
+    <div className="w-full px-3 md:px-8 h-16 grid grid-cols-3 items-center">
 
 
           {/* LEFT */}
-          <div className="flex items-center gap-6">
+          <div className="flex items-center justify-start gap-3 md:gap-6">
 
             <Menu
               className="w-6 h-6 cursor-pointer hover:scale-110 transition"
@@ -226,7 +226,7 @@ products.filter((p: any) =>
           {/* LOGO */}
           <Link
             href="/"
-            className="absolute left-1/2 -translate-x-1/2"
+            className="flex justify-center"
           >
             <img
               src="/logo.png"
@@ -235,7 +235,7 @@ products.filter((p: any) =>
           </Link>
 
           {/* RIGHT */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center justify-end gap-3 md:gap-5">
 
             <Search
               className="w-5 h-5 cursor-pointer hover:scale-110 transition"
