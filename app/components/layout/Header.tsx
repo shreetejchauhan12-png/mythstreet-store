@@ -154,12 +154,32 @@ products.filter((p: any) =>
 <div className="h-14 md:h-16 flex items-center">
 
   {/* LEFT */}
-  <div className="flex-1 flex items-center gap-3 md:gap-6">
-    <Menu
-      className="w-6 h-6 cursor-pointer"
-      onClick={() => setOpen(true)}
-    />
+  <div className="flex-1 flex items-center gap-3 md:gap-8">
+
+  {/* HAMBURGER */}
+  <Menu
+    className="w-6 h-6 cursor-pointer"
+    onClick={() => setOpen(true)}
+  />
+
+  {/* DESKTOP CATEGORY LINKS */}
+  <div className="hidden md:flex items-center gap-6 text-sm font-medium">
+
+    <Link href="/shop/men">
+      <span className="cursor-pointer hover:text-[#680000] transition">
+        MEN
+      </span>
+    </Link>
+
+    <Link href="/shop/women">
+      <span className="cursor-pointer hover:text-[#680000] transition">
+        WOMEN
+      </span>
+    </Link>
+
   </div>
+
+</div>
 
   {/* CENTER */}
   <Link href="/" className="flex justify-center flexshrink-0">
