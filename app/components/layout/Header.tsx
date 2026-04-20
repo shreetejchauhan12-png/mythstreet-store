@@ -150,125 +150,125 @@ products.filter((p: any) =>
     <div className="w-full px-3 md:px-8">
 
   {/* TOP ROW */}
-  <div className="h-14 flex items-center justify-between">
+  {/* TOP ROW */}
+<div className="h-14 md:h-16 flex items-center">
 
-    {/* LEFT */}
-    <div className="flex items-center gap-3">
-      <Menu
-        className="w-6 h-6 cursor-pointer"
-        onClick={() => setOpen(true)}
-      />
+  {/* LEFT */}
+  <div className="flex-1 flex items-center gap-3 md:gap-6">
+    <Menu
+      className="w-6 h-6 cursor-pointer"
+      onClick={() => setOpen(true)}
+    />
+  </div>
+
+  {/* CENTER */}
+  <Link href="/" className="flex justify-center flexshrink-0">
+    <img src="/logo.png" className="h-8 md:h-10" />
+  </Link>
+
+  {/* RIGHT */}
+  <div className="flex-1 flex items-center justify-end gap-3 md:gap-5">
+
+    <Search
+      className="w-5 h-5 cursor-pointer"
+      onClick={() => setSearchOpen(true)}
+    />
+
+    {/* ACCOUNT */}
+    <div className="relative">
+      <div
+        onClick={() => setAccountOpen(!accountOpen)}
+        className="cursor-pointer"
+      >
+        {user ? (
+          <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
+            {user.name?.charAt(0)}
+          </div>
+        ) : (
+          <User className="w-5 h-5" />
+        )}
+      </div>
+
+      {accountOpen && (
+        <div className="absolute right-0 top-10 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 p-4 z-50 animate-dropdown">
+
+          {!user ? (
+            <>
+              <button
+                onClick={() => {
+                  setAuthMode("login");
+                  setAuthOpen(true);
+                  setAccountOpen(false);
+                }}
+                className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
+              >
+                Login
+              </button>
+
+              <button
+                onClick={() => {
+                  setAuthMode("register");
+                  setAuthOpen(true);
+                  setAccountOpen(false);
+                }}
+                className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
+              >
+                Create Account
+              </button>
+            </>
+          ) : (
+            <>
+              <p className="px-3 mb-3 text-sm text-gray-500">
+                Signed in as
+              </p>
+
+              <p className="px-3 font-semibold mb-4">
+                {user.name}
+              </p>
+
+              <Link href="/account">
+                <p className="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer transition">
+                  My Account
+                </p>
+              </Link>
+
+              <button
+                onClick={logout}
+                className="w-full text-left px-3 py-2 rounded-md text-red-500 hover:bg-red-50 transition"
+              >
+                Logout
+              </button>
+            </>
+          )}
+
+        </div>
+      )}
     </div>
 
-    {/* CENTER */}
-    <Link href="/" className="flex justify-center">
-      <img src="/logo.png" className="h-8 md:h-10" />
-    </Link>
+    {/* WISHLIST */}
+    <div
+      className="relative cursor-pointer"
+      onClick={() => setWishlistOpen(true)}
+    >
+      <Heart className="w-5 h-5" />
+      {wishlist.length > 0 && (
+        <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+          {wishlist.length}
+        </span>
+      )}
+    </div>
 
-    {/* RIGHT */}
-    <div className="flex items-center gap-3">
-
-      <Search
-        className="w-5 h-5 cursor-pointer"
-        onClick={() => setSearchOpen(true)}
-      />
-
-      {/* ACCOUNT */}
-      <div className="relative">
-        <div
-          onClick={() => setAccountOpen(!accountOpen)}
-          className="cursor-pointer"
-        >
-          {user ? (
-            <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
-              {user.name?.charAt(0)}
-            </div>
-          ) : (
-            <User className="w-5 h-5" />
-          )}
-        </div>
-
-        {accountOpen && (
-          <div className="absolute right-0 top-10 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 p-4 z-50 animate-fade-in">
-
-  {!user ? (
-    <>
-      <button
-        onClick={() => {
-          setAuthMode("login");
-          setAuthOpen(true);
-          setAccountOpen(false);
-        }}
-        className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
-      >
-        Login
-      </button>
-
-      <button
-        onClick={() => {
-          setAuthMode("register");
-          setAuthOpen(true);
-          setAccountOpen(false);
-        }}
-        className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
-      >
-        Create Account
-      </button>
-    </>
-  ) : (
-    <>
-      <p className="px-3 mb-3 text-sm text-gray-500">
-        Signed in as
-      </p>
-
-      <p className="px-3 font-semibold mb-4">
-        {user.name}
-      </p>
-
-      <Link href="/account">
-        <p className="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer transition">
-          My Account
-        </p>
-      </Link>
-
-      <button
-        onClick={logout}
-        className="w-full text-left px-3 py-2 rounded-md text-red-500 hover:bg-red-50 transition"
-      >
-        Logout
-      </button>
-    </>
-  )}
-
-</div>
-)}
-
-      {/* WISHLIST */}
-      <div
-        className="relative cursor-pointer"
-        onClick={() => setWishlistOpen(true)}
-      >
-        <Heart className="w-5 h-5" />
-        {wishlist.length > 0 && (
-          <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-            {wishlist.length}
-          </span>
-        )}
-      </div>
-
-      {/* CART */}
-      <div
-        className="relative cursor-pointer"
-        onClick={() => setCartOpen(true)}
-      >
-        <ShoppingBag className="w-5 h-5" />
-        {totalItems > 0 && (
-          <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-            {totalItems}
-          </span>
-        )}
-      </div>
-
+    {/* CART */}
+    <div
+      className="relative cursor-pointer"
+      onClick={() => setCartOpen(true)}
+    >
+      <ShoppingBag className="w-5 h-5" />
+      {totalItems > 0 && (
+        <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+          {totalItems}
+        </span>
+      )}
     </div>
 
   </div>
