@@ -4,6 +4,9 @@ import { Pool } from "pg";
 // ✅ GLOBAL DB CONNECTION (best practice)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // ✅ POST → ADD SUBSCRIBER
