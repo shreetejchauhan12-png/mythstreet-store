@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useCart } from "@/app/store/cart";
+import { useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -10,6 +11,7 @@ declare global {
 }
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const cart = useCart((state) => state.cart);
   const clearCart = useCart((state) => state.clearCart); // ✅ ADDED
 
@@ -31,108 +33,111 @@ export default function CheckoutPage() {
   const [pincode, setPincode] = useState("");
 
   async function handlePlaceOrder() {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!user.id) {
-  alert("Please login first");
-  return;
-}
-    if (!name || !phone || !address || !city || !state || !pincode) {
-      alert("Please fill all details");
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  // 🔥 LOGIN CHECK → REDIRECT
+  if (!user.id) {
+    router.push("/login");
+    return;
+  }
+
+  // 🔥 VALIDATION
+  if (!name || !phone || !address || !city || !state || !pincode) {
+    alert("Please fill all details");
+    return;
+  }
+
+  const orderData = {
+    userId: user.id,
+    name,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    pincode,
+    paymentMethod,
+    items: cart.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      price: item.price,
+      quantity: item.quantity,
+      size: item.size || "M",
+      image: item.image || "",
+    })),
+    amount: finalTotal,
+  };
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert("Order failed");
       return;
     }
 
-    const orderData = {
-      userId: user.id,
-      name,
-      email,
-      phone,
-      address,
-      city,
-      state,
-      pincode,
-      paymentMethod,
-      items: cart.map((item: any) => ({
-  id: item.id,
-  title: item.title,
-  price: item.price,
-  quantity: item.quantity,
-  size: item.size || "M",
-  image: item.image || "", // ✅ ADDED
-})),
-      amount: finalTotal,
+    // ✅ COD FLOW
+    if (paymentMethod === "cod") {
+      clearCart();
+      window.location.href = `/order-success?method=cod&order_id=${data.orderId}`;
+      return;
+    }
+
+    // ✅ ONLINE PAYMENT
+    const options = {
+      key: "rzp_test_ScYcSvKi9K3r9z",
+      amount: data.razorpay.amount,
+      currency: "INR",
+      name: "MythStreet",
+      description: "Order Payment",
+      order_id: data.razorpay.id,
+
+      handler: async function (response: any) {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/verify`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            razorpay_order_id: data.razorpay.id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            orderId: data.orderId,
+          }),
+        });
+
+        clearCart();
+
+        window.location.href = `/order-success?payment_id=${response.razorpay_payment_id}&order_id=${data.orderId}`;
+      },
+
+      prefill: {
+        name,
+        email,
+        contact: phone,
+      },
+
+      theme: {
+        color: "#680000",
+      },
     };
 
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(orderData),
-      });
+    const rzp = new window.Razorpay(options);
+    rzp.open();
 
-      const data = await res.json();
-
-      if (!data.success) {
-        alert("Order failed");
-        return;
-      }
-
-      // ✅ COD FLOW
-      if (paymentMethod === "cod") {
-        clearCart(); // 🔥 FIX
-        window.location.href = `/order-success?method=cod&order_id=${data.orderId}`;
-        return;
-      }
-
-      // ✅ ONLINE PAYMENT
-      const options = {
-        key: "rzp_test_ScYcSvKi9K3r9z",
-        amount: data.razorpay.amount,
-        currency: "INR",
-        name: "MythStreet",
-        description: "Order Payment",
-        order_id: data.razorpay.id,
-
-        handler: async function (response: any) {
-          // ✅ VERIFY PAYMENT
-          await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/verify`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              razorpay_order_id: data.razorpay.id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              orderId: data.orderId,
-            }),
-          });
-
-          clearCart(); // 🔥 FIX
-
-          window.location.href = `/order-success?payment_id=${response.razorpay_payment_id}&order_id=${data.orderId}`;
-        },
-
-        prefill: {
-          name,
-          email,
-          contact: phone,
-        },
-
-        theme: {
-          color: "#680000",
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-
-    } catch (error) {
-      console.error("ORDER ERROR:", error);
-      alert("Something went wrong");
-    }
+  } catch (error) {
+    console.error("ORDER ERROR:", error);
+    alert("Something went wrong");
   }
+}
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-10">
