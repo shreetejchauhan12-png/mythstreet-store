@@ -189,56 +189,59 @@ products.filter((p: any) =>
         </div>
 
         {accountOpen && (
-          <div className="absolute right-0 top-8 w-56 bg-white shadow-xl border p-4 z-50">
+          <div className="absolute right-0 top-10 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 p-4 z-50 animate-fade-in">
 
-            {!user ? (
-              <>
-                <button
-                  onClick={() => {
-                    setAuthMode("login");
-                    setAuthOpen(true);
-                    setAccountOpen(false);
-                  }}
-                  className="block w-full text-left py-2"
-                >
-                  Login
-                </button>
+  {!user ? (
+    <>
+      <button
+        onClick={() => {
+          setAuthMode("login");
+          setAuthOpen(true);
+          setAccountOpen(false);
+        }}
+        className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
+      >
+        Login
+      </button>
 
-                <button
-                  onClick={() => {
-                    setAuthMode("register");
-                    setAuthOpen(true);
-                    setAccountOpen(false);
-                  }}
-                  className="block w-full text-left py-2"
-                >
-                  Create Account
-                </button>
-              </>
-            ) : (
-              <>
-                <p className="font-medium mb-3">
-                  Hello {user.name}
-                </p>
+      <button
+        onClick={() => {
+          setAuthMode("register");
+          setAuthOpen(true);
+          setAccountOpen(false);
+        }}
+        className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
+      >
+        Create Account
+      </button>
+    </>
+  ) : (
+    <>
+      <p className="px-3 mb-3 text-sm text-gray-500">
+        Signed in as
+      </p>
 
-                <Link href="/account">
-                  <p className="py-2 cursor-pointer">
-                    My Account
-                  </p>
-                </Link>
+      <p className="px-3 font-semibold mb-4">
+        {user.name}
+      </p>
 
-                <button
-                  onClick={logout}
-                  className="py-2 text-red-500"
-                >
-                  Logout
-                </button>
-              </>
-            )}
+      <Link href="/account">
+        <p className="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer transition">
+          My Account
+        </p>
+      </Link>
 
-          </div>
-        )}
-      </div>
+      <button
+        onClick={logout}
+        className="w-full text-left px-3 py-2 rounded-md text-red-500 hover:bg-red-50 transition"
+      >
+        Logout
+      </button>
+    </>
+  )}
+
+</div>
+)}
 
       {/* WISHLIST */}
       <div
@@ -270,6 +273,7 @@ products.filter((p: any) =>
 
   </div>
 
+</div>
 </div>
       
 {/* announcement bar */}
