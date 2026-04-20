@@ -1,16 +1,18 @@
 import { NextResponse } from "next/server";
 import { Pool } from "pg";
 
-// ✅ create pool once (global)
+// ✅ GLOBAL DB CONNECTION (best practice)
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
+// ✅ POST → ADD SUBSCRIBER
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const body = await req.json();
+    let email = body.email;
 
-    // ❌ VALIDATION
+    // ❌ BASIC VALIDATION
     if (!email || typeof email !== "string") {
       return NextResponse.json(
         { error: "Valid email required" },
@@ -18,7 +20,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // simple email regex (safe enough)
+    // ✅ NORMALIZE EMAIL (important)
+    email = email.trim().toLowerCase();
+
+    // ❌ EMAIL FORMAT CHECK
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isValid) {
       return NextResponse.json(
@@ -27,7 +32,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🔥 AUTO CREATE TABLE (safe)
+    // 🔥 CREATE TABLE IF NOT EXISTS
     await pool.query(`
       CREATE TABLE IF NOT EXISTS subscribers (
         id SERIAL PRIMARY KEY,
@@ -36,13 +41,16 @@ export async function POST(req: Request) {
       );
     `);
 
-    // 🔥 INSERT EMAIL
+    // 🔥 INSERT EMAIL (NO DUPLICATES)
     const result = await pool.query(
-      "INSERT INTO subscribers (email) VALUES ($1) ON CONFLICT (email) DO NOTHING RETURNING *",
+      `INSERT INTO subscribers (email)
+       VALUES ($1)
+       ON CONFLICT (email) DO NOTHING
+       RETURNING *`,
       [email]
     );
 
-    // ✅ CHECK DUPLICATE
+    // ✅ HANDLE DUPLICATE
     if (result.rowCount === 0) {
       return NextResponse.json(
         { message: "Already subscribed" },
@@ -50,16 +58,17 @@ export async function POST(req: Request) {
       );
     }
 
+    // ✅ SUCCESS
     return NextResponse.json(
       { message: "Subscribed successfully" },
       { status: 200 }
     );
 
-  } catch (err) {
-    console.error("DB ERROR:", err);
+  } catch (error) {
+    console.error("❌ DB ERROR:", error);
 
     return NextResponse.json(
-      { error: "Server error" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
