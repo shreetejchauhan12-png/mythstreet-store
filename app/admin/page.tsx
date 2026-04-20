@@ -9,7 +9,7 @@ export default function AdminPage() {
   // 🔹 Fetch orders
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/order");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`);
       const data = await res.json();
       setOrders(data.orders);
     } catch (error) {
@@ -26,7 +26,7 @@ export default function AdminPage() {
   // 🔹 Update status
   const updateStatus = async (id: number, status: string) => {
     try {
-      await fetch(`http://localhost:5000/api/order/${id}/status`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/${id}/status`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
