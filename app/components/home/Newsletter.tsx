@@ -5,37 +5,53 @@ import { useState } from "react";
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [type, setType] = useState<"success" | "error" | "">("");
 
   async function handleSubscribe() {
     if (!email) {
-      setError("Please enter email");
+      setType("error");
+      setMessage("Please enter email");
       return;
     }
 
-    setError("");
     setLoading(true);
+    setMessage("");
+    setType("");
 
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
-        body: JSON.stringify({ email }),
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ email }),
       });
 
-      if (!res.ok) throw new Error("Failed");
+      const data = await res.json(); // ✅ IMPORTANT
 
-      setSuccess(true);
+      if (!res.ok) {
+        setType("error");
+        setMessage(data.error || "Something went wrong");
+        return;
+      }
+
+      // ✅ SUCCESS HANDLING
+      setType("success");
+      setMessage(data.message || "Subscribed successfully");
       setEmail("");
 
-      setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      setError("Something went wrong");
+      setType("error");
+      setMessage("Server error");
     } finally {
       setLoading(false);
+
+      // auto hide message
+      setTimeout(() => {
+        setMessage("");
+        setType("");
+      }, 3000);
     }
   }
 
@@ -91,25 +107,25 @@ export default function Newsletter() {
 
         </div>
 
-        {/* 🔥 SUCCESS / ERROR MESSAGE (ANIMATED) */}
+        {/* 🔥 MESSAGE */}
         <div className="mt-5 h-6">
 
           <p
             className={`
               text-sm transition-all duration-500
-              ${success ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
+              ${type === "success" ? "opacity-100 translate-y-0 text-green-300" : "opacity-0 -translate-y-2"}
             `}
           >
-            ✅ You're subscribed!
+            {message}
           </p>
 
           <p
             className={`
-              text-sm text-red-300 transition-all duration-500
-              ${error ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"}
+              text-sm transition-all duration-500
+              ${type === "error" ? "opacity-100 translate-y-0 text-red-300" : "opacity-0 -translate-y-2"}
             `}
           >
-            {error}
+            {message}
           </p>
 
         </div>
