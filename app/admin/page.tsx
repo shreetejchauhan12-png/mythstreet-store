@@ -9,9 +9,19 @@ export default function AdminPage() {
   // 🔹 Fetch orders
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`);
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/order`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+
       const data = await res.json();
-      setOrders(data.orders);
+      setOrders(data.orders || []);
     } catch (error) {
       console.error(error);
     } finally {
@@ -26,13 +36,19 @@ export default function AdminPage() {
   // 🔹 Update status
   const updateStatus = async (id: number, status: string) => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/${id}/status`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status }),
-      });
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/order/${id}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
 
       fetchOrders(); // refresh
     } catch (error) {
@@ -46,16 +62,11 @@ export default function AdminPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-
-      <h1 className="text-2xl font-semibold mb-6">
-        Admin Panel
-      </h1>
+      <h1 className="text-2xl font-semibold mb-6">Admin Panel</h1>
 
       <div className="space-y-6">
-
-        {orders.map((order) => (
+        {orders?.map((order) => (
           <div key={order.id} className="border p-5 rounded">
-
             {/* HEADER */}
             <div className="flex justify-between mb-4">
               <div>
@@ -89,15 +100,13 @@ export default function AdminPage() {
                   <option value="shipped">Shipped</option>
                   <option value="delivered">Delivered</option>
                 </select>
-
               </div>
             </div>
 
             {/* ITEMS */}
             <div className="space-y-3">
-              {order.items.map((item: any) => (
+              {order.items?.map((item: any) => (
                 <div key={item.id} className="flex gap-4 items-center">
-
                   <img
                     src={item.image}
                     className="w-16 h-16 object-cover"
@@ -109,16 +118,12 @@ export default function AdminPage() {
                       Qty: {item.quantity}
                     </p>
                   </div>
-
                 </div>
               ))}
             </div>
-
           </div>
         ))}
-
       </div>
-
     </div>
   );
 }
