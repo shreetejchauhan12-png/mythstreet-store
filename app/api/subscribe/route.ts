@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ NORMALIZE EMAIL (important)
+    // ✅ NORMALIZE EMAIL
     email = email.trim().toLowerCase();
 
     // ❌ EMAIL FORMAT CHECK
@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       );
     `);
 
-    // 🔥 INSERT EMAIL (NO DUPLICATES)
+    // 🔥 INSERT EMAIL
     const result = await pool.query(
       `INSERT INTO subscribers (email)
        VALUES ($1)
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       [email]
     );
 
-    // ✅ HANDLE DUPLICATE
+    // ✅ DUPLICATE CHECK
     if (result.rowCount === 0) {
       return NextResponse.json(
         { message: "Already subscribed" },
@@ -61,7 +61,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // ✅ SUCCESS
     return NextResponse.json(
       { message: "Subscribed successfully" },
       { status: 200 }
@@ -72,6 +71,24 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+// ✅ GET → FETCH ALL SUBSCRIBERS
+export async function GET() {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM subscribers ORDER BY created_at DESC"
+    );
+
+    return NextResponse.json(result.rows);
+  } catch (error) {
+    console.error("❌ FETCH ERROR:", error);
+
+    return NextResponse.json(
+      { error: "Failed to fetch subscribers" },
       { status: 500 }
     );
   }
