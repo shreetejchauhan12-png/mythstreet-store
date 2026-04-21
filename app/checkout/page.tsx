@@ -33,20 +33,19 @@ export default function CheckoutPage() {
   const [pincode, setPincode] = useState("");
 
   async function handlePlaceOrder() {
-  const userData = localStorage.getItem("user");
+  // 🔥 CHECK TOKEN (MAIN LOGIN CHECK)
+const token = localStorage.getItem("token");
 
-if (!userData) {
+if (!token) {
   router.push("/login?redirect=checkout");
   return;
 }
 
-const user = JSON.parse(userData);
+// 🔥 OPTIONAL: get user after token check
+const userData = localStorage.getItem("user");
+const user = userData ? JSON.parse(userData) : null;
 
-// 🔥 STRICT CHECK
 if (!user || !user.id) {
-  localStorage.removeItem("user");
-  localStorage.removeItem("token");
-
   router.push("/login?redirect=checkout");
   return;
 }
