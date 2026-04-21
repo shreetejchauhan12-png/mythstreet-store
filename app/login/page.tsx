@@ -1,5 +1,4 @@
 "use client";
-throw new Error("LOGIN PAGE TEST");
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -7,13 +6,15 @@ import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [step, setStep] = useState<"phone" | "otp">("phone");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      alert("Fill all fields");
+  // 🔥 SEND OTP
+  const handleSendOtp = async () => {
+    if (!phone) {
+      alert("Enter phone number");
       return;
     }
 
@@ -21,34 +22,71 @@ export default function LoginPage() {
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/send-otp`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ phone }),
         }
       );
 
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.error || "Login failed");
-        setLoading(false);
+        alert(data.error || "Failed to send OTP");
         return;
       }
 
-      // ✅ SAVE USER + TOKEN
+      alert("OTP sent (check server logs for now)");
+      setStep("otp");
+
+    } catch (error) {
+      console.error(error);
+      alert("Error sending OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 🔥 VERIFY OTP
+  const handleVerifyOtp = async () => {
+    if (!otp) {
+      alert("Enter OTP");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ phone, otp }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Invalid OTP");
+        return;
+      }
+
+      // ✅ SAVE USER
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("token", data.token);
 
-      // ✅ REDIRECT HOME
       router.push("/");
 
     } catch (error) {
       console.error(error);
-      alert("Error logging in");
+      alert("Error verifying OTP");
     } finally {
       setLoading(false);
     }
@@ -58,51 +96,59 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto mt-20 p-6 border rounded-xl shadow-sm">
 
       <h1 className="text-2xl font-semibold mb-6 text-center">
-        Login
+        Login / Signup
       </h1>
 
-      <input
-        type="email"
-        placeholder="Email"
-        className="w-full border p-3 mb-3 rounded"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+      {step === "phone" && (
+        <>
+          <input
+            type="tel"
+            placeholder="Enter Mobile Number"
+            className="w-full border p-3 mb-4 rounded"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
 
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full border p-3 mb-2 rounded"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+          <button
+            onClick={handleSendOtp}
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded"
+          >
+            {loading ? "Sending..." : "Send OTP"}
+          </button>
+        </>
+      )}
 
-      {/* 🔥 FORGOT PASSWORD LINK */}
-      <p
-        onClick={() => router.push("/forgot-password")}
-        className="text-right text-sm mb-4 cursor-pointer underline"
-      >
-        Forgot Password?
-      </p>
+      {step === "otp" && (
+        <>
+          <p className="text-sm mb-2 text-gray-500">
+            OTP sent to {phone}
+          </p>
 
-      <button
-        onClick={handleLogin}
-        disabled={loading}
-        className="w-full bg-black text-white py-3 rounded disabled:opacity-50"
-      >
-        {loading ? "Logging in..." : "Login"}
-      </button>
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            className="w-full border p-3 mb-4 rounded"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
 
-      {/* 🔥 REGISTER LINK */}
-      <p className="text-center mt-4 text-sm">
-        Don’t have an account?{" "}
-        <span
-          onClick={() => router.push("/register")}
-          className="underline cursor-pointer"
-        >
-          Register
-        </span>
-      </p>
+          <button
+            onClick={handleVerifyOtp}
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded"
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+
+          <p
+            onClick={() => setStep("phone")}
+            className="text-sm mt-3 text-center underline cursor-pointer"
+          >
+            Change Number
+          </p>
+        </>
+      )}
 
     </div>
   );

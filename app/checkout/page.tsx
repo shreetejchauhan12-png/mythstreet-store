@@ -217,11 +217,14 @@ export default function CheckoutPage() {
           </div>
 
           <button
-            onClick={handlePlaceOrder}
-            className="bg-[#680000] text-white w-full py-3"
-          >
-            PLACE ORDER
-          </button>
+  onClick={() => {
+    console.log("🔥 BUTTON CLICKED");
+    handlePlaceOrder();
+  }}
+  className="bg-[#680000] text-white w-full py-3"
+>
+  PLACE ORDER
+</button>
 
         </div>
 
