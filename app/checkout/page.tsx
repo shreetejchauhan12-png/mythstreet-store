@@ -37,9 +37,9 @@ export default function CheckoutPage() {
 
   // 🔥 LOGIN CHECK → REDIRECT
   if (!user.id) {
-    router.push("/login");
-    return;
-  }
+  router.push("/login?redirect=checkout");
+  return;
+}
 
   // 🔥 VALIDATION
   if (!name || !phone || !address || !city || !state || !pincode) {
