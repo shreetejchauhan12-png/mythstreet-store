@@ -9,103 +9,65 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState<"phone" | "otp">("phone");
-  const [loading, setLoading] = useState(false);
 
-  const handleSendOtp = async () => {
-    if (!phone) {
-      alert("Enter phone number");
-      return;
-    }
+  const sendOtp = async () => {
+    if (!phone) return alert("Enter phone");
 
-    try {
-      setLoading(true);
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/send-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ phone }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.error || "Failed to send OTP");
-        return;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/send-otp`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
       }
+    );
 
-      alert("OTP sent");
-      setStep("otp");
+    const data = await res.json();
 
-    } catch (error) {
-      alert("Error sending OTP");
-    } finally {
-      setLoading(false);
-    }
+    if (!res.ok) return alert(data.error);
+
+    alert("OTP sent (check backend logs)");
+    setStep("otp");
   };
 
-  const handleVerifyOtp = async () => {
-    if (!otp) {
-      alert("Enter OTP");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-otp`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ phone, otp }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.error || "Invalid OTP");
-        return;
+  const verifyOtp = async () => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-otp`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, otp }),
       }
+    );
 
-      localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("token", data.token);
+    const data = await res.json();
 
-      router.push("/");
+    if (!res.ok) return alert(data.error);
 
-    } catch (error) {
-      alert("Error verifying OTP");
-    } finally {
-      setLoading(false);
-    }
+    localStorage.setItem("user", JSON.stringify(data.user));
+    localStorage.setItem("token", data.token);
+
+    router.push("/");
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 border rounded-xl">
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded">
 
-      <h1 className="text-2xl text-center mb-6">
-        OTP LOGIN TEST
+      <h1 className="text-xl mb-6 text-center">
+        Mobile Login
       </h1>
 
       {step === "phone" && (
         <>
           <input
-            type="tel"
-            placeholder="Enter Mobile Number"
+            placeholder="Phone Number"
             className="w-full border p-3 mb-4"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
 
           <button
-            onClick={handleSendOtp}
+            onClick={sendOtp}
             className="w-full bg-black text-white py-3"
           >
             Send OTP
@@ -116,7 +78,6 @@ export default function LoginPage() {
       {step === "otp" && (
         <>
           <input
-            type="text"
             placeholder="Enter OTP"
             className="w-full border p-3 mb-4"
             value={otp}
@@ -124,7 +85,7 @@ export default function LoginPage() {
           />
 
           <button
-            onClick={handleVerifyOtp}
+            onClick={verifyOtp}
             className="w-full bg-black text-white py-3"
           >
             Verify OTP
