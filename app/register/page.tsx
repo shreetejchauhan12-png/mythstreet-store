@@ -9,25 +9,44 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
+    if (!name || !email || !password || !confirmPassword) {
+      alert("Fill all fields");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-        }),
-      });
+      setLoading(true);
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            password,
+          }),
+        }
+      );
 
       const data = await res.json();
 
       if (!res.ok) {
         alert(data.error || "Something went wrong");
+        setLoading(false);
         return;
       }
 
@@ -38,11 +57,13 @@ export default function RegisterPage() {
     } catch (error) {
       console.error(error);
       alert("Error registering");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 mt-20 border rounded">
+    <div className="max-w-md mx-auto mt-20 p-6 border rounded-xl shadow-sm">
 
       <h1 className="text-2xl font-semibold mb-6 text-center">
         Create Account
@@ -50,16 +71,16 @@ export default function RegisterPage() {
 
       <input
         type="text"
-        placeholder="Name"
-        className="w-full border p-2 mb-3"
+        placeholder="Full Name"
+        className="w-full border p-3 mb-3 rounded"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
 
       <input
         type="email"
-        placeholder="Email"
-        className="w-full border p-2 mb-3"
+        placeholder="Email Address"
+        className="w-full border p-3 mb-3 rounded"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -67,17 +88,36 @@ export default function RegisterPage() {
       <input
         type="password"
         placeholder="Password"
-        className="w-full border p-2 mb-4"
+        className="w-full border p-3 mb-3 rounded"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        className="w-full border p-3 mb-4 rounded"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+      />
+
       <button
         onClick={handleRegister}
-        className="w-full bg-black text-white py-2"
+        disabled={loading}
+        className="w-full bg-black text-white py-3 rounded disabled:opacity-50"
       >
-        Register
+        {loading ? "Creating..." : "Register"}
       </button>
+
+      <p className="text-center mt-4 text-sm">
+        Already have an account?{" "}
+        <span
+          onClick={() => router.push("/login")}
+          className="underline cursor-pointer"
+        >
+          Login
+        </span>
+      </p>
 
     </div>
   );
