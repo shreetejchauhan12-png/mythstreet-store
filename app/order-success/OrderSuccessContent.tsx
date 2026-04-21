@@ -17,7 +17,7 @@ export default function OrderSuccessContent() {
     const fetchOrder = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/api/order/${orderIdParam}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/order/${orderIdParam}`
         );
         const data = await res.json();
 
