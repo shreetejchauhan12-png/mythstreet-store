@@ -1,4 +1,5 @@
 "use client";
+throw new Error("LOGIN PAGE TEST");
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
