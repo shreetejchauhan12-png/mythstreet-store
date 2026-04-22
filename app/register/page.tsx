@@ -6,57 +6,71 @@ import { useRouter } from "next/navigation";
 export default function RegisterPage() {
   const router = useRouter();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [step, setStep] = useState<"phone" | "otp">("phone");
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
-    if (!name || !email || !password || !confirmPassword) {
-      alert("Fill all fields");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+  // 🔥 SEND OTP
+  const sendOtp = async () => {
+    if (!phone) return alert("Enter phone number");
 
     try {
       setLoading(true);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/send-otp`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone }),
         }
       );
 
       const data = await res.json();
 
-      if (!res.ok) {
-        alert(data.error || "Something went wrong");
-        setLoading(false);
-        return;
-      }
+      if (!res.ok) return alert(data.error);
 
-      alert("Account created successfully");
+      alert("OTP sent to your phone");
+      setStep("otp");
 
-      router.push("/login");
+    } catch (err) {
+      alert("Failed to send OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    } catch (error) {
-      console.error(error);
-      alert("Error registering");
+  // 🔥 VERIFY OTP
+  const verifyOtp = async () => {
+    if (!otp) return alert("Enter OTP");
+
+    try {
+      setLoading(true);
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-otp`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone, otp }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) return alert(data.error);
+
+      // ✅ SAVE USER
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+
+      alert("Account created & logged in ✅");
+
+      router.push("/");
+
+    } catch (err) {
+      alert("Verification failed");
     } finally {
       setLoading(false);
     }
@@ -69,45 +83,61 @@ export default function RegisterPage() {
         Create Account
       </h1>
 
-      <input
-        type="text"
-        placeholder="Full Name"
-        className="w-full border p-3 mb-3 rounded"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
+      {/* STEP 1 */}
+      {step === "phone" && (
+        <>
+          <input
+            type="tel"
+            placeholder="Enter Mobile Number"
+            className="w-full border p-3 mb-4 rounded"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
 
-      <input
-        type="email"
-        placeholder="Email Address"
-        className="w-full border p-3 mb-3 rounded"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+          <button
+            onClick={sendOtp}
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded disabled:opacity-50"
+          >
+            {loading ? "Sending..." : "Send OTP"}
+          </button>
+        </>
+      )}
 
-      <input
-        type="password"
-        placeholder="Password"
-        className="w-full border p-3 mb-3 rounded"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+      {/* STEP 2 */}
+      {step === "otp" && (
+        <>
+          <p className="text-sm text-gray-500 mb-2">
+            OTP sent to {phone}
+          </p>
 
-      <input
-        type="password"
-        placeholder="Confirm Password"
-        className="w-full border p-3 mb-4 rounded"
-        value={confirmPassword}
-        onChange={(e) => setConfirmPassword(e.target.value)}
-      />
+          <input
+            type="text"
+            placeholder="Enter OTP"
+            className="w-full border p-3 mb-4 rounded"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+          />
 
-      <button
-        onClick={handleRegister}
-        disabled={loading}
-        className="w-full bg-black text-white py-3 rounded disabled:opacity-50"
-      >
-        {loading ? "Creating..." : "Register"}
-      </button>
+          <button
+            onClick={verifyOtp}
+            disabled={loading}
+            className="w-full bg-black text-white py-3 rounded disabled:opacity-50"
+          >
+            {loading ? "Verifying..." : "Verify OTP"}
+          </button>
+
+          <p
+            onClick={() => {
+              setStep("phone");
+              setOtp("");
+            }}
+            className="text-center text-sm mt-3 underline cursor-pointer"
+          >
+            Change Number
+          </p>
+        </>
+      )}
 
       <p className="text-center mt-4 text-sm">
         Already have an account?{" "}
