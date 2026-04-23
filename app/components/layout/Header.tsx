@@ -264,11 +264,15 @@ products.filter((p: any) =>
                 {user.name || "User"}
               </p>
 
-              <Link href="/account">
-                <p className="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer transition">
-                  My Account
-                </p>
-              </Link>
+              <p
+  onClick={() => {
+    setAccountOpen(false); // close dropdown
+    window.location.href = "/account"; // force navigation
+  }}
+  className="px-3 py-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
+>
+  My Account
+</p>
 
               <button
                 onClick={logout}
