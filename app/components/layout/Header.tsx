@@ -71,10 +71,37 @@ export default function Header() {
 
       // ✅ SAVE USER
       localStorage.setItem("user", JSON.stringify(result.user));
-      localStorage.setItem("token", result.token);
+localStorage.setItem("token", result.token);
 
-      setUser(result.user);
-      setAuthOpen(false);
+// 👉 ASK NAME IF NOT EXISTS
+if (!result.user.name) {
+  const name = prompt("Enter your name");
+
+  if (name) {
+    const res2 = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-name`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${result.token}`,
+        },
+        body: JSON.stringify({ name }),
+      }
+    );
+
+    const updated = await res2.json();
+
+    localStorage.setItem("user", JSON.stringify(updated.user));
+    setUser(updated.user);
+  } else {
+    setUser(result.user);
+  }
+} else {
+  setUser(result.user);
+}
+
+setAuthOpen(false);
     },
 
     failure: function (err: any) {
