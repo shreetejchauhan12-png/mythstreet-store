@@ -43,22 +43,50 @@ export default function LoginPage() {
       tokenAuth: "510536Txv5S33tx69e77c1eP1",
       identifier: "91" + phone,
 
-      success: function (data: any) {
+      // ✅ UPDATED SUCCESS FLOW
+      success: async function (data: any) {
         console.log("✅ VERIFIED:", data);
 
-        // ✅ SAVE TOKEN (you can verify later with backend)
-        localStorage.setItem("otp_token", data.token);
+        try {
+          const res = await fetch(
+            "https://mythstreet-backend.onrender.com/api/auth/verify-msg91",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token: data.token }),
+            }
+          );
 
-        alert("Login Successful ✅");
+          const result = await res.json();
+          console.log("BACKEND RESULT:", result);
 
-        // 🔥 REDIRECT
-        const params = new URLSearchParams(window.location.search);
-        const redirect = params.get("redirect");
+          if (!result.success) {
+            alert("Login failed");
+            setLoading(false);
+            return;
+          }
 
-        if (redirect === "checkout") {
-          router.push("/checkout");
-        } else {
-          router.push("/");
+          // ✅ STORE USER + TOKEN
+          localStorage.setItem("token", result.token);
+          localStorage.setItem("user", JSON.stringify(result.user));
+
+          alert("Login Successful ✅");
+
+          // 🔥 REDIRECT
+          const params = new URLSearchParams(window.location.search);
+          const redirect = params.get("redirect");
+
+          if (redirect === "checkout") {
+            router.push("/checkout");
+          } else {
+            router.push("/");
+          }
+
+        } catch (err) {
+          console.log("LOGIN ERROR:", err);
+          alert("Something went wrong");
         }
 
         setLoading(false);

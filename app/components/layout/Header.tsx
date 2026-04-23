@@ -32,6 +32,12 @@ export default function Header() {
   const [authOpen, setAuthOpen] = useState(false);
 
   const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    setUser(JSON.parse(storedUser));
+  }
+}, []);
   const startLogin = () => {
   if (!window.initSendOTP) {
     alert("OTP service not loaded. Refresh page.");
@@ -98,10 +104,11 @@ export default function Header() {
 }, []);
 
   const logout = () => {
-    localStorage.removeItem("myth_user");
-    setUser(null);
-    setAccountOpen(false);
-  };
+  localStorage.removeItem("user");   // ✅ remove correct key
+  localStorage.removeItem("token");  // ✅ remove jwt
+  setUser(null);                     // ✅ clear state
+  setAccountOpen(false);
+};
 
   const cart = useCart((state) => state.cart);
   const addToCart = useCart((state) => state.addToCart);
@@ -187,7 +194,7 @@ products.filter((p: any) =>
       >
         {user ? (
           <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
-            {user.name?.charAt(0)}
+            {user.name ? user.name.charAt(0).toUpperCase() : "U"}
           </div>
         ) : (
           <User className="w-5 h-5" />
@@ -227,7 +234,7 @@ products.filter((p: any) =>
               </p>
 
               <p className="px-3 font-semibold mb-4">
-                {user.name}
+                {user.name || "User"}
               </p>
 
               <Link href="/account">
