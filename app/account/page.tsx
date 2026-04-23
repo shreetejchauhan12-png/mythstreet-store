@@ -6,9 +6,16 @@ export default function AccountPage() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("user"); // ✅ FIXED
-    if (saved) setUser(JSON.parse(saved));
-  }, []);
+  const saved = localStorage.getItem("user");
+
+  console.log("LOCAL STORAGE USER:", saved); // 👈 ADD THIS
+
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    console.log("PARSED USER:", parsed); // 👈 ADD THIS
+    setUser(parsed);
+  }
+}, []);
 
   if (!user) return <p className="p-10">Loading...</p>;
 
