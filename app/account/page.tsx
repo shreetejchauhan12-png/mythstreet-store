@@ -6,14 +6,14 @@ export default function AccountPage() {
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("myth_user");
+    const saved = localStorage.getItem("user"); // ✅ FIXED
     if (saved) setUser(JSON.parse(saved));
   }, []);
 
-  if (!user) return null;
+  if (!user) return <p className="p-10">Loading...</p>;
 
   return (
-    <div>
+    <div className="p-10">
 
       <h2 className="text-xl font-semibold mb-6">
         Profile
@@ -22,29 +22,16 @@ export default function AccountPage() {
       <div className="border p-6 max-w-xl">
 
         <div className="mb-4">
-          <p className="text-sm text-gray-500">
-            Name
-          </p>
+          <p className="text-sm text-gray-500">Name</p>
           <p className="font-medium">
-            {user.name}
+            {user.name || "Not set"}
           </p>
         </div>
 
         <div className="mb-4">
-          <p className="text-sm text-gray-500">
-            Email
-          </p>
+          <p className="text-sm text-gray-500">Phone</p>
           <p className="font-medium">
-            {user.email}
-          </p>
-        </div>
-
-        <div className="mb-4">
-          <p className="text-sm text-gray-500">
-            Account Created
-          </p>
-          <p className="font-medium">
-            {new Date(user.createdAt).toLocaleDateString()}
+            {user.phone}
           </p>
         </div>
 
