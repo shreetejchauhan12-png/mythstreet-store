@@ -15,7 +15,7 @@ export default function AccountLayout({
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("myth_user");
+    const saved = localStorage.getItem("user");
 
     if (!saved) {
       router.push("/");
@@ -26,7 +26,8 @@ export default function AccountLayout({
   }, []);
 
   const logout = () => {
-    localStorage.removeItem("myth_user");
+    localStorage.removeItem("user");
+localStorage.removeItem("token");
     router.push("/");
   };
 

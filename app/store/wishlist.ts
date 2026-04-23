@@ -15,25 +15,39 @@ type WishlistStore = {
   isWishlisted: (id: number) => boolean;
 };
 
+// ✅ LOAD FROM LOCALSTORAGE
+const getInitialWishlist = () => {
+  if (typeof window === "undefined") return [];
+
+  const saved = localStorage.getItem("myth_wishlist");
+  return saved ? JSON.parse(saved) : [];
+};
+
 export const useWishlist = create<WishlistStore>((set, get) => ({
-  wishlist: [],
+  wishlist: getInitialWishlist(),
 
   toggleWishlist: (item) => {
     const exists = get().wishlist.find(
       (i) => i.id === item.id
     );
 
+    let updated;
+
     if (exists) {
-      set({
-        wishlist: get().wishlist.filter(
-          (i) => i.id !== item.id
-        ),
-      });
+      updated = get().wishlist.filter(
+        (i) => i.id !== item.id
+      );
     } else {
-      set({
-        wishlist: [...get().wishlist, item],
-      });
+      updated = [...get().wishlist, item];
     }
+
+    // ✅ SAVE TO LOCALSTORAGE
+    localStorage.setItem(
+      "myth_wishlist",
+      JSON.stringify(updated)
+    );
+
+    set({ wishlist: updated });
   },
 
   isWishlisted: (id) =>
