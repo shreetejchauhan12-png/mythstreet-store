@@ -30,14 +30,53 @@ export default function Header() {
   // account
   const [accountOpen, setAccountOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const [authMode, setAuthMode] = useState<"login" | "register">("login");
 
   const [user, setUser] = useState<any>(null);
+  const startLogin = () => {
+  if (!window.initSendOTP) {
+    alert("OTP service not loaded. Refresh page.");
+    return;
+  }
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  window.initSendOTP({
+    widgetId: "3664756c466b393432373031",
+    tokenAuth: "510536Txv5S33tx69e77c1eP1",
 
+    success: async function (data: any) {
+      console.log("MSG91 FULL RESPONSE:", JSON.stringify(data, null, 2));
+
+      // 🔥 VERIFY WITH BACKEND
+      const res = await fetch(
+        
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-msg91`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: data.token || data.message }),
+        }
+      );
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert(result.error);
+        return;
+      }
+
+      // ✅ SAVE USER
+      localStorage.setItem("user", JSON.stringify(result.user));
+      localStorage.setItem("token", result.token);
+
+      setUser(result.user);
+      setAuthOpen(false);
+    },
+
+    failure: function (err: any) {
+      console.log("❌ OTP ERROR:", err);
+      alert("OTP failed");
+    },
+  });
+};
   // search
   const [search, setSearch] = useState("");
   const filtered = products.filter((p: any) =>
@@ -46,71 +85,17 @@ export default function Header() {
 
   useEffect(() => {
   getProducts().then(setProducts);
+
+  const script = document.createElement("script");
+  script.src = "https://verify.msg91.com/otp-provider.js";
+  script.async = true;
+
+  document.body.appendChild(script);
+
+  return () => {
+    document.body.removeChild(script);
+  };
 }, []);
-
-  const register = () => {
-    if (!name || !email || !password) {
-      alert("Fill all fields");
-      return;
-    }
-
-    const users =
-      JSON.parse(localStorage.getItem("myth_users") || "[]");
-
-    const exists = users.find(
-      (u: any) => u.email === email
-    );
-
-    if (exists) {
-      alert("User already exists");
-      return;
-    }
-
-    const newUser = {
-      name,
-      email,
-      password,
-      createdAt: new Date().toISOString()
-    };
-
-    users.push(newUser);
-
-    localStorage.setItem(
-      "myth_users",
-      JSON.stringify(users)
-    );
-
-    localStorage.setItem(
-      "myth_user",
-      JSON.stringify(newUser)
-    );
-
-    setUser(newUser);
-    setAuthOpen(false);
-  };
-    const login = () => {
-    const users =
-      JSON.parse(localStorage.getItem("myth_users") || "[]");
-
-    const found = users.find(
-      (u: any) =>
-        u.email === email &&
-        u.password === password
-    );
-
-    if (!found) {
-      alert("Invalid email or password");
-      return;
-    }
-
-    localStorage.setItem(
-      "myth_user",
-      JSON.stringify(found)
-    );
-
-    setUser(found);
-    setAuthOpen(false);
-  };
 
   const logout = () => {
     localStorage.removeItem("myth_user");
@@ -216,7 +201,6 @@ products.filter((p: any) =>
             <>
               <button
                 onClick={() => {
-                  setAuthMode("login");
                   setAuthOpen(true);
                   setAccountOpen(false);
                 }}
@@ -227,7 +211,7 @@ products.filter((p: any) =>
 
               <button
                 onClick={() => {
-                  setAuthMode("register");
+
                   setAuthOpen(true);
                   setAccountOpen(false);
                 }}
@@ -316,60 +300,15 @@ products.filter((p: any) =>
             />
 
             <h2 className="text-xl font-semibold mb-6">
-              {authMode === "login" ? "Login" : "Create Account"}
-            </h2>
-
-            {authMode === "register" && (
-              <input
-                placeholder="Full name"
-                className="w-full border p-3 mb-3"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            )}
-
-            <input
-              placeholder="Email"
-              className="w-full border p-3 mb-3"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <input
-              placeholder="Password"
-              type="password"
-              className="w-full border p-3 mb-4"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+  Login / Signup
+</h2>
 
             <button
-              onClick={authMode === "login" ? login : register}
-              className="w-full bg-black text-white py-3"
-            >
-              {authMode === "login" ? "Login" : "Create Account"}
-            </button>
-
-            <p className="text-sm mt-4 text-center">
-              {authMode === "login"
-                ? "Don't have account?"
-                : "Already have account?"}
-
-              <span
-                className="ml-2 underline cursor-pointer"
-                onClick={() =>
-                  setAuthMode(
-                    authMode === "login"
-                      ? "register"
-                      : "login"
-                  )
-                }
-              >
-                {authMode === "login"
-                  ? "Create one"
-                  : "Login"}
-              </span>
-            </p>
+  onClick={startLogin}
+  className="w-full bg-black text-white py-3"
+>
+  Continue with Mobile
+</button>
 
           </div>
 
