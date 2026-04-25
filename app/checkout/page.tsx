@@ -57,7 +57,6 @@ if (!user || !user.id) {
   }
 
   const orderData = {
-    userId: user.id,
     name,
     email,
     phone,
@@ -81,8 +80,9 @@ if (!user || !user.id) {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-      },
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${token}`,
+},
       body: JSON.stringify(orderData),
     });
 
