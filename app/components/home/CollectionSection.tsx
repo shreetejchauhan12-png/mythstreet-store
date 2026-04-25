@@ -4,37 +4,32 @@ import Link from "next/link";
 
 export default function CollectionSection() {
   const collections = [
-    {
-      name: "Spiritual",
-      slug: "spiritual",
-      image:
-        "https://images.unsplash.com/photo-1604881991720-f91add269bed?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      name: "Anime",
-      slug: "anime",
-      image:
-        "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      name: "Marvel",
-      slug: "marvel",
-      image:
-        "https://images.unsplash.com/photo-1608889175123-8ee362201f81?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      name: "Streetwear",
-      slug: "streetwear",
-      image:
-        "https://images.unsplash.com/photo-1520975954732-35dd22299614?q=80&w=1974&auto=format&fit=crop",
-    },
-    {
-      name: "Minimal",
-      slug: "minimal",
-      image:
-        "https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1974&auto=format&fit=crop",
-    },
-  ];
+  {
+    name: "Spiritual",
+    slug: "spiritual",
+    image: "/ct2.jpg",
+  },
+  {
+    name: "Anime",
+    slug: "anime",
+    image: "/ct3.jpg",
+  },
+  {
+    name: "Marvel",
+    slug: "marvel",
+    image: "/ct1.jpg",
+  },
+  {
+    name: "Streetwear",
+    slug: "streetwear",
+    image: "/ct4.jpg",
+  },
+  {
+    name: "Minimal",
+    slug: "minimal",
+    image: "/ct5.jpg",
+  },
+];
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-10 md:py-16">
