@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export type Product = {
   id: number;
   title: string;
@@ -28,7 +31,6 @@ export async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch(`${BASE_URL}/api/products`, {
       cache: "no-store",
-      next: { revalidate: 10 },
     });
 
     if (res.ok) {
@@ -40,7 +42,6 @@ export async function getProducts(): Promise<Product[]> {
     console.error("⚠️ Fetch failed, using fallback", error);
   }
 
-  // ✅ ALWAYS RETURN SAFE DATA (no crash)
   return Array.isArray(data)
     ? data.map((item: any): Product => {
         const index = ((Number(item.id) - 1) % 8) + 1;
