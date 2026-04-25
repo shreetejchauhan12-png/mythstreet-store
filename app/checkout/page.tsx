@@ -102,7 +102,7 @@ if (!user || !user.id) {
 
     // ✅ ONLINE PAYMENT
     const options = {
-      key: "rzp_test_ScYcSvKi9K3r9z",
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
       amount: data.razorpay.amount,
       currency: "INR",
       name: "MythStreet",

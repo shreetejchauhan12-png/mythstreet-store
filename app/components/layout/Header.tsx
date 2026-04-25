@@ -466,15 +466,19 @@ products.filter((p: any) =>
                   </p>
 
                   <button
-                    onClick={() =>
-                      addToCart({
-                        id: String(item.id),
-                        title: item.title,
-                        price: item.price,
-                        image: item.image,
-                        quantity: 1,
-                      })
-                    }
+                    onClick={() => {
+  // ✅ add to cart
+  addToCart({
+    id: String(item.id),
+    title: item.title,
+    price: item.price,
+    image: item.image,
+    quantity: 1,
+  });
+
+  // ✅ remove from wishlist
+  toggleWishlist(item);
+}}
                     className="text-xs text-[#680000]"
                   >
                     Move to cart

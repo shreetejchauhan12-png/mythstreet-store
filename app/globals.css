@@ -14,3 +14,40 @@ body {
   96% { transform: rotateY(0deg); }
   100% { transform: rotateY(360deg); }
 }
+/* 🔥 POP CIRCLE */
+@keyframes pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-pop {
+  animation: pop 0.5s ease-out;
+}
+
+/* 🔥 TICK DRAW EFFECT */
+@keyframes tick {
+  0% {
+    transform: scale(0) rotate(-30deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0);
+  }
+}
+
+.animate-tick {
+  animation: tick 0.4s ease-out 0.2s both;
+}

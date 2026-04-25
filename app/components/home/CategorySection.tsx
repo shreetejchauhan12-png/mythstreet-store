@@ -53,19 +53,18 @@ export default function CategorySection() {
             <div className="group cursor-pointer">
 
               {/* ratio container */}
-              <div className="relative overflow-hidden rounded-xl">
+              <div className="relative overflow-hidden rounded-2xl aspect-4/5">
 
-                <div className="pt-[125%]"></div>
+  <img
+    src={cat.image}
+    alt={cat.name}
+    className="w-full h-full object-cover transition duration-700 ease-out group-hover:scale-110"
+  />
 
-                <img
-                  src={cat.image}
-                  className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                />
+  {/* gradient overlay */}
+  <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition"></div>
 
-                {/* hover overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition"></div>
-
-              </div>
+</div>
 
               <p className="mt-3 text-sm md:text-base font-medium text-center">
                 {cat.name}
