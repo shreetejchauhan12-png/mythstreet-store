@@ -60,40 +60,49 @@ export async function getProducts(): Promise<Product[]> {
 
           // ✅ TYPE-BASED FALLBACK IMAGES
           image:
-            item.image ||
-            (item.type === "hoodie"
-              ? "/pd1.jpg"
-              : item.type === "tshirt"
-              ? "/pd2.jpg"
-              : item.type === "sweatshirt"
-              ? "/pd3.jpg"
-              : item.type === "oversized"
-              ? "/pd4.jpg"
-              : "/pd2.jpg"),
+  item.image &&
+  item.image.startsWith("/") &&
+  !item.image.includes("img")
+    ? item.image
+    : item.type === "hoodie"
+    ? "/pd1.jpg"
+    : item.type === "tshirt"
+    ? "/pd2.jpg"
+    : item.type === "sweatshirt"
+    ? "/pd3.jpg"
+    : item.type === "oversized"
+    ? "/pd4.jpg"
+    : "/placeholder.jpg",
 
           hoverLeft:
-            item.hover_left ||
-            (item.type === "hoodie"
-              ? "/pd1.jpg"
-              : item.type === "tshirt"
-              ? "/pd2.jpg"
-              : item.type === "sweatshirt"
-              ? "/pd3.jpg"
-              : item.type === "oversized"
-              ? "/pd4.jpg"
-              : "/pd2.jpg"),
+  item.hover_left &&
+  item.hover_left.startsWith("/") &&
+  !item.hover_left.includes("img")
+    ? item.hover_left
+    : item.type === "hoodie"
+    ? "/pd1.jpg"
+    : item.type === "tshirt"
+    ? "/pd2.jpg"
+    : item.type === "sweatshirt"
+    ? "/pd3.jpg"
+    : item.type === "oversized"
+    ? "/pd4.jpg"
+    : "/pd2.jpg",
 
           hoverRight:
-            item.hover_right ||
-            (item.type === "hoodie"
-              ? "/pd1.jpg"
-              : item.type === "tshirt"
-              ? "/pd2.jpg"
-              : item.type === "sweatshirt"
-              ? "/pd3.jpg"
-              : item.type === "oversized"
-              ? "/pd4.jpg"
-              : "/pd2.jpg"),
+  item.hover_right &&
+  item.hover_right.startsWith("/") &&
+  !item.hover_right.includes("img")
+    ? item.hover_right
+    : item.type === "hoodie"
+    ? "/pd1.jpg"
+    : item.type === "tshirt"
+    ? "/pd2.jpg"
+    : item.type === "sweatshirt"
+    ? "/pd3.jpg"
+    : item.type === "oversized"
+    ? "/pd4.jpg"
+    : "/pd2.jpg",
 
           banner: item.banner || `/banner${index}.jpg`,
 

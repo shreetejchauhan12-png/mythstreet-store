@@ -40,22 +40,24 @@ export default function Hero() {
           <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
             <div>
 
-              <p className="tracking-widest mb-2 text-xs md:text-sm">
-                NEW COLLECTION
-              </p>
+              <p className="tracking-widest mb-2 text-xs md:text-sm text-white/80">
+  WELCOME TO
+</p>
 
-              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4">
-                MYTHSTREET
-              </h1>
+<h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-wide">
+  STREET HOMIE
+</h1>
 
-              <button
-                onClick={() =>
-                  router.push("/shop/all/all?collection=new")
-                }
-                className="bg-[#680000] px-6 py-2 md:px-8 md:py-3 hover:bg-black transition"
-              >
-                SHOP NOW
-              </button>
+<p className="text-sm md:text-base text-white/80 mb-6">
+  Built for the streets. Worn everywhere.
+</p>
+
+<button
+  onClick={() => router.push("/shop/all/all")}
+  className="bg-[#680000] px-6 py-2 md:px-8 md:py-3 hover:bg-black transition rounded"
+>
+  SHOP ALL
+</button>
 
             </div>
           </div>

@@ -130,7 +130,26 @@ export default function ProductCard({ product }: { product: Product }) {
                 }`}
               />
             </button>
+{/* STOCK BADGE */}
+{/* BADGES */}
+<div className="absolute top-3 left-3 flex flex-col gap-1">
 
+  <span className="bg-black text-white text-[10px] px-2 py-1 rounded">
+    NEW
+  </span>
+
+  <span className="bg-red-600 text-white text-[10px] px-2 py-1 rounded">
+    TRENDING
+  </span>
+
+</div>
+{/* QUICK ADD BUTTON */}
+<button
+  onClick={(e) => addItem(e, "M")}
+  className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-4 py-2 rounded opacity-0 group-hover:opacity-100 transition"
+>
+  Quick Add
+</button>
             {added && (
               <div className="absolute top-3 left-3 bg-black text-white text-xs px-3 py-1 rounded">
                 Added to cart

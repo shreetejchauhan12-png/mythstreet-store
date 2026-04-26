@@ -76,7 +76,17 @@ export default function RecentPurchasePopup() {
       const size =
         ["S","M","L","XL"][Math.floor(Math.random()*4)];
 
-      setText(`${name} from ${city} purchased size ${size}`);
+      const products = [
+  "Oversized T-Shirt",
+  "Anime Hoodie",
+  "Streetwear Tee",
+  "Minimal Sweatshirt"
+];
+
+const product =
+  products[Math.floor(Math.random() * products.length)];
+
+setText(`${name} from ${city} bought ${product} (${size})`);
       setVisible(true);
 
       setTimeout(() => {
@@ -85,7 +95,7 @@ export default function RecentPurchasePopup() {
     }
 
     show();
-    const interval = setInterval(show, 30000);
+    const interval = setInterval(show, 12000);
 
     return () => clearInterval(interval);
   }, [mounted, pathname]);
@@ -94,19 +104,19 @@ export default function RecentPurchasePopup() {
 
   return (
     <div
-      className={`fixed bottom-6 left-6 bg-white shadow-2xl border rounded-lg p-4 text-sm transition-all duration-500 z-50 ${
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-5"
-      }`}
-    >
-      <p className="font-medium">
-        {text}
-      </p>
+  className={`fixed bottom-6 left-6 bg-white shadow-2xl border rounded-xl px-4 py-3 text-sm transition-all duration-500 z-50 ${
+    visible
+      ? "opacity-100 translate-y-0"
+      : "opacity-0 translate-y-5"
+  }`}
+>
+  <p className="font-medium text-gray-800">
+    {text}
+  </p>
 
-      <p className="text-xs text-gray-500">
-        Just now
-      </p>
-    </div>
+  <p className="text-xs text-gray-500 mt-1">
+    Just now
+  </p>
+</div>
   );
 }
