@@ -132,16 +132,11 @@ export default function ProductCard({ product }: { product: Product }) {
             </button>
 {/* STOCK BADGE */}
 {/* BADGES */}
-<div className="absolute top-3 left-3 flex flex-col gap-1">
-
+{/* BADGE */}
+<div className="absolute top-3 left-3">
   <span className="bg-black text-white text-[10px] px-2 py-1 rounded">
-    NEW
+    {["NEW DROP","BEST SELLER","LIMITED STOCK","HOT PICK","STREET FAVORITE","EXCLUSIVE"][product.id % 6]}
   </span>
-
-  <span className="bg-red-600 text-white text-[10px] px-2 py-1 rounded">
-    TRENDING
-  </span>
-
 </div>
 {/* QUICK ADD BUTTON */}
 <button
