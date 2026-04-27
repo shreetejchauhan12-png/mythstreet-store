@@ -146,7 +146,7 @@ export default function ProductCard({ product }: { product: Product }) {
   Quick Add
 </button>
             {added && (
-              <div className="absolute top-3 left-3 bg-black text-white text-xs px-3 py-1 rounded">
+  <div className="absolute top-10 left-3 bg-black text-white text-xs px-3 py-1 rounded">
                 Added to cart
               </div>
             )}

@@ -28,7 +28,7 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="relative overflow-hidden rounded-xl">
 
-          <div className="pt-[42%]" />
+          <div className="pt-[70%] md:pt-[42%]" />
 
           <img
             src={slides[index]}
@@ -40,21 +40,21 @@ export default function Hero() {
           <div className="absolute inset-0 flex items-center justify-center text-center text-white px-4">
             <div>
 
-              <p className="tracking-widest mb-2 text-xs md:text-sm text-white/80">
+              <p className="tracking-[0.2em] mb-2 text-[10px] md:text-sm text-white/70">
   WELCOME TO
 </p>
 
-<h1 className="text-2xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-wide">
+<h1 className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4 tracking-wide">
   STREET HOMIE
 </h1>
 
-<p className="text-sm md:text-base text-white/80 mb-6">
+<p className="text-xs sm:text-sm md:text-base text-white/70 mb-4 md:mb-6">
   Built for the streets. Worn everywhere.
 </p>
 
 <button
   onClick={() => router.push("/shop/all/all")}
-  className="bg-[#680000] px-6 py-2 md:px-8 md:py-3 hover:bg-black transition rounded"
+  className="bg-[#680000] px-5 py-2 text-sm md:px-8 md:py-3 md:text-base hover:bg-black transition rounded-md"
 >
   SHOP ALL
 </button>
@@ -63,18 +63,24 @@ export default function Hero() {
           </div>
 
           <button
-            onClick={prev}
-            className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full"
-          >
-            <ChevronLeft />
-          </button>
+  onClick={prev}
+  className="absolute left-2 md:left-3 top-1/2 -translate-y-1/2 
+  bg-white/70 hover:bg-white text-black 
+  p-1.5 md:p-2 rounded-full 
+  backdrop-blur-sm transition"
+>
+  <ChevronLeft size={18} className="md:size-5" />
+</button>
 
-          <button
-            onClick={next}
-            className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full"
-          >
-            <ChevronRight />
-          </button>
+<button
+  onClick={next}
+  className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 
+  bg-white/70 hover:bg-white text-black 
+  p-1.5 md:p-2 rounded-full 
+  backdrop-blur-sm transition"
+>
+  <ChevronRight size={18} className="md:size-5" />
+</button>
 
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
             {slides.map((_, i) => (
