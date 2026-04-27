@@ -9,7 +9,7 @@ import Newsletter from "./components/home/Newsletter";
 
 export default function Home() {
   return (
-    <main>
+    <main className="space-y-8 md:space-y-12">
       <Hero />
       <CategorySection />
       <TrustBadges />

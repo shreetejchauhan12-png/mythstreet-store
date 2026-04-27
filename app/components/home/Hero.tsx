@@ -28,7 +28,7 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="relative overflow-hidden rounded-xl">
 
-          <div className="pt-[70%] md:pt-[42%]" />
+          <div className="pt-[45%]" />
 
           <img
             src={slides[index]}

@@ -32,7 +32,7 @@ export default function CollectionSection() {
 ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-10 md:py-16">
+    <section className="max-w-7xl mx-auto px-4 py-5 md:py-8">
 
       <div className="text-center mb-10">
         <p className="text-xs tracking-[4px] text-gray-500 uppercase">

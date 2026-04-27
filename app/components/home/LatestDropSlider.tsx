@@ -75,7 +75,7 @@ export default function LatestDropSlider() {
   if (!slides.length) return null;
 
   return (
-    <section className="py-12 md:py-16">
+    <section className="py-5 md:py-8">
 
       {/* HEADER */}
       <div className="text-center mb-8">
