@@ -54,7 +54,7 @@ export default function LoginPage() {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ token: data.token }),
+              body: JSON.stringify({ token: data.token || data.message }),
             }
           );
 
