@@ -48,8 +48,8 @@ export default function LoginPage() {
 
         try {
           const res = await fetch(
-            "https://mythstreet-backend.onrender.com/api/auth/verify-msg91",
-            {
+  `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-msg91`,
+  {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
