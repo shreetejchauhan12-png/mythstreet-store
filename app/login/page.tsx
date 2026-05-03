@@ -28,7 +28,7 @@ export default function LoginPage() {
     };
   }, []);
 
-  // 🔥 SEND OTP (MSG91 WIDGET)
+  // 🔥 SEND OTP
   const sendOtp = () => {
     if (!phone) return alert("Enter phone number");
 
@@ -43,7 +43,6 @@ export default function LoginPage() {
       tokenAuth: "510536Txv5S33tx69e77c1eP1",
       identifier: "91" + phone,
 
-      // ✅ UPDATED SUCCESS FLOW
       success: async function (data: any) {
         console.log("✅ VERIFIED:", data);
 
@@ -68,9 +67,16 @@ export default function LoginPage() {
             return;
           }
 
-          // ✅ STORE USER + TOKEN
+          // ✅🔥 FIXED STORAGE (VERY IMPORTANT)
           localStorage.setItem("token", result.token);
-          localStorage.setItem("user", JSON.stringify(result.user));
+
+          localStorage.setItem(
+            "user",
+            JSON.stringify({
+              ...result.user,
+              token: result.token,
+            })
+          );
 
           alert("Login Successful ✅");
 

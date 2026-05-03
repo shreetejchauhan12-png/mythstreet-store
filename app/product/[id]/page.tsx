@@ -2,11 +2,11 @@
 
 import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 import PincodeChecker from "@/app/components/ui/PincodeChecker";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { getProducts } from "@/app/data/products";
 import { useCart } from "@/app/store/cart";
 import ProductCard from "@/app/components/ui/ProductCard";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { Share2 } from "lucide-react";
 
 function ShareButton({ title }: { title: string }) {
@@ -58,12 +58,9 @@ function ShareButton({ title }: { title: string }) {
   );
 }
 
-export default function ProductPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = use(params);
+export default function ProductPage() {
+  const params = useParams();
+const id = params?.id;
   const router = useRouter();
 
   const [product, setProduct] = useState<any>(null);
@@ -78,33 +75,47 @@ export default function ProductPage({
   const [similar, setSimilar] = useState<any[]>([]);
 
   useEffect(() => {
+  if (!id) return;
+
   async function load() {
-    // 🔥 RESET FIRST (VERY IMPORTANT)
-    setProduct(null);
-    setSimilar([]);
+    try {
+      setProduct(null);
+      setSimilar([]);
 
-    const data = await getProducts();
+      const data = await getProducts();
 
-    const found = data.find(
-      (p: any) => Number(p.id) === Number(id)
-    );
+      console.log("PRODUCT DATA:", data);
+      console.log("URL ID:", id);
 
-    if (!found) return;
+      if (!Array.isArray(data) || data.length === 0) {
+        console.error("❌ No products found");
+        return;
+      }
 
-    // 🔥 FORCE NEW OBJECT (avoid stale reference)
-    const freshProduct = { ...found };
-
-    setProduct(freshProduct);
-
-    // ✅ Similar products
-    if (freshProduct.design) {
-      const same = data.filter(
-        (p: any) =>
-          p.design === freshProduct.design &&
-          Number(p.id) !== Number(freshProduct.id)
+      const found = data.find(
+        (p: any) => String(p.id) === String(id)
       );
 
-      setSimilar([...same.slice(0, 4)]);
+      if (!found) {
+        console.error("❌ Product NOT found for ID:", id);
+        return;
+      }
+
+      const freshProduct = { ...found };
+
+      setProduct(freshProduct);
+
+      if (freshProduct.design) {
+        const same = data.filter(
+          (p: any) =>
+            p.design === freshProduct.design &&
+            String(p.id) !== String(freshProduct.id)
+        );
+
+        setSimilar(same.slice(0, 4));
+      }
+    } catch (err) {
+      console.error("❌ ERROR LOADING PRODUCT:", err);
     }
   }
 
@@ -189,7 +200,13 @@ export default function ProductPage({
   router.push("/checkout");
 }
 
-  if (!product) return <ProductSkeleton />;
+  if (!product) {
+  return (
+    <div className="p-10 text-center">
+      Loading product...
+    </div>
+  );
+}
 
   return (
     <>

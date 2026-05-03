@@ -76,139 +76,139 @@ export default function TypePage({
         Welcome to Street Homie
       </h1>
 
-      <div className="grid md:grid-cols-[220px_1fr] gap-8">
+      <div className="grid md:grid-cols-[260px_1fr] gap-10">
 
         {/* ================= LEFT SIDEBAR ================= */}
-        <aside className="space-y-6 sticky top-24 h-fit">
+        <aside className="space-y-6 md:sticky md:top-28 h-max bg-white border rounded-2xl p-5 shadow-md">
 
           {/* CATEGORY */}
-          <div>
-            <h3 className="font-semibold mb-2 text-sm tracking-wide text-gray-700">Category</h3>
-            <div className="flex flex-col gap-2 text-sm">
+<div>
+  <h3 className="font-semibold mb-3 text-xs tracking-[0.2em] text-gray-500 uppercase">
+    Category
+  </h3>
 
-              <button
-  onClick={() => router.push("/shop/men/all")}
-  className={`text-left hover:text-black transition ${
-    category === "men" ? "font-semibold text-black" : "text-gray-500"
-  }`}
->
-  Men
-</button>
+  <div className="flex flex-wrap gap-2">
 
-<button
-  onClick={() => router.push("/shop/women/all")}
-  className={`text-left hover:text-black transition ${
-    category === "women" ? "font-semibold text-black" : "text-gray-500"
-  }`}
->
-  Women
-</button>
+    <button
+      onClick={() => router.push("/shop/men/all")}
+      className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+        category === "men"
+          ? "bg-black text-white border-black"
+          : "text-gray-600 border-gray-300 hover:border-black"
+      }`}
+    >
+      Men
+    </button>
 
-            </div>
-          </div>
+    <button
+      onClick={() => router.push("/shop/women/all")}
+      className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+        category === "women"
+          ? "bg-black text-white border-black"
+          : "text-gray-600 border-gray-300 hover:border-black"
+      }`}
+    >
+      Women
+    </button>
+
+  </div>
+</div>
 
           {/* TYPE */}
-          <div>
-            <h3 className="font-semibold mb-2 text-sm tracking-wide text-gray-700">Product Type</h3>
-            <div className="flex flex-col gap-2 text-sm">
+<div>
+  <h3 className="font-semibold mb-3 text-xs tracking-[0.2em] text-gray-500 uppercase">
+    Product Type
+  </h3>
 
-              <button
-  onClick={() => router.push(`/shop/${category}/all`)}
-  className={`text-left hover:text-black transition ${
-    type === "all" ? "font-semibold text-black" : "text-gray-500"
-  }`}
->
-  All
-</button>
+  <div className="flex flex-wrap gap-2">
 
-              {types.map((t) => (
-                <button
-  key={t}
-  onClick={() => router.push(`/shop/${category}/${t}`)}
-  className={`capitalize text-left hover:text-black transition ${
-    type === t ? "font-semibold text-black" : "text-gray-500"
-  }`}
->
-  {t}
-</button>
-              ))}
+    <button
+      onClick={() => router.push(`/shop/${category}/all`)}
+      className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+        type === "all"
+          ? "bg-black text-white border-black"
+          : "text-gray-600 border-gray-300 hover:border-black"
+      }`}
+    >
+      All
+    </button>
 
-            </div>
-          </div>
+    {types.map((t) => (
+      <button
+        key={t}
+        onClick={() => router.push(`/shop/${category}/${t}`)}
+        className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+          type === t
+            ? "bg-black text-white border-black"
+            : "text-gray-600 border-gray-300 hover:border-black"
+        }`}
+      >
+        {t}
+      </button>
+    ))}
+
+  </div>
+</div>
 
           {/* COLLECTION */}
-          <div>
-            <h3 className="font-semibold mb-2 text-sm tracking-wide text-gray-700">Collection</h3>
-            <div className="flex flex-col gap-2 text-sm">
+<div>
+  <h3 className="font-semibold mb-3 text-xs tracking-[0.2em] text-gray-500 uppercase">
+    Collection
+  </h3>
 
-              {collections.map((c) => (
-                <button
-  key={c}
-  onClick={() =>
-    router.push(`/shop/${category}/${type}?collection=${c}`)
-  }
-  className={`capitalize text-left hover:text-black transition ${
-    collection === c ? "font-semibold text-black" : "text-gray-500"
-  }`}
->
-  {c}
-</button>
-              ))}
+  <div className="flex flex-wrap gap-2">
 
-            </div>
-          </div>
+    {collections.map((c) => (
+      <button
+        key={c}
+        onClick={() =>
+          router.push(`/shop/${category}/${type}?collection=${c}`)
+        }
+        className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+          collection === c
+            ? "bg-black text-white border-black"
+            : "text-gray-600 border-gray-300 hover:border-black"
+        }`}
+      >
+        {c}
+      </button>
+    ))}
+
+  </div>
+</div>
 
           {/* PRICE */}
-          <div>
-            <h3 className="font-semibold mb-2 text-sm tracking-wide text-gray-700">Price</h3>
+<div>
+  <h3 className="font-semibold mb-3 text-xs tracking-[0.2em] text-gray-500 uppercase">
+    Price
+  </h3>
 
-            <input
-              type="range"
-              min="0"
-              max="2000"
-              value={price}
-              onChange={(e) =>
-                setPrice(Number(e.target.value))
-              }
-              className="w-full"
-            />
+  <div className="space-y-3">
 
-            <p className="text-sm mt-1">Up to ₹{price}</p>
-          </div>
+    <input
+      type="range"
+      min="0"
+      max="2000"
+      value={price}
+      onChange={(e) =>
+        setPrice(Number(e.target.value))
+      }
+      className="w-full accent-black cursor-pointer"
+    />
+
+    <div className="flex justify-between text-xs text-gray-500">
+      <span>₹0</span>
+      <span>₹{price}</span>
+    </div>
+
+  </div>
+</div>
 
         </aside>
 
         {/* ================= RIGHT SIDE ================= */}
         <div>
-{/* FILTER CHIPS */}
-<div className="flex gap-2 overflow-x-auto mb-6">
 
-  <button
-    onClick={() => router.push(`/shop/${category}/all`)}
-    className={`px-4 py-1 border rounded-full text-sm whitespace-nowrap ${
-      type === "all"
-        ? "bg-black text-white"
-        : "text-gray-600 hover:bg-gray-100"
-    }`}
-  >
-    All
-  </button>
-
-  {types.map((t) => (
-    <button
-      key={t}
-      onClick={() => router.push(`/shop/${category}/${t}`)}
-      className={`px-4 py-1 border rounded-full text-sm whitespace-nowrap capitalize ${
-        type === t
-          ? "bg-black text-white"
-          : "text-gray-600 hover:bg-gray-100"
-      }`}
-    >
-      {t}
-    </button>
-  ))}
-
-</div>
           {/* SORT */}
           <div className="flex justify-between items-center mb-6">
 

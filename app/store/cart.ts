@@ -1,9 +1,6 @@
-"use client";
-
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
-export type CartItem = {
+type CartItem = {
   id: string;
   title: string;
   price: number;
@@ -13,56 +10,57 @@ export type CartItem = {
 
 type CartStore = {
   cart: CartItem[];
+
   addToCart: (item: CartItem) => void;
   decreaseQty: (id: string) => void;
   removeFromCart: (id: string) => void;
-  clearCart: () => void;
+  clearCart: () => void; // ✅ NEW
 };
 
-export const useCart = create<CartStore>()(
-  persist(
-    (set) => ({
-      cart: [],
+export const useCart = create<CartStore>((set) => ({
+  cart: [],
 
-      addToCart: (item) =>
-        set((state) => {
-          const exists = state.cart.find((i) => i.id === item.id);
+  // ✅ ADD TO CART (NO DUPLICATES)
+  addToCart: (item) =>
+    set((state) => {
+      const existing = state.cart.find((i) => i.id === item.id);
 
-          if (exists) {
-            return {
-              cart: state.cart.map((i) =>
-                i.id === item.id
-                  ? { ...i, quantity: i.quantity + 1 }
-                  : i
-              ),
-            };
-          }
+      if (existing) {
+        return {
+          cart: state.cart.map((i) =>
+            i.id === item.id
+              ? { ...i, quantity: i.quantity + 1 }
+              : i
+          ),
+        };
+      }
 
-          return {
-            cart: [...state.cart, item],
-          };
-        }),
-
-      decreaseQty: (id) =>
-        set((state) => ({
-          cart: state.cart
-            .map((i) =>
-              i.id === id
-                ? { ...i, quantity: i.quantity - 1 }
-                : i
-            )
-            .filter((i) => i.quantity > 0),
-        })),
-
-      removeFromCart: (id) =>
-        set((state) => ({
-          cart: state.cart.filter((i) => i.id !== id),
-        })),
-
-      clearCart: () => set({ cart: [] }),
+      return {
+        cart: [...state.cart, { ...item, quantity: 1 }],
+      };
     }),
-    {
-      name: "cart-storage", // 🔥 key in localStorage
-    }
-  )
-);
+
+  // ➖ DECREASE
+  decreaseQty: (id) =>
+    set((state) => ({
+      cart: state.cart
+        .map((item) =>
+          item.id === id
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0),
+    })),
+
+  // ❌ REMOVE
+  removeFromCart: (id) =>
+    set((state) => ({
+      cart: state.cart.filter((item) => item.id !== id),
+    })),
+
+  // 🧹 CLEAR CART (🔥 FIX FOR YOUR ERROR)
+  clearCart: () =>
+    set(() => ({
+      cart: [],
+    })),
+}));

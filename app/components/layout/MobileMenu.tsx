@@ -23,13 +23,15 @@ export default function MobileMenu({ open, setOpen }: Props) {
       )}
 
       <div
-        className={`fixed top-0 left-0 h-full w-[85%] max-w-sm bg-white z-50 transition transform duration-300 overflow-y-auto ${
+  className={`fixed top-0 left-0 h-full w-[88%] max-w-sm bg-white z-50 transition-transform duration-300 ease-out overflow-y-auto shadow-2xl ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* header */}
-        <div className="flex items-center justify-between p-5 border-b">
-          <h2 className="font-semibold text-lg">Menu</h2>
+        <div className="flex items-center justify-between px-5 py-4 border-b">
+  <h2 className="text-sm tracking-[0.2em] text-gray-500 uppercase">
+    Menu
+  </h2>
 
           <X
             className="cursor-pointer"
@@ -40,12 +42,14 @@ export default function MobileMenu({ open, setOpen }: Props) {
         <div className="p-4">
 
           {/* MEN */}
-          <div className="border-b py-3">
+          <div className="py-4 border-b border-gray-100">
             <div
               className="flex justify-between items-center cursor-pointer"
               onClick={() => setMenOpen(!menOpen)}
             >
-              <p className="font-semibold">MEN</p>
+              <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
+  Men
+</p>
               <ChevronDown
                 className={`transition ${
                   menOpen ? "rotate-180" : ""
@@ -56,17 +60,21 @@ export default function MobileMenu({ open, setOpen }: Props) {
             {menOpen && (
               <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
 
-                <Link href="/shop/men" onClick={() => setOpen(false)}>
-                  All
-                </Link>
+                <Link href="/shop/men/all" onClick={() => setOpen(false)}>
+  All
+</Link>
 
                 <Link href="/shop/men/oversized" onClick={() => setOpen(false)}>
                   Oversized
                 </Link>
 
-                <Link href="/shop/men/tshirt" onClick={() => setOpen(false)}>
-                  T-Shirts
-                </Link>
+                <Link
+  href="/shop/men/tshirt"
+  onClick={() => setOpen(false)}
+  className="text-gray-700 hover:text-black transition"
+>
+  T-Shirts
+</Link>
 
                 <Link href="/shop/men/hoodie" onClick={() => setOpen(false)}>
                   Hoodies
@@ -81,12 +89,14 @@ export default function MobileMenu({ open, setOpen }: Props) {
           </div>
 
           {/* WOMEN */}
-          <div className="border-b py-3">
+          <div className="py-4 border-b border-gray-100">
             <div
-              className="flex justify-between items-center cursor-pointer"
+              className="flex justify-between items-center cursor-pointer py-2 active:opacity-60"
               onClick={() => setWomenOpen(!womenOpen)}
             >
-              <p className="font-semibold">WOMEN</p>
+              <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
+  Women
+</p>
               <ChevronDown
                 className={`transition ${
                   womenOpen ? "rotate-180" : ""
@@ -95,11 +105,11 @@ export default function MobileMenu({ open, setOpen }: Props) {
             </div>
 
             {womenOpen && (
-              <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+              <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
 
-                <Link href="/shop/women" onClick={() => setOpen(false)}>
-                  All
-                </Link>
+                <Link href="/shop/women/all" onClick={() => setOpen(false)}>
+  All
+</Link>
 
                 <Link href="/shop/women/oversized" onClick={() => setOpen(false)}>
                   Oversized
@@ -122,36 +132,45 @@ export default function MobileMenu({ open, setOpen }: Props) {
           </div>
 
           {/* categories */}
-          <div className="py-4 space-y-4 text-sm">
+          <div className="py-6 space-y-5 text-sm border-t border-gray-100 mt-6">
 
             <Link
-              href="/search?q=new"
+              href="/shop/all/all"
               onClick={() => setOpen(false)}
-              className="block"
+              className="block text-gray-700 hover:text-black transition py-1.5"
             >
               New Arrivals
             </Link>
 
             <Link
-              href="/search?q=oversized"
+              href="/shop/all/oversized"
               onClick={() => setOpen(false)}
-              className="block"
+              className="block text-gray-700 hover:text-black transition py-1.5"
             >
               Oversized
             </Link>
 
-            <Link
-              href="/account"
-              onClick={() => setOpen(false)}
-              className="block"
-            >
-              My Account
-            </Link>
+            <button
+  onClick={() => {
+    setOpen(false);
+
+    const isLoggedIn = localStorage.getItem("user");
+
+    if (isLoggedIn) {
+      window.location.href = "/account";
+    } else {
+      window.location.href = "/login";
+    }
+  }}
+  className="block w-full text-left text-gray-700 hover:text-black active:scale-95 transition-all duration-150 py-1.5"
+>
+  My Account
+</button>
 
             <Link
               href="/wishlist"
               onClick={() => setOpen(false)}
-              className="block"
+              className="block text-gray-700 hover:text-black transition py-1.5"
             >
               Wishlist
             </Link>

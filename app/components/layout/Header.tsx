@@ -184,17 +184,17 @@ products.filter((p: any) =>
   {/* DESKTOP CATEGORY LINKS */}
   <div className="hidden md:flex items-center gap-6 text-sm font-medium">
 
-    <Link href="/shop/men">
-      <span className="cursor-pointer hover:text-[#680000] transition">
-        MEN
-      </span>
-    </Link>
+    <Link href="/shop/men/all">
+  <span className="cursor-pointer hover:text-[#680000] transition">
+    MEN
+  </span>
+</Link>
 
-    <Link href="/shop/women">
-      <span className="cursor-pointer hover:text-[#680000] transition">
-        WOMEN
-      </span>
-    </Link>
+<Link href="/shop/women/all">
+  <span className="cursor-pointer hover:text-[#680000] transition">
+    WOMEN
+  </span>
+</Link>
 
   </div>
 
@@ -446,9 +446,8 @@ products.filter((p: any) =>
               <X onClick={() => setWishlistOpen(false)} />
             </div>
 
-            {wishlist.map((item) => (
-              <div
-                key={item.id}
+            {wishlist.map((item, index) => (
+  <div key={`${item.id}-${index}`}
                 className="flex gap-3 border-b pb-4 mb-4"
               >
                 <img
@@ -518,9 +517,9 @@ products.filter((p: any) =>
               <X onClick={() => setCartOpen(false)} />
             </div>
 
-            {cart.map((item) => (
-              <div
-                key={item.id}
+            {cart.map((item, index) => (
+  <div
+    key={`${item.id}-${index}`}
                 className="flex gap-3 border-b pb-4 mb-4"
               >
                 <img
