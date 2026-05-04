@@ -38,13 +38,14 @@ export default function Header() {
     setUser(JSON.parse(storedUser));
   }
 
-  // 🛒 LOAD CART FROM BACKEND
   const token = localStorage.getItem("token");
 
-if (token) {
-  fetchCart();
-}
-
+  if (token) {
+    // 🔥 FORCE FRESH LOAD
+    setTimeout(() => {
+      fetchCart();
+    }, 100);
+  }
 }, []);
   const startLogin = () => {
   if (!window.initSendOTP) {
