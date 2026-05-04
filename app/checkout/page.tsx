@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from "@/app/store/cart";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
@@ -17,16 +17,24 @@ export default function CheckoutPage() {
 const isBuyNow = searchParams.get("mode") === "buyNow";
 
 // 🔥 Get Buy Now product
-const buyNowItem =
-  typeof window !== "undefined"
-    ? JSON.parse(localStorage.getItem("buyNowItem") || "null")
-    : null;
+const [buyNowItem, setBuyNowItem] = useState(null);
+useEffect(() => {
+  const item = localStorage.getItem("buyNowItem");
+
+  if (item) {
+    setBuyNowItem(JSON.parse(item));
+  }
+}, []);
+
   const cart = useCart((state) => state.cart);
   const clearCart = useCart((state) => state.clearCart); // ✅ ADDED
   const finalItems =
   isBuyNow && buyNowItem
     ? [buyNowItem]
     : cart;
+    if (isBuyNow && !buyNowItem) {
+  return <p className="text-center mt-10">Loading checkout...</p>;
+}
 
   const totalAmount = finalItems.reduce(
   (acc, item) => acc + item.price * item.quantity,
@@ -146,7 +154,7 @@ if (!pincodeRegex.test(pincode)) {
       title: item.title,
       price: item.price,
       quantity: item.quantity,
-      size: item.size || "M",
+      size: "M",
       image: item.image || "",
     })),
     amount: finalTotal,
