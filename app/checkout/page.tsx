@@ -8,6 +8,8 @@ function CheckoutInner() {
   const [isBuyNow, setIsBuyNow] = useState(false);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const params = new URLSearchParams(window.location.search);
     const mode = params.get("mode");
 
@@ -101,11 +103,15 @@ useEffect(() => {
   const [pincodeError, setPincodeError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  if (typeof window !== "undefined") {
   console.log("TOKEN:", localStorage.getItem("token"));
-console.log("USER:", localStorage.getItem("user"));
+  console.log("USER:", localStorage.getItem("user"));
+}
   async function handlePlaceOrder() {
     setLoading(true);
   // 🔥 CHECK TOKEN (MAIN LOGIN CHECK)
+if (typeof window === "undefined") return;
+
 const token = localStorage.getItem("token");
 
 if (!token) {
@@ -114,7 +120,10 @@ if (!token) {
 }
 
 // 🔥 OPTIONAL: get user after token check
-const userData = localStorage.getItem("user");
+const userData =
+  typeof window !== "undefined"
+    ? localStorage.getItem("user")
+    : null;
 const user = userData ? JSON.parse(userData) : null;
 
 if (!user || !user.id) {
