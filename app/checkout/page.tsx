@@ -101,6 +101,8 @@ useEffect(() => {
   const [pincodeError, setPincodeError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  console.log("TOKEN:", localStorage.getItem("token"));
+console.log("USER:", localStorage.getItem("user"));
   async function handlePlaceOrder() {
     setLoading(true);
   // 🔥 CHECK TOKEN (MAIN LOGIN CHECK)
