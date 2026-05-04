@@ -98,6 +98,10 @@ export default function ProductCard({ product }: { product: Product }) {
   setTimeout(() => setAdded(false), 1500);
 }
 
+<p style={{ color: "red", fontSize: "12px" }}>
+  API: {process.env.NEXT_PUBLIC_API_URL || "undefined"}
+</p>
+
   return (
     <Link href={`/product/${product.id}`} className="block">
       <div className="group cursor-pointer">
