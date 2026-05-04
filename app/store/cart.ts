@@ -21,10 +21,7 @@ type CartStore = {
 };
 
 export const useCart = create<CartStore>((set) => ({
-  cart:
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("cart") || "[]")
-      : [],
+  cart: [],
 
   addToCart: (item) =>
     set((state) => {
@@ -103,8 +100,6 @@ export const useCart = create<CartStore>((set) => ({
       }));
 
       set({ cart: formatted });
-
-      localStorage.setItem("cart", JSON.stringify(formatted));
 
     } catch (error) {
       console.error("Fetch cart error:", error);

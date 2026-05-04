@@ -39,7 +39,11 @@ export default function Header() {
   }
 
   // 🛒 LOAD CART FROM BACKEND
+  const token = localStorage.getItem("token");
+
+if (token) {
   fetchCart();
+}
 
 }, []);
   const startLogin = () => {
