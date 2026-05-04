@@ -1,9 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useCart } from "@/app/store/cart";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+
+function CheckoutInner() {
+  const searchParams = useSearchParams();
+  const isBuyNow = searchParams.get("mode") === "buyNow";
+
+  return <CheckoutContent isBuyNow={isBuyNow} />;
+}
+
 
 declare global {
   interface Window {
@@ -11,10 +19,8 @@ declare global {
   }
 }
 
-export default function CheckoutPage() {
+function CheckoutContent({ isBuyNow }: { isBuyNow: boolean }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-const isBuyNow = searchParams.get("mode") === "buyNow";
 
 // 🔥 Get Buy Now product
 const [buyNowItem, setBuyNowItem] = useState(null);
@@ -371,5 +377,12 @@ if (!pincodeRegex.test(pincode)) {
       </div>
 
     </main>
+  );
+}
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<p className="text-center mt-10">Loading checkout...</p>}>
+      <CheckoutInner />
+    </Suspense>
   );
 }
