@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/app/store/cart";
 import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 declare global {
   interface Window {
@@ -12,13 +13,25 @@ declare global {
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+const isBuyNow = searchParams.get("mode") === "buyNow";
+
+// 🔥 Get Buy Now product
+const buyNowItem =
+  typeof window !== "undefined"
+    ? JSON.parse(localStorage.getItem("buyNowItem") || "null")
+    : null;
   const cart = useCart((state) => state.cart);
   const clearCart = useCart((state) => state.clearCart); // ✅ ADDED
+  const finalItems =
+  isBuyNow && buyNowItem
+    ? [buyNowItem]
+    : cart;
 
-  const totalAmount = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const totalAmount = finalItems.reduce(
+  (acc, item) => acc + item.price * item.quantity,
+  0
+);
 
   const [paymentMethod, setPaymentMethod] = useState("online");
   const codCharge = paymentMethod === "cod" ? 49 : 0;
@@ -26,13 +39,49 @@ export default function CheckoutPage() {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
+  const indianStates = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Delhi",
+];
   const [pincode, setPincode] = useState("");
+  const [pincodeError, setPincodeError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handlePlaceOrder() {
+    setLoading(true);
   // 🔥 CHECK TOKEN (MAIN LOGIN CHECK)
 const token = localStorage.getItem("token");
 
@@ -50,11 +99,38 @@ if (!user || !user.id) {
   return;
 }
 
+// ✅ EMAIL VALIDATION
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(email)) {
+  setEmailError("Invalid email address");
+  setLoading(false);
+  return;
+}
+
+// ✅ PHONE VALIDATION (INDIA ONLY)
+const phoneRegex = /^[6-9]\d{9}$/;
+
+if (!phoneRegex.test(phone)) {
+  setPhoneError("Enter valid Indian phone number");
+  setLoading(false);
+  return;
+}
+
+// ✅ PINCODE VALIDATION (INDIA)
+const pincodeRegex = /^\d{6}$/;
+
+if (!pincodeRegex.test(pincode)) {
+  setPincodeError("Enter valid 6-digit pincode");
+  setLoading(false);
+  return;
+}
   // 🔥 VALIDATION
   if (!name || !phone || !address || !city || !state || !pincode) {
-    alert("Please fill all details");
-    return;
-  }
+  alert("Please fill all details");
+  setLoading(false);
+  return;
+}
 
   const orderData = {
     name,
@@ -65,7 +141,7 @@ if (!user || !user.id) {
     state,
     pincode,
     paymentMethod,
-    items: cart.map((item: any) => ({
+    items: finalItems.map((item) => ({
       id: item.id,
       title: item.title,
       price: item.price,
@@ -89,9 +165,10 @@ if (!user || !user.id) {
     const data = await res.json();
 
     if (!data.success) {
-      alert("Order failed");
-      return;
-    }
+  alert("Order failed");
+  setLoading(false);
+  return;
+}
 
     // ✅ COD FLOW
     if (paymentMethod === "cod") {
@@ -162,16 +239,64 @@ if (!user || !user.id) {
           <h2 className="mb-4 font-medium">Shipping Details</h2>
 
           <input placeholder="Full Name" className="border p-3 w-full mb-4" value={name} onChange={(e) => setName(e.target.value)} />
-          <input placeholder="Email Address" className="border p-3 w-full mb-4" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input placeholder="Phone Number" className="border p-3 w-full mb-4" value={phone} onChange={(e) => setPhone(e.target.value)} />
+          <input
+  placeholder="Email Address"
+  className="border p-3 w-full mb-1"
+  value={email}
+  onChange={(e) => {
+    setEmail(e.target.value);
+    setEmailError("");
+  }}
+/>
+
+{emailError && (
+  <p className="text-red-500 text-sm mb-3">{emailError}</p>
+)}
+          <input
+  placeholder="Phone Number (10-digit Indian number)"
+  className="border p-3 w-full mb-1"
+  value={phone}
+  onChange={(e) => {
+    setPhone(e.target.value);
+    setPhoneError("");
+  }}
+/>
+
+{phoneError && (
+  <p className="text-red-500 text-sm mb-3">{phoneError}</p>
+)}
           <textarea placeholder="Address" className="border p-3 w-full mb-4" value={address} onChange={(e) => setAddress(e.target.value)} />
 
           <div className="flex gap-4 mb-4">
             <input placeholder="City" className="border p-3 w-full" value={city} onChange={(e) => setCity(e.target.value)} />
-            <input placeholder="State" className="border p-3 w-full" value={state} onChange={(e) => setState(e.target.value)} />
+            <select
+  className="border p-3 w-full"
+  value={state}
+  onChange={(e) => setState(e.target.value)}
+>
+  <option value="">Select State</option>
+
+  {indianStates.map((s) => (
+    <option key={s} value={s}>
+      {s}
+    </option>
+  ))}
+</select>
           </div>
 
-          <input placeholder="Pincode" className="border p-3 w-full mb-6" value={pincode} onChange={(e) => setPincode(e.target.value)} />
+          <input
+  placeholder="Pincode (6-digit Indian pincode)"
+  className="border p-3 w-full mb-1"
+  value={pincode}
+  onChange={(e) => {
+    setPincode(e.target.value);
+    setPincodeError("");
+  }}
+/>
+
+{pincodeError && (
+  <p className="text-red-500 text-sm mb-3">{pincodeError}</p>
+)}
 
           <h2 className="mb-3 font-medium">Payment Method</h2>
 
@@ -193,7 +318,7 @@ if (!user || !user.id) {
 
           <h2 className="mb-4 font-medium">Order Summary</h2>
 
-          {cart.map((item) => (
+          {finalItems.map((item) => (
             <div key={item.id} className="flex gap-4 mb-4 items-center border-b pb-4">
               <img
                 src={item.image}
@@ -226,13 +351,11 @@ if (!user || !user.id) {
           </div>
 
           <button
-  onClick={() => {
-    console.log("🔥 BUTTON CLICKED");
-    handlePlaceOrder();
-  }}
-  className="bg-[#680000] text-white w-full py-3"
+  onClick={handlePlaceOrder}
+  disabled={loading}
+  className="bg-[#680000] text-white w-full py-3 disabled:opacity-50"
 >
-  PLACE ORDER
+  {loading ? "Placing Order..." : "PLACE ORDER"}
 </button>
 
         </div>

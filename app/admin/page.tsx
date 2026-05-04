@@ -43,28 +43,35 @@ const codOrders = orders.filter(o => o.payment_method === "cod");
 const prepaidOrders = orders.filter(o => o.payment_method === "online");
   // 🔹 Fetch orders
   const fetchOrders = async () => {
-    try {
-      const token = localStorage.getItem("token"); // ✅ FIXED
+  try {
+    const token = localStorage.getItem("token");
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/order`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // ✅ FIXED
-          },
-        }
-      );
+    const res = await fetch(
+      "https://mythstreet-backend.onrender.com/api/order",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      const data = await res.json();
-      console.log("ADMIN DATA:", data);
-
-      setOrders(data.orders || []);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      console.log("❌ FETCH FAILED:", res.status);
+      return;
     }
-  };
+
+    const data = await res.json();
+    console.log("ADMIN DATA:", data);
+
+    setOrders(data.orders || []);
+  } catch (error) {
+    console.error("FETCH ERROR:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
@@ -88,7 +95,7 @@ const quickUpdate = (id: number, status: string) => {
       const token = localStorage.getItem("token"); // ✅ FIXED
 
       await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/order/${id}/status`,
+        `https://mythstreet-backend.onrender.com/api/order/${id}/status`,
         {
           method: "PUT",
           headers: {
