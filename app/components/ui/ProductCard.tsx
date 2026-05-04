@@ -70,6 +70,7 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   try {
+    alert("API URL: " + process.env.NEXT_PUBLIC_API_URL);
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`, {
     method: "POST",
     headers: {
@@ -86,8 +87,8 @@ export default function ProductCard({ product }: { product: Product }) {
 
   const data = await res.json();
 
-  alert("STATUS: " + res.status);
-  alert("RESPONSE: " + JSON.stringify(data));
+const fetchCart = useCart.getState().fetchCart;
+await fetchCart();
 
 } catch (error) {
   alert("ERROR: " + error);
@@ -97,10 +98,6 @@ export default function ProductCard({ product }: { product: Product }) {
   setAdded(true);
   setTimeout(() => setAdded(false), 1500);
 }
-
-<p style={{ color: "red", fontSize: "12px" }}>
-  API: {process.env.NEXT_PUBLIC_API_URL || "undefined"}
-</p>
 
   return (
     <Link href={`/product/${product.id}`} className="block">
