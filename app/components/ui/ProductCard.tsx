@@ -77,7 +77,7 @@ export default function ProductCard({ product }: { product: Product }) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      product_id: product.id,
+      product_id: `${product.id}-${size}`,
       title: product.title,
       price: product.price,
       image: product.image,
