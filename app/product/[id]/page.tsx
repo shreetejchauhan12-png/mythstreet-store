@@ -185,19 +185,18 @@ const id = params?.id;
 
   setError("");
 
-  const uniqueId = `${item.id}-${size}`;
-
-  // ✅ Add to cart (same as Add to Cart)
-  addToCart({
-    id: uniqueId,
+  const buyNowItem = {
+    id: `${item.id}-${size}`,
     title: `${item.title} - ${size}`,
     price: item.price,
     image: item.image,
     quantity: 1,
-  });
+  };
 
-  // ✅ Redirect to checkout
-  router.push("/checkout");
+  // ✅ Store separately (NOT cart)
+  localStorage.setItem("buyNowItem", JSON.stringify(buyNowItem));
+
+  router.push("/checkout?mode=buyNow");
 }
 
   if (!product) {
