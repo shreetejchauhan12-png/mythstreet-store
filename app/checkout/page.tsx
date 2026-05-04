@@ -3,11 +3,18 @@
 import { useState, useEffect, Suspense } from "react";
 import { useCart } from "@/app/store/cart";
 import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
 
 function CheckoutInner() {
-  const searchParams = useSearchParams();
-  const isBuyNow = searchParams.get("mode") === "buyNow";
+  const [isBuyNow, setIsBuyNow] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
+
+    if (mode === "buyNow") {
+      setIsBuyNow(true);
+    }
+  }, []);
 
   return <CheckoutContent isBuyNow={isBuyNow} />;
 }
