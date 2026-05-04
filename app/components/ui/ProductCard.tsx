@@ -85,7 +85,16 @@ export default function ProductCard({ product }: { product: Product }) {
     }),
   });
 
-  const data = await res.json();
+  const text = await res.text();
+alert("STATUS: " + res.status);
+alert("RAW RESPONSE: " + text);
+
+let data;
+try {
+  data = JSON.parse(text);
+} catch {
+  data = text;
+}
 
 const fetchCart = useCart.getState().fetchCart;
 await fetchCart();
