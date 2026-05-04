@@ -70,24 +70,28 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   try {
-    // 🌐 3. SEND TO BACKEND
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_id: product.id,
-        title: product.title,
-        price: product.price,
-        image: product.image,
-      }),
-    });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      product_id: product.id,
+      title: product.title,
+      price: product.price,
+      image: product.image,
+    }),
+  });
 
-  } catch (error) {
-    console.error("Cart sync error:", error);
-  }
+  const data = await res.json();
+
+  alert("STATUS: " + res.status);
+  alert("RESPONSE: " + JSON.stringify(data));
+
+} catch (error) {
+  alert("ERROR: " + error);
+}
 
   // ✅ UI FEEDBACK
   setAdded(true);
