@@ -71,7 +71,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   try {
     alert("API URL: " + process.env.NEXT_PUBLIC_API_URL);
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`, {
+  const res = await fetch(`https://mythstreet-backend.onrender.com/api/products/cart`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
