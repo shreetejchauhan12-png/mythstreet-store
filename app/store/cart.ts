@@ -14,53 +14,100 @@ type CartStore = {
   addToCart: (item: CartItem) => void;
   decreaseQty: (id: string) => void;
   removeFromCart: (id: string) => void;
-  clearCart: () => void; // ✅ NEW
+  clearCart: () => void;
+
+  // 🆕 NEW
+  fetchCart: () => Promise<void>;
 };
 
 export const useCart = create<CartStore>((set) => ({
-  cart: [],
+  cart:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("cart") || "[]")
+      : [],
 
-  // ✅ ADD TO CART (NO DUPLICATES)
   addToCart: (item) =>
     set((state) => {
+      let updatedCart;
+
       const existing = state.cart.find((i) => i.id === item.id);
 
       if (existing) {
-        return {
-          cart: state.cart.map((i) =>
-            i.id === item.id
-              ? { ...i, quantity: i.quantity + 1 }
-              : i
-          ),
-        };
+        updatedCart = state.cart.map((i) =>
+          i.id === item.id
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
+      } else {
+        updatedCart = [...state.cart, { ...item, quantity: 1 }];
       }
 
-      return {
-        cart: [...state.cart, { ...item, quantity: 1 }],
-      };
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      return { cart: updatedCart };
     }),
 
-  // ➖ DECREASE
   decreaseQty: (id) =>
-    set((state) => ({
-      cart: state.cart
+    set((state) => {
+      const updatedCart = state.cart
         .map((item) =>
           item.id === id
             ? { ...item, quantity: item.quantity - 1 }
             : item
         )
-        .filter((item) => item.quantity > 0),
-    })),
+        .filter((item) => item.quantity > 0);
 
-  // ❌ REMOVE
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      return { cart: updatedCart };
+    }),
+
   removeFromCart: (id) =>
-    set((state) => ({
-      cart: state.cart.filter((item) => item.id !== id),
-    })),
+    set((state) => {
+      const updatedCart = state.cart.filter((item) => item.id !== id);
 
-  // 🧹 CLEAR CART (🔥 FIX FOR YOUR ERROR)
-  clearCart: () =>
-    set(() => ({
-      cart: [],
-    })),
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      return { cart: updatedCart };
+    }),
+
+  clearCart: () => {
+    localStorage.removeItem("cart");
+    set({ cart: [] });
+  },
+
+  // 🆕 FETCH CART FROM BACKEND
+  fetchCart: async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      const formatted = data.cart.map((item: any) => ({
+        id: `${item.product_id}`,
+        title: item.title,
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+      }));
+
+      set({ cart: formatted });
+
+      localStorage.setItem("cart", JSON.stringify(formatted));
+
+    } catch (error) {
+      console.error("Fetch cart error:", error);
+    }
+  },
 }));

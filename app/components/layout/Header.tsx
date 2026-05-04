@@ -37,6 +37,10 @@ export default function Header() {
   if (storedUser) {
     setUser(JSON.parse(storedUser));
   }
+
+  // 🛒 LOAD CART FROM BACKEND
+  fetchCart();
+
 }, []);
   const startLogin = () => {
   if (!window.initSendOTP) {
@@ -138,6 +142,7 @@ setAuthOpen(false);
 };
 
   const cart = useCart((state) => state.cart);
+  const fetchCart = useCart((state) => state.fetchCart);
   const addToCart = useCart((state) => state.addToCart);
   const decrease = useCart((state) => state.decreaseQty);
   const removeFromCart = useCart((state) => state.removeFromCart);

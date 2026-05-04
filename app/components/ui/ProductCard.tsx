@@ -49,20 +49,50 @@ export default function ProductCard({ product }: { product: Product }) {
     setHoverSide(null);
   }
 
-  function addItem(e: React.MouseEvent, size: string) {
-    e.preventDefault();
+  async function addItem(e: React.MouseEvent, size: string) {
+  e.preventDefault();
 
-    addToCart({
-      id: `${product.id}-${size}`,
-      title: `${product.title} (${size})`,
-      price: product.price,
-      image: product.image,
-      quantity: 1,
+  // 🛒 1. LOCAL CART
+  addToCart({
+    id: `${product.id}-${size}`,
+    title: `${product.title} (${size})`,
+    price: product.price,
+    image: product.image,
+    quantity: 1,
+  });
+
+  // 🔐 2. GET TOKEN
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  try {
+    // 🌐 3. SEND TO BACKEND
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        product_id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+      }),
     });
 
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+  } catch (error) {
+    console.error("Cart sync error:", error);
   }
+
+  // ✅ UI FEEDBACK
+  setAdded(true);
+  setTimeout(() => setAdded(false), 1500);
+}
 
   return (
     <Link href={`/product/${product.id}`} className="block">
