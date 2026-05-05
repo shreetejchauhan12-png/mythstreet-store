@@ -157,24 +157,51 @@ const id = params?.id;
     setRecent(filtered.slice(0, 4));
   }, [item]);
 
-  function handleAddToCart() {
-    if (!size) {
-      setError("Please select size");
+  async function handleAddToCart() {
+  if (!size) {
+    setError("Please select size");
+    return;
+  }
+
+  setError("");
+
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      alert("Please login first");
       return;
     }
 
-    setError("");
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product_id: item.id,
+          size: size,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+        }),
+      }
+    );
 
-    const uniqueId = `${item.id}-${size}`;
+    const data = await res.json();
 
-    addToCart({
-      id: uniqueId as any,
-      title: `${item.title} - ${size}`,
-      price: item.price,
-      image: item.image,
-      quantity: 1,
-    });
+    console.log("ADD TO CART RESPONSE:", data);
+
+    // 🔥 AFTER BACKEND SUCCESS → SYNC FRONTEND
+    await useCart.getState().fetchCart();
+
+  } catch (error) {
+    console.error("ADD TO CART ERROR:", error);
   }
+}
 
   // ✅ FIXED BUY NOW (NO RAZORPAY HERE)
   function buyNow() {
