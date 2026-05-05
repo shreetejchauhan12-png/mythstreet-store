@@ -13,10 +13,28 @@ export default function CartInitializer() {
 
     if (!token) return;
 
-    // ✅ Load cart + wishlist once
-    fetchCart();
-    fetchWishlist();
+    async function init() {
+      // 1️⃣ Load from backend
+      await fetchCart();
+      await fetchWishlist();
 
+      // 2️⃣ 🔥 CHECK IF CART EMPTY
+      const currentCart = useCart.getState().cart;
+
+      const tempCart = JSON.parse(
+        localStorage.getItem("tempCart") || "[]"
+      );
+
+      // 3️⃣ 🔥 RESTORE IF NEEDED
+      if (currentCart.length === 0 && tempCart.length > 0) {
+        useCart.setState({ cart: tempCart });
+      }
+
+      // 4️⃣ CLEANUP
+      localStorage.removeItem("tempCart");
+    }
+
+    init();
   }, []);
 
   return null;

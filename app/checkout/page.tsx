@@ -156,7 +156,11 @@ const token = localStorage.getItem("token");
 
 if (!token) {
 
-  saveCheckoutData(); // ✅ USE FUNCTION
+  saveCheckoutData();
+
+  // 🔥 SAVE CART ALSO
+  const cart = useCart.getState().cart;
+  localStorage.setItem("tempCart", JSON.stringify(cart));
 
   router.push("/login?redirect=checkout");
   return;
