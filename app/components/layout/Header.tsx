@@ -445,7 +445,7 @@ products.filter((p: any) =>
 
           <div
   className="absolute inset-0 bg-black/40"
-  onClick={() => setWishlistOpen(false)}
+  onClick={() => setCartOpen(false)}
 />
 
           <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
@@ -455,7 +455,7 @@ products.filter((p: any) =>
                 Wishlist
               </h2>
 
-              <X onClick={() => setWishlistOpen(false)} />
+              <X onClick={() => setCartOpen(false)} />
             </div>
 
             {wishlist.map((item, index) => (
