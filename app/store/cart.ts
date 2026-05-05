@@ -12,8 +12,8 @@ type CartStore = {
   cart: CartItem[];
 
   addToCart: (item: CartItem) => void;
-  decreaseQty: (id: string) => void;
-  removeFromCart: (id: string) => void;
+  decreaseQty: (id: string) => Promise<void>;
+  removeFromCart: (id: string) => Promise<void>;
   clearCart: () => void;
 
   fetchCart: () => Promise<void>;
@@ -22,7 +22,7 @@ type CartStore = {
 export const useCart = create<CartStore>((set) => ({
   cart: [],
 
-  // ➕ ADD
+  // ➕ ADD (UI only, backend handled elsewhere)
   addToCart: (item) =>
     set((state) => {
       const existing = state.cart.find((i) => i.id === item.id);
@@ -42,25 +42,71 @@ export const useCart = create<CartStore>((set) => ({
       };
     }),
 
-  // ➖ DECREASE
-  decreaseQty: (id) =>
-    set((state) => ({
-      cart: state.cart
-        .map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-        .filter((item) => item.quantity > 0),
-    })),
+  // ➖ DECREASE (SYNC WITH BACKEND)
+  decreaseQty: async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
 
-  // ❌ REMOVE
-  removeFromCart: (id) =>
-    set((state) => ({
-      cart: state.cart.filter((item) => item.id !== id),
-    })),
+      const [product_id, size] = id.split("-");
 
-  // 🧹 CLEAR
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart/decrease`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            product_id: Number(product_id),
+            size: size,
+          }),
+        }
+      );
+
+      // 🔄 refresh cart
+      const fetchCart = useCart.getState().fetchCart;
+      await fetchCart();
+
+    } catch (error) {
+      console.error("DECREASE ERROR:", error);
+    }
+  },
+
+  // ❌ REMOVE (SYNC WITH BACKEND)
+  removeFromCart: async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const [product_id, size] = id.split("-");
+
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            product_id: Number(product_id),
+            size: size,
+          }),
+        }
+      );
+
+      // 🔄 refresh cart
+      const fetchCart = useCart.getState().fetchCart;
+      await fetchCart();
+
+    } catch (error) {
+      console.error("REMOVE ERROR:", error);
+    }
+  },
+
+  // 🧹 CLEAR (ONLY FRONTEND)
   clearCart: () => set({ cart: [] }),
 
   // 🔥 FETCH FROM BACKEND
@@ -81,8 +127,8 @@ export const useCart = create<CartStore>((set) => ({
       const data = await res.json();
 
       const formatted = data.cart.map((item: any) => ({
-        id: `${item.product_id}-${item.size}`, // ✅ CRITICAL FIX
-        title: `${item.title} (${item.size})`, // optional but better UX
+        id: `${item.product_id}-${item.size}`,
+        title: `${item.title} (${item.size})`,
         price: item.price,
         image: item.image,
         quantity: item.quantity,
