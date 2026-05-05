@@ -1,32 +1,9 @@
-"use client";
-
 import "./globals.css";
 import Header from "@/app/components/layout/Header";
 import Footer from "@/app/components/layout/Footer";
 import RecentPurchasePopup from "@/app/components/ui/RecentPurchasePopup";
 import Script from "next/script";
-import { useEffect } from "react";
-import { useCart } from "@/app/store/cart";
-
-// 🔥 THIS LOADS CART ON EVERY REFRESH
-function CartInitializer() {
-  const fetchCart = useCart((s) => s.fetchCart);
-
-  useEffect(() => {
-  const interval = setInterval(() => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      fetchCart();
-      clearInterval(interval); // stop once loaded
-    }
-  }, 300);
-
-  return () => clearInterval(interval);
-}, []);
-
-  return null;
-}
+import CartInitializer from "./CartInitializer";
 
 export const metadata = {
   title: "Mythstreet",
@@ -42,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
 
-        {/* 🔥 IMPORTANT: LOAD CART FIRST */}
+        {/* ✅ CLIENT SIDE CART LOADER */}
         <CartInitializer />
 
         <Header />
@@ -53,7 +30,6 @@ export default function RootLayout({
 
         <RecentPurchasePopup />
 
-        {/* 🔥 Razorpay Script */}
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="beforeInteractive"
