@@ -69,6 +69,7 @@ useEffect(() => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const indianStates = [
+    
   "Andhra Pradesh",
   "Arunachal Pradesh",
   "Assam",
@@ -102,6 +103,45 @@ useEffect(() => {
   const [pincode, setPincode] = useState("");
   const [pincodeError, setPincodeError] = useState("");
   const [loading, setLoading] = useState(false);
+  
+  function saveCheckoutData() {
+  const data = {
+    name,
+    email,
+    phone,
+    address,
+    city,
+    state,
+    pincode,
+  };
+
+  console.log("SAVING DATA:", data);
+
+  localStorage.setItem("checkoutData", JSON.stringify(data));
+}
+  useEffect(() => {
+  const saved = localStorage.getItem("checkoutData");
+
+  if (!saved) return;
+
+  try {
+    const data = JSON.parse(saved);
+
+    setName(data.name || "");
+    setEmail(data.email || "");
+    setPhone(data.phone || "");
+    setAddress(data.address || "");
+    setCity(data.city || "");
+    setState(data.state || "");
+    setPincode(data.pincode || "");
+
+    // 🧹 clear after restore
+    localStorage.removeItem("checkoutData");
+
+  } catch (err) {
+    console.error("Restore checkout error:", err);
+  }
+}, []);
 
   if (typeof window !== "undefined") {
   console.log("TOKEN:", localStorage.getItem("token"));
@@ -115,6 +155,9 @@ if (typeof window === "undefined") return;
 const token = localStorage.getItem("token");
 
 if (!token) {
+
+  saveCheckoutData(); // ✅ USE FUNCTION
+
   router.push("/login?redirect=checkout");
   return;
 }
@@ -383,7 +426,10 @@ if (!pincodeRegex.test(pincode)) {
           </div>
 
           <button
-  onClick={handlePlaceOrder}
+  onClick={() => {
+    saveCheckoutData(); // 🔥 FORCE SAVE FIRST
+    handlePlaceOrder();
+  }}
   disabled={loading}
   className="bg-[#680000] text-white w-full py-3 disabled:opacity-50"
 >
