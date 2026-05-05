@@ -52,14 +52,7 @@ export default function ProductCard({ product }: { product: Product }) {
   async function addItem(e: React.MouseEvent, size: string) {
   e.preventDefault();
 
-  // 🛒 LOCAL STATE
-  addToCart({
-    id: `${product.id}-${size}`,
-    title: `${product.title} (${size})`,
-    price: product.price,
-    image: product.image,
-    quantity: 1,
-  });
+  // ❌ REMOVE local addToCart here
 
   // 🔐 TOKEN
   const token = localStorage.getItem("token");
