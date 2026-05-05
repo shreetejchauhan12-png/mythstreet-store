@@ -13,12 +13,17 @@ function CartInitializer() {
   const fetchCart = useCart((s) => s.fetchCart);
 
   useEffect(() => {
+  const interval = setInterval(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      fetchCart(); // ✅ always load cart from backend
+      fetchCart();
+      clearInterval(interval); // stop once loaded
     }
-  }, []);
+  }, 300);
+
+  return () => clearInterval(interval);
+}, []);
 
   return null;
 }
