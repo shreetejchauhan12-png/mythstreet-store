@@ -52,7 +52,7 @@ export default function ProductCard({ product }: { product: Product }) {
   async function addItem(e: React.MouseEvent, size: string) {
   e.preventDefault();
 
-  // 🛒 1. LOCAL CART
+  // 🛒 LOCAL STATE
   addToCart({
     id: `${product.id}-${size}`,
     title: `${product.title} (${size})`,
@@ -61,7 +61,7 @@ export default function ProductCard({ product }: { product: Product }) {
     quantity: 1,
   });
 
-  // 🔐 2. GET TOKEN
+  // 🔐 TOKEN
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -70,39 +70,35 @@ export default function ProductCard({ product }: { product: Product }) {
   }
 
   try {
-    alert("API URL: " + process.env.NEXT_PUBLIC_API_URL);
-  const res = await fetch(`https://mythstreet-backend.onrender.com/api/products/cart`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-  product_id: product.id,   // ✅ FIXED
-  size: size,               // ✅ ADD THIS
-  title: product.title,
-  price: product.price,
-  image: product.image,
-}),
-  });
+    const res = await fetch(
+      `https://mythstreet-backend.onrender.com/api/products/cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product_id: product.id,
+          size: size,
+          title: product.title,
+          price: product.price,
+          image: product.image,
+        }),
+      }
+    );
 
-  const text = await res.text();
-alert("STATUS: " + res.status);
-alert("RAW RESPONSE: " + text);
+    const data = await res.json();
 
-let data;
-try {
-  data = JSON.parse(text);
-} catch {
-  data = text;
-}
+    console.log("ADD TO CART:", data); // ✅ no popup
 
-const fetchCart = useCart.getState().fetchCart;
-await fetchCart();
+    // 🔄 SYNC FROM DB
+    const fetchCart = useCart.getState().fetchCart;
+    await fetchCart();
 
-} catch (error) {
-  alert("ERROR: " + error);
-}
+  } catch (error) {
+    console.error("ADD TO CART ERROR:", error);
+  }
 
   // ✅ UI FEEDBACK
   setAdded(true);
