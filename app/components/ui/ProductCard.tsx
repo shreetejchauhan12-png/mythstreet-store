@@ -78,11 +78,12 @@ export default function ProductCard({ product }: { product: Product }) {
       Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-      product_id: `${product.id}-${size}`,
-      title: product.title,
-      price: product.price,
-      image: product.image,
-    }),
+  product_id: product.id,   // ✅ FIXED
+  size: size,               // ✅ ADD THIS
+  title: product.title,
+  price: product.price,
+  image: product.image,
+}),
   });
 
   const text = await res.text();
