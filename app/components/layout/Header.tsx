@@ -32,7 +32,9 @@ export default function Header() {
   const [authOpen, setAuthOpen] = useState(false);
 
   const [user, setUser] = useState<any>(null);
-  useEffect(() => {
+  const fetchWishlist = useWishlist((s) => s.fetchWishlist);
+
+useEffect(() => {
   const storedUser = localStorage.getItem("user");
   if (storedUser) {
     setUser(JSON.parse(storedUser));
@@ -41,9 +43,9 @@ export default function Header() {
   const token = localStorage.getItem("token");
 
   if (token) {
-    // 🔥 FORCE FRESH LOAD
     setTimeout(() => {
       fetchCart();
+      fetchWishlist(); // ✅ ADD THIS
     }, 100);
   }
 }, []);
@@ -443,7 +445,7 @@ products.filter((p: any) =>
 
           <div
             className="absolute inset-0 bg-black/40"
-            onClick={() => setWishlistOpen(false)}
+            onClick={() => setCartOpen(false)}
           />
 
           <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
@@ -453,22 +455,26 @@ products.filter((p: any) =>
                 Wishlist
               </h2>
 
-              <X onClick={() => setWishlistOpen(false)} />
+              <X onClick={() => setCartOpen(false)} />
             </div>
 
             {wishlist.map((item, index) => (
   <div key={`${item.id}-${index}`}
                 className="flex gap-3 border-b pb-4 mb-4"
               >
-                <img
-                  src={item.image}
-                  className="w-16 h-20 object-cover"
-                />
+                <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
+  <img
+    src={item.image}
+    className="w-16 h-20 object-cover cursor-pointer"
+  />
+</Link>
 
-                <div className="flex-1">
-                  <p className="text-sm font-medium">
-                    {item.title}
-                  </p>
+<div className="flex-1">
+  <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
+    <p className="text-sm font-medium cursor-pointer hover:underline">
+      {item.title}
+    </p>
+  </Link>
 
                   <p className="text-sm text-gray-500">
                     ₹{item.price}
@@ -514,7 +520,7 @@ products.filter((p: any) =>
 
           <div
             className="absolute inset-0 bg-black/40"
-            onClick={() => setCartOpen(false)}
+            onClick={() => setWishlistOpen(false)}
           />
 
           <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
@@ -524,7 +530,7 @@ products.filter((p: any) =>
                 Your Cart
               </h2>
 
-              <X onClick={() => setCartOpen(false)} />
+              <X onClick={() => setWishlistOpen(false)} />
             </div>
 
             {cart.map((item, index) => (
@@ -532,15 +538,19 @@ products.filter((p: any) =>
     key={`${item.id}-${index}`}
                 className="flex gap-3 border-b pb-4 mb-4"
               >
-                <img
-                  src={item.image}
-                  className="w-16 h-20 object-cover"
-                />
+                <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
+  <img
+    src={item.image}
+    className="w-16 h-20 object-cover cursor-pointer"
+  />
+</Link>
 
-                <div className="flex-1">
-                  <p className="text-sm font-medium">
-                    {item.title}
-                  </p>
+<div className="flex-1">
+  <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
+    <p className="text-sm font-medium cursor-pointer hover:underline">
+      {item.title}
+    </p>
+  </Link>
 
                   <p className="text-sm text-gray-500">
                     ₹{item.price}
