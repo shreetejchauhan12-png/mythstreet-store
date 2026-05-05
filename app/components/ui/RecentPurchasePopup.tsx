@@ -36,7 +36,7 @@ export default function RecentPurchasePopup() {
 "Aahana","Aarti","Anjali","Bhavya","Charu","Deepa","Esha","Falguni","Geeta","Hina",
 "Indu","Jaya","Kajal","Lata","Meena","Naina","Ojasvi","Pinky","Rupal","Sonal",
 "Tanisha","Uma","Vandana","Warda","Yashika","Zoya"
-];
+  ];
 
   const cities = [
 "Mumbai","Pune","Delhi","Bangalore","Hyderabad",
@@ -46,7 +46,7 @@ export default function RecentPurchasePopup() {
 "Rajkot","Coimbatore","Kochi","Chennai",
 "Kolkata","Noida","Gurgaon","Faridabad",
 "Thane","Kalyan","Aurangabad","Kolhapur"
-];
+  ];
 
   useEffect(() => {
     if (!mounted) return;
@@ -69,33 +69,32 @@ export default function RecentPurchasePopup() {
       lastIndex.current = randomIndex;
 
       const name = names[randomIndex];
-
-      const city =
-        cities[Math.floor(Math.random() * cities.length)];
-
-      const size =
-        ["S","M","L","XL"][Math.floor(Math.random()*4)];
+      const city = cities[Math.floor(Math.random() * cities.length)];
+      const size = ["S","M","L","XL"][Math.floor(Math.random() * 4)];
 
       const products = [
-  "Oversized T-Shirt",
-  "Anime Hoodie",
-  "Streetwear Tee",
-  "Minimal Sweatshirt"
-];
+        "Oversized T-Shirt",
+        "Anime Hoodie",
+        "Streetwear Tee",
+        "Minimal Sweatshirt"
+      ];
 
-const product =
-  products[Math.floor(Math.random() * products.length)];
+      const product =
+        products[Math.floor(Math.random() * products.length)];
 
-setText(`${name} from ${city} bought ${product} (${size})`);
+      setText(`${name} from ${city} bought ${product} (${size})`);
       setVisible(true);
 
+      // ⏳ SHOW FOR 2 MINUTES
       setTimeout(() => {
-        setVisible(false);
-      }, 5000);
+  setVisible(false);
+}, 60000); // ✅ 1 minute // 120,000 ms = 2 minutes
     }
 
     show();
-    const interval = setInterval(show, 12000);
+
+    // ⏳ SHOW NEXT POPUP AFTER 2.5 MINUTES (avoid overlap)
+    const interval = setInterval(show, 150000);
 
     return () => clearInterval(interval);
   }, [mounted, pathname]);
@@ -104,19 +103,19 @@ setText(`${name} from ${city} bought ${product} (${size})`);
 
   return (
     <div
-  className={`fixed bottom-6 left-6 bg-white shadow-2xl border rounded-xl px-4 py-3 text-sm transition-all duration-500 z-50 ${
-    visible
-      ? "opacity-100 translate-y-0"
-      : "opacity-0 translate-y-5"
-  }`}
->
-  <p className="font-medium text-gray-800">
-    {text}
-  </p>
+      className={`fixed bottom-6 left-6 bg-white shadow-2xl border rounded-xl px-4 py-3 text-sm transition-all duration-500 z-50 ${
+        visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 translate-y-5"
+      }`}
+    >
+      <p className="font-medium text-gray-800">
+        {text}
+      </p>
 
-  <p className="text-xs text-gray-500 mt-1">
-    Just now
-  </p>
-</div>
+      <p className="text-xs text-gray-500 mt-1">
+        Just now
+      </p>
+    </div>
   );
 }

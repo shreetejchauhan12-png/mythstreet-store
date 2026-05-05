@@ -64,7 +64,7 @@ export default function TrendingBanner() {
           <div className="relative overflow-hidden rounded-xl cursor-pointer">
 
             {/* ✅ FIXED RATIO */}
-            <div className="relative w-full pt-[37.5%]">
+            <div className="relative w-full pt-[45%]">
 
               <img
                 src={current.banner || current.image}

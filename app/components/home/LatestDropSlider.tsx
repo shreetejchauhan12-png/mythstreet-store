@@ -75,7 +75,7 @@ export default function LatestDropSlider() {
   if (!slides.length) return null;
 
   return (
-    <section className="py-5 md:py-8">
+    <section className="py-2 md:py-4">
 
       {/* HEADER */}
       <div className="text-center mb-8">
@@ -110,7 +110,7 @@ export default function LatestDropSlider() {
                 key={item.id}
                 className="min-w-full relative"
               >
-                <div className="relative w-full pt-[37.5%]">
+                <div className="relative w-full pt-[45%]">
 
                   <Link href={`/product/${item.id}`}>
                     <img
