@@ -27,7 +27,13 @@ declare global {
     Razorpay: any;
   }
 }
-
+type CheckoutItem = {
+  id: string;
+  title: string;
+  price: number;
+  quantity: number;
+  image: string;
+};
 function CheckoutContent({ isBuyNow }: { isBuyNow: boolean }) {
   const router = useRouter();
 
@@ -42,17 +48,34 @@ useEffect(() => {
 }, []);
 
   const cart = useCart((state) => state.cart);
+
+// 🔥 FORCE RESTORE CART BEFORE USE
+useEffect(() => {
+  const tempCart = JSON.parse(localStorage.getItem("tempCart") || "[]");
+
+  if (cart.length === 0 && tempCart.length > 0) {
+    useCart.setState({ cart: tempCart });
+  }
+}, []);
   const clearCart = useCart((state) => state.clearCart); // ✅ ADDED
-  const finalItems =
+  const tempCart =
+  typeof window !== "undefined"
+    ? JSON.parse(localStorage.getItem("tempCart") || "[]")
+    : [];
+
+const finalItems =
   isBuyNow && buyNowItem
     ? [buyNowItem]
-    : cart;
+    : cart.length > 0
+    ? cart
+    : tempCart;
     if (isBuyNow && !buyNowItem) {
   return <p className="text-center mt-10">Loading checkout...</p>;
 }
 
-  const totalAmount = finalItems.reduce(
-  (acc, item) => acc + item.price * item.quantity,
+  const totalAmount = (finalItems as CheckoutItem[]).reduce(
+  (acc: number, item: CheckoutItem) =>
+    acc + item.price * item.quantity,
   0
 );
 
@@ -220,7 +243,7 @@ if (!pincodeRegex.test(pincode)) {
     state,
     pincode,
     paymentMethod,
-    items: finalItems.map((item) => ({
+    items: (finalItems as CheckoutItem[]).map((item: CheckoutItem) => ({
       id: item.id,
       title: item.title,
       price: item.price,
@@ -252,6 +275,7 @@ if (!pincodeRegex.test(pincode)) {
     // ✅ COD FLOW
     if (paymentMethod === "cod") {
       clearCart();
+      localStorage.removeItem("tempCart");
       window.location.href = `/order-success?method=cod&order_id=${data.orderId}`;
       return;
     }
@@ -397,7 +421,7 @@ if (!pincodeRegex.test(pincode)) {
 
           <h2 className="mb-4 font-medium">Order Summary</h2>
 
-          {finalItems.map((item) => (
+         {(finalItems as CheckoutItem[]).map((item: CheckoutItem) => (
             <div key={item.id} className="flex gap-4 mb-4 items-center border-b pb-4">
               <img
                 src={item.image}
