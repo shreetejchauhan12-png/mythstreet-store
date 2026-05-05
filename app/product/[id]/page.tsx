@@ -335,7 +335,6 @@ const id = params?.id;
             <div className="flex gap-3 mb-4">
               <button
   onClick={handleAddToCart}
-  disabled={!size}
   className={`px-8 py-3 flex-1 text-white transition ${
     size
       ? "bg-[#680000]"
@@ -347,7 +346,6 @@ const id = params?.id;
 
               <button
   onClick={buyNow}
-  disabled={!size}
   className={`px-8 py-3 flex-1 text-white transition ${
     size
       ? "bg-[#680000]"
