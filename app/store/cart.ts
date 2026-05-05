@@ -48,7 +48,8 @@ export const useCart = create<CartStore>((set) => ({
       const token = localStorage.getItem("token");
       if (!token) return;
 
-      const [product_id, size] = id.split("-");
+      const [product_id, sizeRaw] = id.split("-");
+const size = sizeRaw === "nosize" ? null : sizeRaw;
 
       await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart/decrease`,
@@ -127,8 +128,8 @@ export const useCart = create<CartStore>((set) => ({
       const data = await res.json();
 
       const formatted = data.cart.map((item: any) => ({
-        id: `${item.product_id}-${item.size}`,
-        title: `${item.title} (${item.size})`,
+        id: `${item.product_id}-${item.size ?? "nosize"}`,
+        title: item.size ? `${item.title} (${item.size})` : item.title,
         price: item.price,
         image: item.image,
         quantity: item.quantity,

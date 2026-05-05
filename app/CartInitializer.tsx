@@ -2,21 +2,21 @@
 
 import { useEffect } from "react";
 import { useCart } from "@/app/store/cart";
+import { useWishlist } from "@/app/store/wishlist";
 
 export default function CartInitializer() {
   const fetchCart = useCart((s) => s.fetchCart);
+  const fetchWishlist = useWishlist((s) => s.fetchWishlist);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-      if (token) {
-        fetchCart();
-        clearInterval(interval);
-      }
-    }, 300);
+    if (!token) return;
 
-    return () => clearInterval(interval);
+    // ✅ Load cart + wishlist once
+    fetchCart();
+    fetchWishlist();
+
   }, []);
 
   return null;
