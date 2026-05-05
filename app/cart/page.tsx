@@ -7,7 +7,7 @@ export default function CartPage() {
   const cart = useCart((state) => state.cart);
   const removeFromCart = useCart((state) => state.removeFromCart);
   const decreaseQty = useCart((state) => state.decreaseQty);
-  const increase = useCart((state) => state.addToCart);
+  const increase = useCart((state) => state.fetchCart);
 
   const total = cart.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -73,16 +73,36 @@ export default function CartPage() {
                   <span>{item.quantity}</span>
 
                   <button
-                    onClick={() =>
-                      increase({
-                        ...item,
-                        quantity: 1,
-                      })
-                    }
-                    className="border px-2"
-                  >
-                    +
-                  </button>
+  onClick={async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const [product_id, size] = item.id.split("-");
+
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product_id: Number(product_id),
+          size: size,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+        }),
+      }
+    );
+
+    await useCart.getState().fetchCart();
+  }}
+  className="border px-2"
+>
+  +
+</button>
 
                 </div>
 
