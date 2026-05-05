@@ -43,7 +43,7 @@ export default function TrendingBanner() {
   const current = slides[index];
 
   return (
-    <section className="py-5 md:py-8">
+    <section className="py-2 md:py-4">
       
       {/* HEADER */}
       <div className="text-center mb-8">
