@@ -39,8 +39,6 @@ export const useCart = create<CartStore>((set) => ({
         updatedCart = [...state.cart, { ...item, quantity: 1 }];
       }
 
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-
       return { cart: updatedCart };
     }),
 
@@ -54,16 +52,12 @@ export const useCart = create<CartStore>((set) => ({
         )
         .filter((item) => item.quantity > 0);
 
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-
       return { cart: updatedCart };
     }),
 
   removeFromCart: (id) =>
     set((state) => {
-      const updatedCart = state.cart.filter((item) => item.id !== id);
-
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      const updatedCart = state.cart.filter((item) => item.id !== id)
 
       return { cart: updatedCart };
     }),
@@ -92,12 +86,12 @@ export const useCart = create<CartStore>((set) => ({
       const data = await res.json();
 
       const formatted = data.cart.map((item: any) => ({
-        id: `${item.product_id}`,
-        title: item.title,
-        price: item.price,
-        image: item.image,
-        quantity: item.quantity,
-      }));
+  id: `${item.product_id}-${item.size}`,   // ✅ FIX
+  title: `${item.title} (${item.size})`,   // optional but good
+  price: item.price,
+  image: item.image,
+  quantity: item.quantity,
+}));
 
       set({ cart: formatted });
 
