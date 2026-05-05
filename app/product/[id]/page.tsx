@@ -339,12 +339,16 @@ const id = params?.id;
               </button>
 
               <button
-                onClick={buyNow}
-                disabled={!size}
-                className="px-8 py-3 flex-1 border"
-              >
-                BUY NOW
-              </button>
+  onClick={buyNow}
+  disabled={!size}
+  className={`px-8 py-3 flex-1 text-white transition ${
+  size
+    ? "bg-[#680000]"
+    : "bg-gray-400 cursor-not-allowed"
+}`}
+>
+  BUY NOW
+</button>
             </div>
 
             <div className="bg-gray-50 border p-4 rounded-lg text-sm space-y-2 mb-6">
