@@ -16,62 +16,57 @@ type CartStore = {
   removeFromCart: (id: string) => void;
   clearCart: () => void;
 
-  // 🆕 NEW
   fetchCart: () => Promise<void>;
 };
 
 export const useCart = create<CartStore>((set) => ({
   cart: [],
 
+  // ➕ ADD
   addToCart: (item) =>
     set((state) => {
-      let updatedCart;
-
       const existing = state.cart.find((i) => i.id === item.id);
 
       if (existing) {
-        updatedCart = state.cart.map((i) =>
-          i.id === item.id
-            ? { ...i, quantity: i.quantity + 1 }
-            : i
-        );
-      } else {
-        updatedCart = [...state.cart, { ...item, quantity: 1 }];
+        return {
+          cart: state.cart.map((i) =>
+            i.id === item.id
+              ? { ...i, quantity: i.quantity + 1 }
+              : i
+          ),
+        };
       }
 
-      return { cart: updatedCart };
+      return {
+        cart: [...state.cart, { ...item, quantity: 1 }],
+      };
     }),
 
+  // ➖ DECREASE
   decreaseQty: (id) =>
-    set((state) => {
-      const updatedCart = state.cart
+    set((state) => ({
+      cart: state.cart
         .map((item) =>
           item.id === id
             ? { ...item, quantity: item.quantity - 1 }
             : item
         )
-        .filter((item) => item.quantity > 0);
+        .filter((item) => item.quantity > 0),
+    })),
 
-      return { cart: updatedCart };
-    }),
-
+  // ❌ REMOVE
   removeFromCart: (id) =>
-    set((state) => {
-      const updatedCart = state.cart.filter((item) => item.id !== id)
+    set((state) => ({
+      cart: state.cart.filter((item) => item.id !== id),
+    })),
 
-      return { cart: updatedCart };
-    }),
+  // 🧹 CLEAR
+  clearCart: () => set({ cart: [] }),
 
-  clearCart: () => {
-    localStorage.removeItem("cart");
-    set({ cart: [] });
-  },
-
-  // 🆕 FETCH CART FROM BACKEND
+  // 🔥 FETCH FROM BACKEND
   fetchCart: async () => {
     try {
       const token = localStorage.getItem("token");
-
       if (!token) return;
 
       const res = await fetch(
@@ -86,12 +81,12 @@ export const useCart = create<CartStore>((set) => ({
       const data = await res.json();
 
       const formatted = data.cart.map((item: any) => ({
-  id: `${item.product_id}-${item.size}`,   // ✅ FIX
-  title: `${item.title} (${item.size})`,   // optional but good
-  price: item.price,
-  image: item.image,
-  quantity: item.quantity,
-}));
+        id: `${item.product_id}-${item.size}`, // ✅ CRITICAL FIX
+        title: `${item.title} (${item.size})`, // optional but better UX
+        price: item.price,
+        image: item.image,
+        quantity: item.quantity,
+      }));
 
       set({ cart: formatted });
 
