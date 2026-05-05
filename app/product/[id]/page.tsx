@@ -299,14 +299,21 @@ const id = params?.id;
             <div className="mb-2">
               <p className="font-medium mb-2">Select Size</p>
 
-              <div className="flex gap-3">
+              <div
+  className={`flex gap-3 ${
+    error ? "border border-red-500 p-2 rounded" : ""
+  }`}
+>
                 {["S", "M", "L", "XL"].map((s) => (
                   <button
                     key={s}
                     onClick={() => {
-                      setSize(s);
-                      setError("");
-                    }}
+  setSize(s);
+
+  if (error) {
+    setError("");
+  }
+}}
                     className={`border px-4 py-2 ${
                       size === s
                         ? "bg-[#680000] text-white border-[#680000]"
@@ -327,27 +334,27 @@ const id = params?.id;
 
             <div className="flex gap-3 mb-4">
               <button
-                onClick={handleAddToCart}
-                disabled={!size}
-                className={`px-8 py-3 flex-1 text-white ${
-                  size
-                    ? "bg-[#680000]"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                ADD TO CART
-              </button>
+  onClick={handleAddToCart}
+  disabled={!size}
+  className={`px-8 py-3 flex-1 text-white transition ${
+    size
+      ? "bg-[#680000]"
+      : "bg-gray-400 cursor-not-allowed"
+  }`}
+>
+  {size ? "ADD TO CART" : "SELECT SIZE"}
+</button>
 
               <button
   onClick={buyNow}
   disabled={!size}
   className={`px-8 py-3 flex-1 text-white transition ${
-  size
-    ? "bg-[#680000]"
-    : "bg-gray-400 cursor-not-allowed"
-}`}
+    size
+      ? "bg-[#680000]"
+      : "bg-gray-400 cursor-not-allowed"
+  }`}
 >
-  BUY NOW
+  {size ? "BUY NOW" : "SELECT SIZE"}
 </button>
             </div>
 
