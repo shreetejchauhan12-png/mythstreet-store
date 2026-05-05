@@ -440,174 +440,179 @@ products.filter((p: any) =>
         </div>
       )}
             {/* WISHLIST DRAWER */}
-      {wishlistOpen && (
-        <div className="fixed inset-0 z-50">
+{wishlistOpen && (
+  <div className="fixed inset-0 z-50">
 
-          <div
-  className="absolute inset-0 bg-black/40"
-  onClick={() => setCartOpen(false)}
-/>
+    {/* BACKDROP */}
+    <div
+      className="absolute inset-0 bg-black/40"
+      onClick={() => setWishlistOpen(false)}
+    />
 
-          <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
+    {/* PANEL */}
+    <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
 
-            <div className="flex justify-between mb-6">
-              <h2 className="font-semibold text-lg">
-                Wishlist
-              </h2>
+      <div className="flex justify-between mb-6">
+        <h2 className="font-semibold text-lg">
+          Wishlist
+        </h2>
 
-              <X onClick={() => setCartOpen(false)} />
-            </div>
+        <X
+          className="cursor-pointer"
+          onClick={() => setWishlistOpen(false)}
+        />
+      </div>
 
-            {wishlist.map((item, index) => (
-  <div key={`${item.id}-${index}`}
-                className="flex gap-3 border-b pb-4 mb-4"
-              >
-                <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
-  <img
-    src={item.image}
-    className="w-16 h-20 object-cover cursor-pointer"
-  />
-</Link>
+      {wishlist.map((item, index) => (
+        <div
+          key={`${item.id}-${index}`}
+          className="flex gap-3 border-b pb-4 mb-4"
+        >
+          <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
+            <img
+              src={item.image}
+              className="w-16 h-20 object-cover cursor-pointer"
+            />
+          </Link>
 
-<div className="flex-1">
-  <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
-    <p className="text-sm font-medium cursor-pointer hover:underline">
-      {item.title}
-    </p>
-  </Link>
+          <div className="flex-1">
+            <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
+              <p className="text-sm font-medium cursor-pointer hover:underline">
+                {item.title}
+              </p>
+            </Link>
 
-                  <p className="text-sm text-gray-500">
-                    ₹{item.price}
-                  </p>
+            <p className="text-sm text-gray-500">
+              ₹{item.price}
+            </p>
 
-                  <button
-                    onClick={() => {
-  // ✅ add to cart
-  addToCart({
-    id: String(item.id),
-    title: item.title,
-    price: item.price,
-    image: item.image,
-    quantity: 1,
-  });
+            <button
+              onClick={() => {
+                addToCart({
+                  id: String(item.id),
+                  title: item.title,
+                  price: item.price,
+                  image: item.image,
+                  quantity: 1,
+                });
 
-  // ✅ remove from wishlist
-  toggleWishlist(item);
-}}
-                    className="text-xs text-[#680000]"
-                  >
-                    Move to cart
-                  </button>
-                </div>
-
-                <button
-                  onClick={() => toggleWishlist(item)}
-                  className="text-xs text-red-500"
-                >
-                  Remove
-                </button>
-
-              </div>
-            ))}
-
+                toggleWishlist(item);
+              }}
+              className="text-xs text-[#680000]"
+            >
+              Move to cart
+            </button>
           </div>
+
+          <button
+            onClick={() => toggleWishlist(item)}
+            className="text-xs text-red-500"
+          >
+            Remove
+          </button>
         </div>
-      )}
+      ))}
+
+    </div>
+  </div>
+)}
 
       {/* CART DRAWER */}
-      {cartOpen && (
-        <div className="fixed inset-0 z-50">
+{cartOpen && (
+  <div className="fixed inset-0 z-50">
 
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setWishlistOpen(false)}
-          />
+    {/* BACKDROP */}
+    <div
+      className="absolute inset-0 bg-black/40"
+      onClick={() => setCartOpen(false)}
+    />
 
-          <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
+    {/* PANEL */}
+    <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
 
-            <div className="flex justify-between mb-6">
-              <h2 className="font-semibold text-lg">
-                Your Cart
-              </h2>
+      <div className="flex justify-between mb-6">
+        <h2 className="font-semibold text-lg">
+          Your Cart
+        </h2>
 
-              <X onClick={() => setWishlistOpen(false)} />
-            </div>
+        <X
+          className="cursor-pointer"
+          onClick={() => setCartOpen(false)}
+        />
+      </div>
 
-            {cart.map((item, index) => (
-  <div
-    key={`${item.id}-${index}`}
-                className="flex gap-3 border-b pb-4 mb-4"
+      {cart.map((item, index) => (
+        <div
+          key={`${item.id}-${index}`}
+          className="flex gap-3 border-b pb-4 mb-4"
+        >
+          <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
+            <img
+              src={item.image}
+              className="w-16 h-20 object-cover cursor-pointer"
+            />
+          </Link>
+
+          <div className="flex-1">
+            <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
+              <p className="text-sm font-medium cursor-pointer hover:underline">
+                {item.title}
+              </p>
+            </Link>
+
+            <p className="text-sm text-gray-500">
+              ₹{item.price}
+            </p>
+
+            <div className="flex gap-2 mt-2">
+              <button
+                onClick={() => decrease(item.id)}
+                className="border px-2"
               >
-                <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
-  <img
-    src={item.image}
-    className="w-16 h-20 object-cover cursor-pointer"
-  />
-</Link>
+                -
+              </button>
 
-<div className="flex-1">
-  <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
-    <p className="text-sm font-medium cursor-pointer hover:underline">
-      {item.title}
-    </p>
-  </Link>
+              <span>{item.quantity}</span>
 
-                  <p className="text-sm text-gray-500">
-                    ₹{item.price}
-                  </p>
-
-                  <div className="flex gap-2 mt-2">
-
-                    <button
-                      onClick={() => decrease(item.id)}
-                      className="border px-2"
-                    >
-                      -
-                    </button>
-
-                    <span>{item.quantity}</span>
-
-                    <button
-                      onClick={() =>
-                        addToCart({
-                          ...item,
-                          quantity: 1,
-                        })
-                      }
-                      className="border px-2"
-                    >
-                      +
-                    </button>
-
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="text-xs text-red-500"
-                >
-                  Remove
-                </button>
-
-              </div>
-            ))}
-
-            <div className="border-t pt-4">
-              <div className="flex justify-between mb-4">
-                <span>Subtotal</span>
-                <span>₹{subtotal}</span>
-              </div>
-
-              <Link href="/checkout" onClick={() => setCartOpen(false)}>
-  <button className="w-full bg-[#680000] text-white py-3">
-    CHECKOUT
-  </button>
-</Link>
+              <button
+                onClick={() =>
+                  addToCart({
+                    ...item,
+                    quantity: 1,
+                  })
+                }
+                className="border px-2"
+              >
+                +
+              </button>
             </div>
-
           </div>
+
+          <button
+            onClick={() => removeFromCart(item.id)}
+            className="text-xs text-red-500"
+          >
+            Remove
+          </button>
         </div>
-      )}
+      ))}
+
+      <div className="border-t pt-4">
+        <div className="flex justify-between mb-4">
+          <span>Subtotal</span>
+          <span>₹{subtotal}</span>
+        </div>
+
+        <Link href="/checkout" onClick={() => setCartOpen(false)}>
+          <button className="w-full bg-[#680000] text-white py-3">
+            CHECKOUT
+          </button>
+        </Link>
+      </div>
+
+    </div>
+  </div>
+)}
 
     </>
   );
