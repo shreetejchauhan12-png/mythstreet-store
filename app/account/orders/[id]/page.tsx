@@ -107,7 +107,7 @@ const isCancelled =
           Order Tracking
         </h2>
 
-        <div className="flex items-center justify-between relative">
+        <div className="hidden md:flex items-center justify-between relative">
 
           <div className="absolute top-5 left-0 w-full h-1 bg-gray-200"></div>
 
@@ -182,6 +182,87 @@ const isCancelled =
 
                 </div>
 
+        {/* MOBILE TRACKING */}
+        <div className="md:hidden space-y-6">
+
+          {/* PLACED */}
+          <div className="flex gap-4">
+            <div className="flex flex-col items-center">
+              <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center">
+                ✓
+              </div>
+
+              <div className="w-1 h-full bg-black mt-2"></div>
+            </div>
+
+            <div>
+              <p className="font-semibold">
+                Order Placed
+              </p>
+
+              <p className="text-sm text-gray-500">
+                {orderDate.toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+
+          {/* PROCESSING */}
+          <div className="flex gap-4">
+            <div className="flex flex-col items-center">
+              <div
+                className={`w-10 h-10 rounded-full text-white flex items-center justify-center ${
+                  isProcessing
+                    ? "bg-black"
+                    : "bg-gray-300"
+                }`}
+              >
+                ✓
+              </div>
+
+              <div
+                className={`w-1 h-full mt-2 ${
+                  isProcessing
+                    ? "bg-black"
+                    : "bg-gray-300"
+                }`}
+              ></div>
+            </div>
+
+            <div>
+              <p className="font-semibold">
+                Processing
+              </p>
+
+              <p className="text-sm text-gray-500">
+                Preparing your order
+              </p>
+            </div>
+          </div>
+
+          {/* DELIVERED */}
+          <div className="flex gap-4">
+            <div
+              className={`w-10 h-10 rounded-full text-white flex items-center justify-center ${
+                isDelivered
+                  ? "bg-green-500"
+                  : "bg-gray-300"
+              }`}
+            >
+              ✓
+            </div>
+
+            <div>
+              <p className="font-semibold">
+                Delivered
+              </p>
+
+              <p className="text-sm text-gray-500">
+                {deliveredDate.toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+
+        </div>
         {/* STATUS MESSAGE */}
         <div className="mt-8 border-t pt-6">
 
