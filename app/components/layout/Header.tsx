@@ -49,25 +49,6 @@ useEffect(() => {
     }, 100);
   }
 }, []);
-useEffect(() => {
-  function handleClickOutside(event: MouseEvent) {
-    if (
-      accountRef.current &&
-      !accountRef.current.contains(event.target as Node)
-    ) {
-      setAccountOpen(false);
-    }
-  }
-
-  document.addEventListener("mousedown", handleClickOutside);
-
-  return () => {
-    document.removeEventListener(
-      "mousedown",
-      handleClickOutside
-    );
-  };
-}, []);
   const startLogin = () => {
   if (!window.initSendOTP) {
     alert("OTP service not loaded. Refresh page.");
@@ -131,7 +112,7 @@ if (!result.user.name) {
   setUser(result.user);
 }
 
-setAuthOpen(false);
+setAccountOpen(false);
     },
 
     failure: function (err: any) {
@@ -157,6 +138,25 @@ setAuthOpen(false);
 
   return () => {
     document.body.removeChild(script);
+  };
+}, []);
+useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (
+      accountRef.current &&
+      !accountRef.current.contains(event.target as Node)
+    ) {
+      setAccountOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
   };
 }, []);
 
@@ -266,9 +266,9 @@ products.filter((p: any) =>
             <>
               <button
                 onClick={() => {
-                  setAuthOpen(true);
-                  setAccountOpen(false);
-                }}
+  startLogin();
+  setAccountOpen(false);
+}}
                 className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
               >
                 Login
@@ -276,10 +276,9 @@ products.filter((p: any) =>
 
               <button
                 onClick={() => {
-
-                  setAuthOpen(true);
-                  setAccountOpen(false);
-                }}
+  startLogin();
+  setAccountOpen(false);
+}}
                 className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition font-medium"
               >
                 Create Account
@@ -357,34 +356,7 @@ products.filter((p: any) =>
 </header>
 
       <MobileMenu open={open} setOpen={setOpen} />
-            {/* AUTH MODAL */}
-      {authOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-
-          <div className="bg-white w-full max-w-md p-8 relative">
-
-            <X
-              className="absolute right-4 top-4 cursor-pointer"
-              onClick={() => setAuthOpen(false)}
-            />
-
-            <h2 className="text-xl font-semibold mb-6">
-  Login / Signup
-</h2>
-
-            <button
-  onClick={startLogin}
-  className="w-full bg-black text-white py-3"
->
-  Continue with Mobile
-</button>
-
-          </div>
-
-        </div>
-      )}
-
-      {/* SEARCH */}
+            
       {searchOpen && (
         <div className="fixed inset-0 z-50 bg-black/40">
 
