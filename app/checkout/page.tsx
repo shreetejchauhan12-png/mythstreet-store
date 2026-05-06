@@ -241,9 +241,80 @@ if (!pincodeRegex.test(pincode)) {
   return;
 }
   // 🔥 VALIDATION
-  if (!name || !phone || !address || !city || !state || !pincode) {
-  alert("Please fill all details");
+  if (!name) {
+  alert("Please enter your full name");
   setLoading(false);
+
+  document
+    .querySelector('input[placeholder="Full Name"]')
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  return;
+}
+
+if (!email) {
+  alert("Please enter your email");
+  setLoading(false);
+
+  document
+    .querySelector('input[placeholder="Email Address"]')
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  return;
+}
+
+if (!phone) {
+  alert("Please enter your phone number");
+  setLoading(false);
+
+  document
+    .querySelector('input[placeholder="Phone Number (10-digit Indian number)"]')
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  return;
+}
+
+if (!address) {
+  alert("Please enter your address");
+  setLoading(false);
+
+  document
+    .querySelector("textarea")
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  return;
+}
+
+if (!city) {
+  alert("Please enter your city");
+  setLoading(false);
+
+  document
+    .querySelector('input[placeholder="City"]')
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  return;
+}
+
+if (!state) {
+  alert("Please select your state");
+  setLoading(false);
+
+  document
+    .querySelector("select")
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  return;
+}
+
+if (!pincode) {
+  alert("Please enter your pincode");
+  setLoading(false);
+
+  document
+    .querySelector('input[placeholder="Pincode (6-digit Indian pincode)"]')
+    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+
   return;
 }
 
