@@ -88,13 +88,13 @@ export default function RecentPurchasePopup() {
       // ⏳ SHOW FOR 2 MINUTES
       setTimeout(() => {
   setVisible(false);
-}, 60000); // ✅ 1 minute // 120,000 ms = 2 minutes
+}, 3000); // ✅ 1 minute // 120,000 ms = 2 minutes
     }
 
     show();
 
     // ⏳ SHOW NEXT POPUP AFTER 2.5 MINUTES (avoid overlap)
-    const interval = setInterval(show, 150000);
+    const interval = setInterval(show, 60000);
 
     return () => clearInterval(interval);
   }, [mounted, pathname]);
