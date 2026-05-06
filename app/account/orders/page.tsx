@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
@@ -75,7 +76,14 @@ export default function OrdersPage() {
 
       <div className="space-y-6">
         {orders.map((order: any) => (
-          <div key={order.id} className="border p-5 rounded-lg">
+          <Link
+  href={`/account/orders/${order.id}`}
+  key={order.id}
+>
+
+  <div
+  className="border p-5 rounded-xl hover:shadow-lg transition cursor-pointer hover:border-black"
+>
 
             {/* 🔹 Order Info */}
             <div className="flex flex-wrap gap-6 justify-between mb-4">
@@ -128,9 +136,11 @@ export default function OrdersPage() {
                   </div>
                 </div>
               ))}
-            </div>
+                        </div>
 
           </div>
+
+        </Link>
         ))}
       </div>
     </div>
