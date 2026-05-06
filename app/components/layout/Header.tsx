@@ -578,61 +578,97 @@ products.filter((p: any) =>
         />
       </div>
 
-      {cart.map((item, index) => (
-        <div
-          key={`${item.id}-${index}`}
-          className="flex gap-3 border-b pb-4 mb-4"
+      {cart.length === 0 ? (
+
+  <div className="h-[65vh] flex flex-col items-center justify-center text-center px-6">
+
+    <ShoppingBag className="w-16 h-16 text-gray-300 mb-5" />
+
+    <h3 className="text-2xl font-semibold mb-2">
+      Your cart feels lonely
+    </h3>
+
+    <p className="text-gray-500 text-sm leading-6 max-w-xs mb-6">
+      Add your favorite anime and streetwear drops to continue shopping.
+    </p>
+
+    <button
+      onClick={() => {
+        setCartOpen(false);
+        window.location.href = "/shop/all/all";
+      }}
+      className="bg-[#680000] text-white px-6 py-3 rounded-lg text-sm tracking-wide hover:opacity-90 transition"
+    >
+      START SHOPPING
+    </button>
+
+  </div>
+
+) : (
+
+  cart.map((item, index) => (
+    <div
+      key={`${item.id}-${index}`}
+      className="flex gap-3 border-b pb-4 mb-4"
+    >
+      <Link
+        href={`/product/${item.id.split("-")[0]}`}
+        onClick={() => setCartOpen(false)}
+      >
+        <img
+          src={item.image}
+          className="w-16 h-20 object-cover cursor-pointer"
+        />
+      </Link>
+
+      <div className="flex-1">
+        <Link
+          href={`/product/${item.id.split("-")[0]}`}
+          onClick={() => setCartOpen(false)}
         >
-          <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
-            <img
-              src={item.image}
-              className="w-16 h-20 object-cover cursor-pointer"
-            />
-          </Link>
+          <p className="text-sm font-medium cursor-pointer hover:underline">
+            {item.title}
+          </p>
+        </Link>
 
-          <div className="flex-1">
-            <Link href={`/product/${item.id.split("-")[0]}`} onClick={() => setCartOpen(false)}>
-              <p className="text-sm font-medium cursor-pointer hover:underline">
-                {item.title}
-              </p>
-            </Link>
+        <p className="text-sm text-gray-500">
+          ₹{item.price}
+        </p>
 
-            <p className="text-sm text-gray-500">
-              ₹{item.price}
-            </p>
+        <div className="flex gap-2 mt-2">
+          <button
+            onClick={() => decrease(item.id)}
+            className="border px-2"
+          >
+            -
+          </button>
 
-            <div className="flex gap-2 mt-2">
-              <button
-                onClick={() => decrease(item.id)}
-                className="border px-2"
-              >
-                -
-              </button>
-
-              <span>{item.quantity}</span>
-
-              <button
-                onClick={() =>
-                  addToCart({
-                    ...item,
-                    quantity: 1,
-                  })
-                }
-                className="border px-2"
-              >
-                +
-              </button>
-            </div>
-          </div>
+          <span>{item.quantity}</span>
 
           <button
-            onClick={() => removeFromCart(item.id)}
-            className="text-xs text-red-500"
+            onClick={() =>
+              addToCart({
+                ...item,
+                quantity: 1,
+              })
+            }
+            className="border px-2"
           >
-            Remove
+            +
           </button>
         </div>
-      ))}
+      </div>
+
+      <button
+        onClick={() => removeFromCart(item.id)}
+        className="text-xs text-red-500"
+      >
+        Remove
+      </button>
+    </div>
+  ))
+
+)}
 
       <div className="border-t pt-4">
         <div className="flex justify-between mb-4">
