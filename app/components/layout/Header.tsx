@@ -1,7 +1,7 @@
 "use client";
 
 import { getProducts } from "@/app/data/products";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   Menu,
@@ -29,7 +29,7 @@ export default function Header() {
 
   // account
   const [accountOpen, setAccountOpen] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement | null>(null);
 
   const [user, setUser] = useState<any>(null);
   const fetchWishlist = useWishlist((s) => s.fetchWishlist);
@@ -48,6 +48,25 @@ useEffect(() => {
       fetchWishlist(); // ✅ ADD THIS
     }, 100);
   }
+}, []);
+useEffect(() => {
+  function handleClickOutside(event: MouseEvent) {
+    if (
+      accountRef.current &&
+      !accountRef.current.contains(event.target as Node)
+    ) {
+      setAccountOpen(false);
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+  };
 }, []);
   const startLogin = () => {
   if (!window.initSendOTP) {
@@ -226,7 +245,7 @@ products.filter((p: any) =>
     />
 
     {/* ACCOUNT */}
-    <div className="relative">
+    <div className="relative" ref={accountRef}>
       <div
         onClick={() => setAccountOpen(!accountOpen)}
         className="cursor-pointer"
