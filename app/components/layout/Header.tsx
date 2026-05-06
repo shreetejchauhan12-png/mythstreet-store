@@ -464,55 +464,91 @@ products.filter((p: any) =>
         />
       </div>
 
-      {wishlist.map((item, index) => (
-        <div
-          key={`${item.id}-${index}`}
-          className="flex gap-3 border-b pb-4 mb-4"
+      {wishlist.length === 0 ? (
+
+  <div className="h-[70vh] flex flex-col items-center justify-center text-center px-6">
+
+    <Heart className="w-16 h-16 text-gray-300 mb-5" />
+
+    <h3 className="text-2xl font-semibold mb-2">
+      Your wishlist is empty
+    </h3>
+
+    <p className="text-gray-500 text-sm leading-6 max-w-xs mb-6">
+      Save your favorite anime and streetwear drops here.
+    </p>
+
+    <button
+      onClick={() => {
+        setWishlistOpen(false);
+        window.location.href = "/shop/all/all";
+      }}
+      className="bg-[#680000] text-white px-6 py-3 rounded-lg text-sm tracking-wide hover:opacity-90 transition"
+    >
+      EXPLORE PRODUCTS
+    </button>
+
+  </div>
+
+) : (
+
+  wishlist.map((item, index) => (
+    <div
+      key={`${item.id}-${index}`}
+      className="flex gap-3 border-b pb-4 mb-4"
+    >
+      <Link
+        href={`/product/${item.id}`}
+        onClick={() => setWishlistOpen(false)}
+      >
+        <img
+          src={item.image}
+          className="w-16 h-20 object-cover cursor-pointer"
+        />
+      </Link>
+
+      <div className="flex-1">
+        <Link
+          href={`/product/${item.id}`}
+          onClick={() => setWishlistOpen(false)}
         >
-          <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
-            <img
-              src={item.image}
-              className="w-16 h-20 object-cover cursor-pointer"
-            />
-          </Link>
+          <p className="text-sm font-medium cursor-pointer hover:underline">
+            {item.title}
+          </p>
+        </Link>
 
-          <div className="flex-1">
-            <Link href={`/product/${item.id}`} onClick={() => setWishlistOpen(false)}>
-              <p className="text-sm font-medium cursor-pointer hover:underline">
-                {item.title}
-              </p>
-            </Link>
+        <p className="text-sm text-gray-500">
+          ₹{item.price}
+        </p>
 
-            <p className="text-sm text-gray-500">
-              ₹{item.price}
-            </p>
+        <button
+          onClick={() => {
+            addToCart({
+              id: String(item.id),
+              title: item.title,
+              price: item.price,
+              image: item.image,
+              quantity: 1,
+            });
 
-            <button
-              onClick={() => {
-                addToCart({
-                  id: String(item.id),
-                  title: item.title,
-                  price: item.price,
-                  image: item.image,
-                  quantity: 1,
-                });
+            toggleWishlist(item);
+          }}
+          className="text-xs text-[#680000]"
+        >
+          Move to cart
+        </button>
+      </div>
 
-                toggleWishlist(item);
-              }}
-              className="text-xs text-[#680000]"
-            >
-              Move to cart
-            </button>
-          </div>
+      <button
+        onClick={() => toggleWishlist(item)}
+        className="text-xs text-red-500"
+      >
+        Remove
+      </button>
+    </div>
+  ))
 
-          <button
-            onClick={() => toggleWishlist(item)}
-            className="text-xs text-red-500"
-          >
-            Remove
-          </button>
-        </div>
-      ))}
+)}
 
     </div>
   </div>
