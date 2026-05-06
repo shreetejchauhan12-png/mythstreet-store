@@ -160,6 +160,16 @@ useEffect(() => {
   };
 }, []);
 
+useEffect(() => {
+  if (!accountOpen) return;
+
+  const timer = setTimeout(() => {
+    setAccountOpen(false);
+  }, 6000);
+
+  return () => clearTimeout(timer);
+}, [accountOpen]);
+
   const logout = () => {
   localStorage.removeItem("user");   // ✅ remove correct key
   localStorage.removeItem("token");  // ✅ remove jwt
