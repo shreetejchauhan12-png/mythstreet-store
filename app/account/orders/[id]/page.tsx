@@ -85,7 +85,7 @@ const isCancelled =
 
           <p className="text-gray-500 mt-2">
             Placed on{" "}
-            {orderDate.toLocaleDateString()}
+            {orderDate.toLocaleDateString("en-GB")}
           </p>
         </div>
 
@@ -134,7 +134,7 @@ const isCancelled =
             </p>
 
             <p className="text-sm text-gray-500">
-              {orderDate.toLocaleDateString()}
+              {orderDate.toLocaleDateString("en-GB")}
             </p>
           </div>
 
@@ -155,7 +155,7 @@ const isCancelled =
             </p>
 
             <p className="text-sm text-gray-500">
-              {shippedDate.toLocaleDateString()}
+              {shippedDate.toLocaleDateString("en-GB")}
             </p>
           </div>
 
@@ -176,7 +176,7 @@ const isCancelled =
             </p>
 
             <p className="text-sm text-gray-500">
-              {deliveredDate.toLocaleDateString()}
+              {deliveredDate.toLocaleDateString("en-GB")}
             </p>
           </div>
 
@@ -201,7 +201,7 @@ const isCancelled =
               </p>
 
               <p className="text-sm text-gray-500">
-                {orderDate.toLocaleDateString()}
+                {orderDate.toLocaleDateString("en-GB")}
               </p>
             </div>
           </div>
@@ -257,7 +257,7 @@ const isCancelled =
               </p>
 
               <p className="text-sm text-gray-500">
-                {deliveredDate.toLocaleDateString()}
+                {deliveredDate.toLocaleDateString("en-GB")}
               </p>
             </div>
           </div>
@@ -299,7 +299,7 @@ const isCancelled =
           {!isDelivered && !isCancelled && (
             <p className="text-sm text-gray-500 mt-2">
               Estimated delivery by{" "}
-              {deliveredDate.toLocaleDateString()}
+              {deliveredDate.toLocaleDateString("en-GB")}
             </p>
           )}
 
