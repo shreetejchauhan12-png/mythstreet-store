@@ -5,38 +5,48 @@ import { useEffect, useState } from "react";
 export default function AddressesPage() {
   const [addresses, setAddresses] = useState<any[]>([]);
   const [form, setForm] = useState({
-    name: "",
-    phone: "",
-    line1: "",
-    city: "",
-    state: "",
-    pincode: "",
-  });
+  line1: "",
+  city: "",
+  state: "",
+  pincode: "",
+});
 
   useEffect(() => {
-    const saved =
-      JSON.parse(localStorage.getItem("myth_addresses") || "[]");
-    setAddresses(saved);
-  }, []);
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (!user.id) return;
+
+  const saved = JSON.parse(
+    localStorage.getItem(`myth_addresses_${user.id}`) || "[]"
+  );
+
+  setAddresses(saved);
+}, []);
 
   const save = (list: any[]) => {
-    setAddresses(list);
-    localStorage.setItem("myth_addresses", JSON.stringify(list));
-  };
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (!user.id) return;
+
+  setAddresses(list);
+
+  localStorage.setItem(
+    `myth_addresses_${user.id}`,
+    JSON.stringify(list)
+  );
+};
 
   const addAddress = () => {
-    if (!form.name || !form.phone || !form.line1) return;
+    if (!form.line1 || !form.city || !form.state || !form.pincode) return;
 
     save([...addresses, { ...form, id: Date.now() }]);
 
     setForm({
-      name: "",
-      phone: "",
-      line1: "",
-      city: "",
-      state: "",
-      pincode: "",
-    });
+  line1: "",
+  city: "",
+  state: "",
+  pincode: "",
+});
   };
 
   const remove = (id: number) => {
@@ -51,24 +61,6 @@ export default function AddressesPage() {
 
       {/* ADD FORM */}
       <div className="border p-5 mb-8 max-w-xl space-y-3">
-
-        <input
-          placeholder="Full name"
-          className="w-full border p-3"
-          value={form.name}
-          onChange={(e) =>
-            setForm({ ...form, name: e.target.value })
-          }
-        />
-
-        <input
-          placeholder="Phone"
-          className="w-full border p-3"
-          value={form.phone}
-          onChange={(e) =>
-            setForm({ ...form, phone: e.target.value })
-          }
-        />
 
         <input
           placeholder="Address line"
@@ -123,8 +115,6 @@ export default function AddressesPage() {
             key={a.id}
             className="border p-5 max-w-xl"
           >
-            <p className="font-medium">{a.name}</p>
-            <p className="text-sm">{a.phone}</p>
             <p className="text-sm">{a.line1}</p>
             <p className="text-sm">
               {a.city}, {a.state} {a.pincode}
