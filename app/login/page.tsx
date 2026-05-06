@@ -13,6 +13,8 @@ export default function LoginPage() {
   const router = useRouter();
 
   const [phone, setPhone] = useState("");
+  const [name, setName] = useState("");
+const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
   // 🔥 LOAD MSG91 SCRIPT
@@ -30,7 +32,11 @@ export default function LoginPage() {
 
   // 🔥 SEND OTP
   const sendOtp = () => {
-    if (!phone) return alert("Enter phone number");
+    if (!name) return alert("Enter your name");
+
+if (!email) return alert("Enter your email");
+
+if (!phone) return alert("Enter phone number");
 
     if (!window.initSendOTP) {
       return alert("OTP service not loaded. Refresh page.");
@@ -54,7 +60,11 @@ export default function LoginPage() {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ token: data.token || data.message }),
+              body: JSON.stringify({
+  token: data.token || data.message,
+  name,
+  email,
+}),
             }
           );
 
@@ -113,6 +123,21 @@ export default function LoginPage() {
         Login / Signup
       </h1>
 
+<input
+  type="text"
+  placeholder="Enter Your Name"
+  className="w-full border p-3 mb-4 rounded"
+  value={name}
+  onChange={(e) => setName(e.target.value)}
+/>
+
+<input
+  type="email"
+  placeholder="Enter Email Address"
+  className="w-full border p-3 mb-4 rounded"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+/>
       <input
         type="tel"
         placeholder="Enter Mobile Number"
