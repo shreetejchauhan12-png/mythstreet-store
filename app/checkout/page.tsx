@@ -215,105 +215,155 @@ if (!user || !user.id) {
 }
 
 // ✅ EMAIL VALIDATION
+// 🔥 RESET ERRORS
+setEmailError("");
+setPhoneError("");
+setPincodeError("");
+
+const errors = [];
+
+// ✅ NAME
+if (!name.trim()) {
+  errors.push("Full Name");
+}
+
+// ✅ EMAIL
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-if (!emailRegex.test(email)) {
+if (!email.trim()) {
+  errors.push("Email Address");
+} else if (!emailRegex.test(email)) {
   setEmailError("Invalid email address");
-  setLoading(false);
-  return;
+  errors.push("Valid Email Address");
 }
 
-// ✅ PHONE VALIDATION (INDIA ONLY)
+// ✅ PHONE
 const phoneRegex = /^[6-9]\d{9}$/;
 
-if (!phoneRegex.test(phone)) {
+if (!phone.trim()) {
+  errors.push("Phone Number");
+} else if (!phoneRegex.test(phone)) {
   setPhoneError("Enter valid Indian phone number");
-  setLoading(false);
-  return;
+  errors.push("Valid Phone Number");
 }
 
-// ✅ PINCODE VALIDATION (INDIA)
+// ✅ ADDRESS
+if (!address.trim()) {
+  errors.push("Address");
+}
+
+// ✅ CITY
+if (!city.trim()) {
+  errors.push("City");
+}
+
+// ✅ STATE
+if (!state.trim()) {
+  errors.push("State");
+}
+
+// ✅ PINCODE
 const pincodeRegex = /^\d{6}$/;
 
-if (!pincodeRegex.test(pincode)) {
+if (!pincode.trim()) {
+  errors.push("Pincode");
+} else if (!pincodeRegex.test(pincode)) {
   setPincodeError("Enter valid 6-digit pincode");
-  setLoading(false);
-  return;
-}
-  // 🔥 VALIDATION
-  if (!name) {
-  alert("Please enter your full name");
-  setLoading(false);
-
-  document
-    .querySelector('input[placeholder="Full Name"]')
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
-
-  return;
+  errors.push("Valid Pincode");
 }
 
-if (!email) {
-  alert("Please enter your email");
+// ❌ IF ERRORS
+if (errors.length > 0) {
+
+  alert(`Please fill: ${errors.join(", ")}`);
+
   setLoading(false);
 
-  document
-    .querySelector('input[placeholder="Email Address"]')
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  // 🔥 SCROLL TO FIRST EMPTY FIELD
+  setTimeout(() => {
 
-  return;
-}
+    if (!name.trim()) {
+      document
+        .querySelector('input[placeholder="Full Name"]')
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-if (!phone) {
-  alert("Please enter your phone number");
-  setLoading(false);
+      return;
+    }
 
-  document
-    .querySelector('input[placeholder="Phone Number (10-digit Indian number)"]')
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (!email.trim() || !emailRegex.test(email)) {
+      document
+        .querySelector('input[placeholder="Email Address"]')
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-  return;
-}
+      return;
+    }
 
-if (!address) {
-  alert("Please enter your address");
-  setLoading(false);
+    if (!phone.trim() || !phoneRegex.test(phone)) {
+      document
+        .querySelector(
+          'input[placeholder="Phone Number (10-digit Indian number)"]'
+        )
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-  document
-    .querySelector("textarea")
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
 
-  return;
-}
+    if (!address.trim()) {
+      document
+        .querySelector("textarea")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-if (!city) {
-  alert("Please enter your city");
-  setLoading(false);
+      return;
+    }
 
-  document
-    .querySelector('input[placeholder="City"]')
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (!city.trim()) {
+      document
+        .querySelector('input[placeholder="City"]')
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-  return;
-}
+      return;
+    }
 
-if (!state) {
-  alert("Please select your state");
-  setLoading(false);
+    if (!state.trim()) {
+      document
+        .querySelector("select")
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-  document
-    .querySelector("select")
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
 
-  return;
-}
+    if (!pincode.trim() || !pincodeRegex.test(pincode)) {
+      document
+        .querySelector(
+          'input[placeholder="Pincode (6-digit Indian pincode)"]'
+        )
+        ?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
 
-if (!pincode) {
-  alert("Please enter your pincode");
-  setLoading(false);
+      return;
+    }
 
-  document
-    .querySelector('input[placeholder="Pincode (6-digit Indian pincode)"]')
-    ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, 100);
 
   return;
 }
