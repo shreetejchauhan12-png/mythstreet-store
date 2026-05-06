@@ -126,6 +126,7 @@ const finalItems =
   const [pincode, setPincode] = useState("");
   const [pincodeError, setPincodeError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState<any[]>([]);
   
   function saveCheckoutData() {
   const data = {
@@ -142,6 +143,18 @@ const finalItems =
 
   localStorage.setItem("checkoutData", JSON.stringify(data));
 }
+
+useEffect(() => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+  if (!user.id) return;
+
+  const saved = JSON.parse(
+    localStorage.getItem(`myth_addresses_${user.id}`) || "[]"
+  );
+
+  setSavedAddresses(saved);
+}, []);
   useEffect(() => {
   const saved = localStorage.getItem("checkoutData");
 
@@ -232,6 +245,38 @@ if (!pincodeRegex.test(pincode)) {
   alert("Please fill all details");
   setLoading(false);
   return;
+}
+
+if (user.id) {
+
+  const existing = JSON.parse(
+    localStorage.getItem(`myth_addresses_${user.id}`) || "[]"
+  );
+
+  const newAddress = {
+    id: Date.now(),
+    line1: address,
+    city,
+    state,
+    pincode,
+  };
+
+  const alreadyExists = existing.some(
+    (a: any) =>
+      a.line1 === address &&
+      a.city === city &&
+      a.state === state &&
+      a.pincode === pincode
+  );
+
+  if (!alreadyExists) {
+
+    localStorage.setItem(
+      `myth_addresses_${user.id}`,
+      JSON.stringify([newAddress, ...existing])
+    );
+
+  }
 }
 
   const orderData = {
@@ -340,6 +385,47 @@ if (!pincodeRegex.test(pincode)) {
         {/* LEFT */}
         <div>
           <h2 className="mb-4 font-medium">Shipping Details</h2>
+          {savedAddresses.length > 0 && (
+
+  <div className="mb-6">
+
+    <h3 className="text-sm font-medium mb-3 text-gray-600">
+      Saved Addresses
+    </h3>
+
+    <div className="space-y-3">
+
+      {savedAddresses.map((a: any) => (
+
+        <button
+          key={a.id}
+          type="button"
+          onClick={() => {
+            setAddress(a.line1 || "");
+            setCity(a.city || "");
+            setState(a.state || "");
+            setPincode(a.pincode || "");
+          }}
+          className="w-full text-left border rounded-xl p-4 hover:border-black hover:bg-gray-50 transition"
+        >
+
+          <p className="text-sm font-medium">
+            {a.line1}
+          </p>
+
+          <p className="text-sm text-gray-500 mt-1">
+            {a.city}, {a.state} - {a.pincode}
+          </p>
+
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+)}
 
           <input placeholder="Full Name" className="border p-3 w-full mb-4" value={name} onChange={(e) => setName(e.target.value)} />
           <input
