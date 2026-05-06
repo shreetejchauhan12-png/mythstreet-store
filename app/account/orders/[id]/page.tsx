@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import Link from "next/link";
 
 export default function OrderDetailsPage() {
   const params = useParams();
@@ -55,6 +56,22 @@ export default function OrderDetailsPage() {
   shippedDate.setDate(shippedDate.getDate() + 2);
 
   const deliveredDate = new Date(orderDate);
+  const status = order.status || "pending";
+
+const isProcessing =
+  status === "processing" ||
+  status === "shipped" ||
+  status === "delivered";
+
+const isShipped =
+  status === "shipped" ||
+  status === "delivered";
+
+const isDelivered =
+  status === "delivered";
+
+const isCancelled =
+  status === "cancelled";
   deliveredDate.setDate(deliveredDate.getDate() + 5);
 
   return (
@@ -94,7 +111,17 @@ export default function OrderDetailsPage() {
 
           <div className="absolute top-5 left-0 w-full h-1 bg-gray-200"></div>
 
-          <div className="absolute top-5 left-0 w-full h-1 bg-black"></div>
+          <div
+  className={`absolute top-5 left-0 h-1 transition-all duration-500 ${
+    isDelivered
+      ? "w-full bg-green-500"
+      : isShipped
+      ? "w-2/3 bg-black"
+      : isProcessing
+      ? "w-1/3 bg-black"
+      : "w-[8%] bg-black"
+  }`}
+></div>
 
           {/* STEP 1 */}
           <div className="relative z-10 flex flex-col items-center">
@@ -113,7 +140,13 @@ export default function OrderDetailsPage() {
 
           {/* STEP 2 */}
           <div className="relative z-10 flex flex-col items-center">
-            <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center">
+            <div
+  className={`w-10 h-10 rounded-full text-white flex items-center justify-center ${
+    isProcessing
+      ? "bg-black"
+      : "bg-gray-300"
+  }`}
+>
               ✓
             </div>
 
@@ -128,7 +161,13 @@ export default function OrderDetailsPage() {
 
           {/* STEP 3 */}
           <div className="relative z-10 flex flex-col items-center">
-            <div className="w-10 h-10 rounded-full bg-black text-white flex items-center justify-center">
+            <div
+  className={`w-10 h-10 rounded-full text-white flex items-center justify-center ${
+    isDelivered
+      ? "bg-green-500"
+      : "bg-gray-300"
+  }`}
+>
               ✓
             </div>
 
@@ -141,7 +180,50 @@ export default function OrderDetailsPage() {
             </p>
           </div>
 
+                </div>
+
+        {/* STATUS MESSAGE */}
+        <div className="mt-8 border-t pt-6">
+
+          {status === "pending" && (
+            <p className="text-yellow-600 font-medium">
+              Your order has been placed successfully.
+            </p>
+          )}
+
+          {status === "processing" && (
+            <p className="text-blue-600 font-medium">
+              Your order is being prepared for shipment.
+            </p>
+          )}
+
+          {status === "shipped" && (
+            <p className="text-black font-medium">
+              Your order has been shipped and is on the way.
+            </p>
+          )}
+
+          {status === "delivered" && (
+            <p className="text-green-600 font-medium">
+              Your package was delivered successfully.
+            </p>
+          )}
+
+          {status === "cancelled" && (
+            <p className="text-red-600 font-medium">
+              This order has been cancelled.
+            </p>
+          )}
+
+          {!isDelivered && !isCancelled && (
+            <p className="text-sm text-gray-500 mt-2">
+              Estimated delivery by{" "}
+              {deliveredDate.toLocaleDateString()}
+            </p>
+          )}
+
         </div>
+
       </div>
 
       {/* ITEMS */}
@@ -157,16 +239,24 @@ export default function OrderDetailsPage() {
               key={item.id}
               className="flex gap-5 border-b pb-5"
             >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-28 h-32 object-cover rounded-xl"
-              />
+              <Link href={`/product/${item.product_id || item.id}`}>
+
+  <img
+    src={item.image}
+    alt={item.title}
+    className="w-28 h-32 object-cover rounded-xl cursor-pointer hover:opacity-90 transition"
+  />
+
+</Link>
 
               <div className="flex-1">
-                <h3 className="font-semibold text-lg">
-                  {item.title}
-                </h3>
+                <Link href={`/product/${item.product_id || item.id}`}>
+
+  <h3 className="font-semibold text-lg hover:underline cursor-pointer">
+    {item.title}
+  </h3>
+
+</Link>
 
                 <p className="text-gray-500 mt-1">
                   Size: {item.size}
