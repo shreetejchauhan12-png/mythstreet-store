@@ -62,8 +62,6 @@ if (!phone) return alert("Enter phone number");
               },
               body: JSON.stringify({
   token: data.token || data.message,
-  name,
-  email,
 }),
             }
           );
