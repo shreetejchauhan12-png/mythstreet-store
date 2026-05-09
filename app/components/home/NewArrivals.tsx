@@ -68,7 +68,11 @@ setProducts(sorted.slice(0, 8));
           {products.map((product) => (
             <ProductCard
   key={product.id}
-  product={product}
+  product={{
+    ...product,
+    hoverLeft: product.hover_left,
+    hoverRight: product.hover_right,
+  }}
 />
           ))}
         </div>

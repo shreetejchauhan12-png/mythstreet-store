@@ -38,10 +38,10 @@ export default function ProductCard({ product }: { product: Product }) {
   const rightZone = width * 0.6;
 
   if (x < leftZone) {
-    setHoverSide("left");
-  } else if (x > rightZone) {
-    setHoverSide("right");
-  }
+  setHoverSide("right");
+} else if (x > rightZone) {
+  setHoverSide("left");
+}
   // 👇 center does NOTHING → keeps last hover
 }
 
