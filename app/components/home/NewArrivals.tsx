@@ -68,13 +68,7 @@ setProducts(sorted.slice(0, 8));
           {products.map((product) => (
             <ProductCard
   key={product.id}
-  product={{
-    ...product,
-
-    image: `/p${product.id}.jpg`,
-    hoverLeft: `/p${product.id}-left.jpg`,
-    hoverRight: `/p${product.id}-right.jpg`,
-  }}
+  product={product}
 />
           ))}
         </div>
