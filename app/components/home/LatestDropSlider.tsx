@@ -19,17 +19,7 @@ export default function LatestDropSlider() {
 
       const sorted = clean.sort((a, b) => Number(b.id) - Number(a.id));
 
-      const mapped = sorted.map((item) => {
-        const imgIndex = ((item.id - 1) % 8) + 1;
-
-        return {
-          ...item,
-          banner: `/banner${imgIndex}.jpg`,
-          image: `/p${imgIndex}.jpg`,
-        };
-      });
-
-      setSlides(mapped.slice(0, 3));
+      setSlides(sorted.slice(0, 3));
     });
   }, []);
 
