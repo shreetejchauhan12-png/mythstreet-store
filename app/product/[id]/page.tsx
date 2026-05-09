@@ -256,7 +256,12 @@ const id = params?.id;
             </div>
 
             <div className="grid grid-cols-4 gap-3">
-  {[item.image, item.hoverLeft, item.hoverRight, item.image].map((img, i) => (
+  {[
+  item.image,
+  item.hoverLeft,
+  item.hoverRight,
+  `/pd1-4.jpg`,
+].map((img, i) => (
     <div
       key={i}
       onClick={() => setSelectedImage(img)}

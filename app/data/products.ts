@@ -60,20 +60,28 @@ return {
 
   // MAIN IMAGE
   image:
-  item.image ||
-  `/pd${productId}-1.jpg`,
+  item.image
+    ? `/${item.image.replace(/^\/+/, "")}`
+    : "/placeholder.jpg",
 
 hoverLeft:
-  item.hover_left ||
-  `/pd${productId}-2.jpg`,
+  item.hover_left
+    ? `/${item.hover_left.replace(/^\/+/, "")}`
+    : item.image
+    ? `/${item.image.replace(/^\/+/, "")}`
+    : "/placeholder.jpg",
 
 hoverRight:
-  item.hover_right ||
-  `/pd${productId}-3.jpg`,
+  item.hover_right
+    ? `/${item.hover_right.replace(/^\/+/, "")}`
+    : item.image
+    ? `/${item.image.replace(/^\/+/, "")}`
+    : "/placeholder.jpg",
 
 banner:
-  item.banner ||
-  `/bn${productId}.jpg`,
+  item.banner
+    ? `/${item.banner.replace(/^\/+/, "")}`
+    : "/banner1.jpg",
 
   createdAt: item.created_at ?? "",
 };
