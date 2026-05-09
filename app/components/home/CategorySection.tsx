@@ -4,27 +4,27 @@ import Link from "next/link";
 
 export default function CategorySection() {
   const categories = [
-    {
-      name: "Oversized T-Shirts",
-      type: "oversized",
-      image: "/pd4.jpg",
-    },
-    {
-      name: "T-Shirts",
-      type: "tshirt",
-      image: "/pd2.jpg",
-    },
-    {
-      name: "Hoodies",
-      type: "hoodie",
-      image: "/pd1.jpg",
-    },
-    {
-      name: "Sweatshirts",
-      type: "sweatshirt",
-      image: "/pd3.jpg",
-    },
-  ];
+  {
+    name: "Oversized T-Shirts",
+    type: "oversized",
+    image: "/p4.jpg",
+  },
+  {
+    name: "T-Shirts",
+    type: "tshirt",
+    image: "/p2.jpg",
+  },
+  {
+    name: "Hoodies",
+    type: "hoodie",
+    image: "/p1.jpg",
+  },
+  {
+    name: "Sweatshirts",
+    type: "sweatshirt",
+    image: "/p3.jpg",
+  },
+];
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-02">
