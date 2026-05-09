@@ -7,22 +7,22 @@ export default function CategorySection() {
   {
     name: "Oversized T-Shirts",
     type: "oversized",
-    image: "/p4.jpg",
+    image: "/ct1.jpg",
   },
   {
     name: "T-Shirts",
     type: "tshirt",
-    image: "/p2.jpg",
+    image: "/ct2.jpg",
   },
   {
     name: "Hoodies",
     type: "hoodie",
-    image: "/p1.jpg",
+    image: "/ct3.jpg",
   },
   {
     name: "Sweatshirts",
     type: "sweatshirt",
-    image: "/p3.jpg",
+    image: "/ct4.jpg",
   },
 ];
 
