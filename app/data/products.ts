@@ -59,20 +59,9 @@ export async function getProducts(): Promise<Product[]> {
           design: item.design ?? "",
 
           // ✅ TYPE-BASED FALLBACK IMAGES
-          image:
-  item.image &&
-  item.image.startsWith("/") &&
-  !item.image.includes("img")
-    ? item.image
-    : item.type === "hoodie"
-    ? "/pd1.jpg"
-    : item.type === "tshirt"
-    ? "/pd2.jpg"
-    : item.type === "sweatshirt"
-    ? "/pd3.jpg"
-    : item.type === "oversized"
-    ? "/pd4.jpg"
-    : "/placeholder.jpg",
+          image: item.image
+  ? `/${item.image}`
+  : "/placeholder.jpg",
 
           hoverLeft:
   item.hover_left &&
