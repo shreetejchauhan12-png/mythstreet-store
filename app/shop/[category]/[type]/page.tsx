@@ -35,11 +35,18 @@ export default function TypePage({
   }
 
   if (type !== "all") {
-  filteredProducts = filteredProducts.filter(
-    (p) =>
-      p.type?.toLowerCase().trim() ===
-      decodeURIComponent(type).toLowerCase().trim()
-  );
+  filteredProducts = filteredProducts.filter((p) => {
+    const productType = p.type
+      ?.toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-");
+
+    const urlType = decodeURIComponent(type)
+      .toLowerCase()
+      .trim();
+
+    return productType === urlType;
+  });
 }
 
   if (collection) {
@@ -135,10 +142,23 @@ export default function TypePage({
       All
     </button>
 
-    {types.map((t) => (
-      <button
-        key={t}
-        onClick={() => router.push(`/shop/${category}/${t}`)}
+    {types.map((t) => {
+  const slug = t
+    ?.toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-");
+
+  const active =
+    decodeURIComponent(type)
+      .toLowerCase()
+      .trim() === slug;
+
+  return (
+    <button
+      key={t}
+      onClick={() =>
+        router.push(`/shop/${category}/${slug}`)
+      }
         className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
           type === t
             ? "bg-black text-white border-black"
@@ -147,7 +167,8 @@ export default function TypePage({
       >
         {t}
       </button>
-    ))}
+      );
+})}
 
   </div>
 </div>
