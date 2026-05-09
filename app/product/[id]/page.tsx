@@ -260,7 +260,7 @@ const id = params?.id;
   item.image,
   item.hoverLeft,
   item.hoverRight,
-  `/pd1-4.jpg`,
+  `/pd${item.id}-4.jpg`,
 ].map((img, i) => (
     <div
       key={i}
