@@ -60,27 +60,20 @@ return {
 
   // MAIN IMAGE
   image:
-    item.image
-      ? `/${item.image}`
-      : `/pd${productId}-1.jpg`,
+  item.image ||
+  `/pd${productId}-1.jpg`,
 
-  // LEFT HOVER
-  hoverLeft:
-    item.hover_left
-      ? `/${item.hover_left}`
-      : `/pd${productId}-2.jpg`,
+hoverLeft:
+  item.hover_left ||
+  `/pd${productId}-2.jpg`,
 
-  // RIGHT HOVER
-  hoverRight:
-    item.hover_right
-      ? `/${item.hover_right}`
-      : `/pd${productId}-3.jpg`,
+hoverRight:
+  item.hover_right ||
+  `/pd${productId}-3.jpg`,
 
-  // BANNER
-  banner:
-    item.banner
-      ? `/${item.banner}`
-      : `/bn${productId}.jpg`,
+banner:
+  item.banner ||
+  `/bn${productId}.jpg`,
 
   createdAt: item.created_at ?? "",
 };
