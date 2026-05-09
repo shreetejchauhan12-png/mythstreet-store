@@ -35,10 +35,12 @@ export default function TypePage({
   }
 
   if (type !== "all") {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.type === type
-    );
-  }
+  filteredProducts = filteredProducts.filter(
+    (p) =>
+      p.type?.toLowerCase().trim() ===
+      decodeURIComponent(type).toLowerCase().trim()
+  );
+}
 
   if (collection) {
     filteredProducts = filteredProducts.filter(
