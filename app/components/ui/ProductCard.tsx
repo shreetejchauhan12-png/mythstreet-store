@@ -34,15 +34,11 @@ export default function ProductCard({ product }: { product: Product }) {
   const { left, width } = e.currentTarget.getBoundingClientRect();
   const x = e.clientX - left;
 
-  const leftZone = width * 0.4;
-  const rightZone = width * 0.6;
-
-  if (x < leftZone) {
-  setHoverSide("right");
-} else if (x > rightZone) {
-  setHoverSide("left");
-}
-  // 👇 center does NOTHING → keeps last hover
+  if (x < width / 2) {
+    setHoverSide("left");
+  } else {
+    setHoverSide("right");
+  }
 }
 
   function handleLeave() {
@@ -117,7 +113,7 @@ export default function ProductCard({ product }: { product: Product }) {
     (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
   }}
   className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-  hoverSide === null ? "opacity-100 scale-100" : "opacity-0 scale-105"
+  hoverSide === null ? "opacity-100" : "opacity-0"
 }`}
 />
 
@@ -128,8 +124,8 @@ export default function ProductCard({ product }: { product: Product }) {
     (e.currentTarget as HTMLImageElement).src = product.image;
   }}
   className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-    hoverSide === "left" ? "opacity-100 scale-105" : "opacity-0"
-  }`}
+  hoverSide === "left" ? "opacity-100" : "opacity-0"
+}`}
 />
 
 {/* RIGHT IMAGE */}
@@ -139,8 +135,8 @@ export default function ProductCard({ product }: { product: Product }) {
     (e.currentTarget as HTMLImageElement).src = product.image;
   }}
   className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-    hoverSide === "right" ? "opacity-100 scale-105" : "opacity-0"
-  }`}
+  hoverSide === "right" ? "opacity-100" : "opacity-0"
+}`}
 />
 
             {/* wishlist */}
