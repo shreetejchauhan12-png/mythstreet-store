@@ -44,59 +44,46 @@ export async function getProducts(): Promise<Product[]> {
 
   return Array.isArray(data)
     ? data.map((item: any): Product => {
-        const index = ((Number(item.id) - 1) % 8) + 1;
+        const productId = Number(item.id);
 
-        return {
-          id: Number(item.id),
+return {
+  id: productId,
 
-          title: item.title ?? "",
-          price: Number(item.price ?? item.base_price ?? 0),
+  title: item.title ?? "",
+  price: Number(item.price ?? item.base_price ?? 0),
 
-          category: item.category ?? "",
-          type: item.type ?? "",
-          collection: item.collection ?? "",
+  category: item.category ?? "",
+  type: item.type ?? "",
+  collection: item.collection ?? "",
 
-          design: item.design ?? "",
+  design: item.design ?? "",
 
-          // ✅ TYPE-BASED FALLBACK IMAGES
-          image: item.image
-  ? `/${item.image}`
-  : "/placeholder.jpg",
+  // MAIN IMAGE
+  image:
+    item.image
+      ? `/${item.image}`
+      : `/pd${productId}-1.jpg`,
 
-          hoverLeft:
-  item.hover_left &&
-  item.hover_left.startsWith("/") &&
-  !item.hover_left.includes("img")
-    ? item.hover_left
-    : item.type === "hoodie"
-    ? "/pd1.jpg"
-    : item.type === "tshirt"
-    ? "/pd2.jpg"
-    : item.type === "sweatshirt"
-    ? "/pd3.jpg"
-    : item.type === "oversized"
-    ? "/pd4.jpg"
-    : "/pd2.jpg",
+  // LEFT HOVER
+  hoverLeft:
+    item.hover_left
+      ? `/${item.hover_left}`
+      : `/pd${productId}-2.jpg`,
 
-          hoverRight:
-  item.hover_right &&
-  item.hover_right.startsWith("/") &&
-  !item.hover_right.includes("img")
-    ? item.hover_right
-    : item.type === "hoodie"
-    ? "/pd1.jpg"
-    : item.type === "tshirt"
-    ? "/pd2.jpg"
-    : item.type === "sweatshirt"
-    ? "/pd3.jpg"
-    : item.type === "oversized"
-    ? "/pd4.jpg"
-    : "/pd2.jpg",
+  // RIGHT HOVER
+  hoverRight:
+    item.hover_right
+      ? `/${item.hover_right}`
+      : `/pd${productId}-3.jpg`,
 
-          banner: item.banner || `/banner${index}.jpg`,
+  // BANNER
+  banner:
+    item.banner
+      ? `/${item.banner}`
+      : `/bn${productId}.jpg`,
 
-          createdAt: item.created_at ?? "",
-        };
+  createdAt: item.created_at ?? "",
+};
       })
     : [];
 }
