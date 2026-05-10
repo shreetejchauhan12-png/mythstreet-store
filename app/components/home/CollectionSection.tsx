@@ -50,7 +50,7 @@ export default function CollectionSection() {
         {collections.map((item, i) => (
           <Link
   key={i}
-  href={`/shop/all/oversized-t-shirt?collection=${item.slug}`}
+  href={`/shop/all/all?collection=${item.slug}`}
 >
             <div className="group cursor-pointer">
 
