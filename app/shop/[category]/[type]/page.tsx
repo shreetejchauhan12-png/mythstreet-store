@@ -50,10 +50,15 @@ export default function TypePage({
 }
 
   if (collection) {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.collection === collection
+  filteredProducts = filteredProducts.filter((p) => {
+    return (
+      p.collection
+        ?.toLowerCase()
+        .trim() ===
+      collection.toLowerCase().trim()
     );
-  }
+  });
+}
 
   filteredProducts = filteredProducts.filter(
     (p) => p.price <= price
