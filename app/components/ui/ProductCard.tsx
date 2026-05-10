@@ -23,6 +23,7 @@ type Product = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const [hoverSide, setHoverSide] = useState<"left" | "right" | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [added, setAdded] = useState(false);
 
   const addToCart = useCart((state) => state.addToCart);
@@ -106,7 +107,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="group cursor-pointer">
 
         <div
-  className="relative overflow-hidden bg-gray-100 rounded-xl shadow-sm hover:shadow-lg transition"
+  className="relative overflow-hidden bg-gray-100 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500"
   onMouseMove={handleMove}
   onMouseLeave={handleLeave}
 >
@@ -116,22 +117,31 @@ export default function ProductCard({ product }: { product: Product }) {
             <img
   src={
   hoverSide === "left"
-    ? (product.hoverLeft ||
-       product.hover_left ||
-       product.image)
-
+    ? (
+        product.hoverLeft ||
+        product.hover_left ||
+        product.image
+      )
     : hoverSide === "right"
-    ? (product.hoverRight ||
-       product.hover_right ||
-       product.image)
-
+    ? (
+        product.hoverRight ||
+        product.hover_right ||
+        product.image
+      )
     : product.image
 }
+key={hoverSide || "default"}
+onLoadStart={() => setImageLoaded(false)}
+  onLoad={() => setImageLoaded(true)}
   onError={(e) => {
     (e.currentTarget as HTMLImageElement).src =
       product.image || "/placeholder.jpg";
   }}
-  className="absolute inset-0 w-full h-full object-cover transition-all duration-300 pointer-events-none"
+  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
+    imageLoaded
+      ? "opacity-100 scale-100"
+      : "opacity-0 scale-105"
+  }`}
 />
 
             {/* wishlist */}
