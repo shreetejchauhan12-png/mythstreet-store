@@ -27,13 +27,9 @@ export default function NewArrivals({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {latestProducts.map((product) => (
             <ProductCard
-              key={product.id}
-              product={{
-                ...product,
-                hoverLeft: product.hover_left,
-                hoverRight: product.hover_right,
-              }}
-            />
+  key={product.id}
+  product={product}
+/>
           ))}
         </div>
       )}
