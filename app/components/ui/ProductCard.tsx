@@ -23,7 +23,6 @@ type Product = {
 
 export default function ProductCard({ product }: { product: Product }) {
   const [hoverSide, setHoverSide] = useState<"left" | "right" | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [added, setAdded] = useState(false);
 
   const addToCart = useCart((state) => state.addToCart);
@@ -114,31 +113,39 @@ export default function ProductCard({ product }: { product: Product }) {
           {/* ✅ FIXED RATIO CONTAINER */}
           <div className="relative w-full pt-[120%]">
 
-            <img
-  src={
-  hoverSide === "left"
-    ? (
-        product.hoverLeft ||
-        product.hover_left ||
-        product.image
-      )
-    : hoverSide === "right"
-    ? (
-        product.hoverRight ||
-        product.hover_right ||
-        product.image
-      )
-    : product.image
-}
-key={hoverSide || "default"}
-onLoadStart={() => setImageLoaded(false)}
-  onLoad={() => setImageLoaded(true)}
-  onError={(e) => {
-    (e.currentTarget as HTMLImageElement).src =
-      product.image || "/placeholder.jpg";
-  }}
+            {/* BASE IMAGE */}
+<img
+  src={product.image}
   className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
-    imageLoaded
+    hoverSide === null
+      ? "opacity-100 scale-100"
+      : "opacity-0 scale-105"
+  }`}
+/>
+
+{/* LEFT IMAGE */}
+<img
+  src={
+    product.hoverLeft ||
+    product.hover_left ||
+    product.image
+  }
+  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
+    hoverSide === "left"
+      ? "opacity-100 scale-100"
+      : "opacity-0 scale-105"
+  }`}
+/>
+
+{/* RIGHT IMAGE */}
+<img
+  src={
+    product.hoverRight ||
+    product.hover_right ||
+    product.image
+  }
+  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
+    hoverSide === "right"
       ? "opacity-100 scale-100"
       : "opacity-0 scale-105"
   }`}
