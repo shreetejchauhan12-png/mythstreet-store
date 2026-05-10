@@ -36,10 +36,12 @@ export default function ProductCard({ product }: { product: Product }) {
   );
 
   function handleMove(e: React.MouseEvent<HTMLDivElement>) {
-  const { left, width } = e.currentTarget.getBoundingClientRect();
+  const { left, width } =
+    e.currentTarget.getBoundingClientRect();
+
   const x = e.clientX - left;
 
-  if (x < width / 2) {
+  if (x <= width / 2) {
     setHoverSide("left");
   } else {
     setHoverSide("right");
@@ -104,30 +106,32 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="group cursor-pointer">
 
         <div
-          className="relative overflow-hidden bg-gray-100 rounded-xl shadow-sm hover:shadow-lg transition"
-          onMouseMove={handleMove}
-          onMouseLeave={handleLeave}
-        >
+  className="relative overflow-hidden bg-gray-100 rounded-xl shadow-sm hover:shadow-lg transition"
+  onMouseMove={handleMove}
+  onMouseLeave={handleLeave}
+>
           {/* ✅ FIXED RATIO CONTAINER */}
           <div className="relative w-full pt-[120%]">
 
             <img
   src={
-    hoverSide === "left"
-      ? product.hoverLeft ||
-        product.hover_left ||
-        product.image
-      : hoverSide === "right"
-      ? product.hoverRight ||
-        product.hover_right ||
-        product.image
-      : product.image
-  }
+  hoverSide === "left"
+    ? (product.hoverLeft ||
+       product.hover_left ||
+       product.image)
+
+    : hoverSide === "right"
+    ? (product.hoverRight ||
+       product.hover_right ||
+       product.image)
+
+    : product.image
+}
   onError={(e) => {
     (e.currentTarget as HTMLImageElement).src =
       product.image || "/placeholder.jpg";
   }}
-  className="absolute inset-0 w-full h-full object-cover transition-all duration-300"
+  className="absolute inset-0 w-full h-full object-cover transition-all duration-300 pointer-events-none"
 />
 
             {/* wishlist */}
