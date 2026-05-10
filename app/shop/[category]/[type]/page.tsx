@@ -160,10 +160,10 @@ export default function TypePage({
         router.push(`/shop/${category}/${slug}`)
       }
         className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
-          type === t
-            ? "bg-black text-white border-black"
-            : "text-gray-600 border-gray-300 hover:border-black"
-        }`}
+  active
+    ? "bg-black text-white border-black"
+    : "text-gray-600 border-gray-300 hover:border-black"
+}`}
       >
         {t}
       </button>
