@@ -11,9 +11,14 @@ type Product = {
   title: string;
   price: number;
   category: string;
+
   image: string;
-  hoverLeft: string;
-  hoverRight: string;
+
+  hoverLeft?: string;
+  hoverRight?: string;
+
+  hover_left?: string;
+  hover_right?: string;
 };
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -119,7 +124,11 @@ export default function ProductCard({ product }: { product: Product }) {
 
 {/* LEFT IMAGE */}
 <img
-  src={product.hoverLeft || product.image}
+  src={
+  product.hoverLeft ||
+  product.hover_left ||
+  product.image
+}
   onError={(e) => {
     (e.currentTarget as HTMLImageElement).src = product.image;
   }}
@@ -130,7 +139,11 @@ export default function ProductCard({ product }: { product: Product }) {
 
 {/* RIGHT IMAGE */}
 <img
-  src={product.hoverRight || product.image}
+  src={
+  product.hoverRight ||
+  product.hover_right ||
+  product.image
+}
   onError={(e) => {
     (e.currentTarget as HTMLImageElement).src = product.image;
   }}
