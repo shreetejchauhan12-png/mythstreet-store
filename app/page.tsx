@@ -7,15 +7,23 @@ import LatestDropSlider from "./components/home/LatestDropSlider";
 import CollectionSection from "./components/home/CollectionSection";
 import Newsletter from "./components/home/Newsletter";
 
-export default function Home() {
+import { getProducts } from "@/app/data/products";
+
+export default async function Home() {
+  const products = await getProducts();
+
   return (
     <main className="space-y-2 md:space-y-3">
       <Hero />
       <CategorySection />
       <TrustBadges />
-      <NewArrivals />
-      <TrendingBanner />
-      <LatestDropSlider />
+
+      <NewArrivals products={products} />
+
+      <TrendingBanner products={products} />
+
+      <LatestDropSlider products={products} />
+
       <CollectionSection />
       <Newsletter />
     </main>

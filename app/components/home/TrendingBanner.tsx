@@ -1,26 +1,31 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getProducts } from "@/app/data/products";
 import Link from "next/link";
 
-export default function TrendingBanner() {
+export default function TrendingBanner({
+  products,
+}: {
+  products: any[];
+}) {
   const [slides, setSlides] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
-  // ✅ FETCH LATEST 8 PRODUCTS (ID BASED - MOST RELIABLE)
+  // ✅ USE PRODUCTS FROM HOME PAGE
   useEffect(() => {
-    getProducts().then((data) => {
-      const clean = Array.isArray(data) ? data : [];
+    const clean = Array.isArray(products)
+      ? products
+      : [];
 
-      // 🔥 SORT BY ID (NEWEST FIRST)
-      const sorted = clean.sort((a, b) => b.id - a.id);
+    // ✅ SORT LATEST FIRST
+    const sorted = clean.sort(
+      (a, b) => b.id - a.id
+    );
 
-      // 🔥 TAKE ONLY LATEST 8
-      setSlides(sorted.slice(0, 8));
-    });
-  }, []);
+    // ✅ TAKE LATEST 8
+    setSlides(sorted.slice(0, 8));
+  }, [products]);
 
   // ✅ AUTO SLIDER
   useEffect(() => {
@@ -44,7 +49,7 @@ export default function TrendingBanner() {
 
   return (
     <section className="py-2 md:py-4">
-      
+
       {/* HEADER */}
       <div className="text-center mb-8">
         <p className="text-xs tracking-widest text-gray-500 uppercase">
@@ -63,7 +68,7 @@ export default function TrendingBanner() {
         <Link href={`/product/${current.id}`}>
           <div className="relative overflow-hidden rounded-xl cursor-pointer">
 
-            {/* ✅ FIXED RATIO */}
+            {/* FIXED RATIO */}
             <div className="relative w-full pt-[45%]">
 
               <img

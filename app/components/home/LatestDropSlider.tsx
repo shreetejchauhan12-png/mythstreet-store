@@ -2,28 +2,33 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getProducts } from "@/app/data/products";
 import Link from "next/link";
 
-export default function LatestDropSlider() {
+export default function LatestDropSlider({
+  products,
+}: {
+  products: any[];
+}) {
   const [slides, setSlides] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // ✅ FETCH LATEST 3 PRODUCTS
+  // ✅ USE PRODUCTS FROM HOME PAGE
   useEffect(() => {
-    getProducts().then((data) => {
-      const clean = Array.isArray(data) ? data : [];
+    const clean = Array.isArray(products)
+      ? products
+      : [];
 
-      const sorted = clean.sort((a, b) => Number(b.id) - Number(a.id));
+    const sorted = clean.sort(
+      (a, b) => Number(b.id) - Number(a.id)
+    );
 
-      setSlides(sorted.slice(0, 3));
-    });
-  }, []);
+    setSlides(sorted.slice(0, 3));
+  }, [products]);
 
-  // ✅ AUTO SLIDE (6 SEC)
+  // ✅ AUTO SLIDE
   useEffect(() => {
     if (!slides.length) return;
 
@@ -46,7 +51,7 @@ export default function LatestDropSlider() {
     );
   }
 
-  // ✅ SWIPE HANDLERS
+  // ✅ SWIPE
   function handleTouchStart(e: React.TouchEvent) {
     touchStartX.current = e.touches[0].clientX;
   }
@@ -56,7 +61,8 @@ export default function LatestDropSlider() {
   }
 
   function handleTouchEnd() {
-    const diff = touchStartX.current - touchEndX.current;
+    const diff =
+      touchStartX.current - touchEndX.current;
 
     if (diff > 50) next();
     else if (diff < -50) prev();
