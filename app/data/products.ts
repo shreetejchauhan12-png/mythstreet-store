@@ -62,26 +62,22 @@ return {
   image:
   item.image
     ? `/${item.image.replace(/^\/+/, "")}`
-    : "/placeholder.jpg",
+    : `/pd${productId}-1.jpg`,
 
 hoverLeft:
   item.hover_left
     ? `/${item.hover_left.replace(/^\/+/, "")}`
-    : item.image
-    ? `/${item.image.replace(/^\/+/, "")}`
-    : "/placeholder.jpg",
+    : `/pd${productId}-2.jpg`,
 
 hoverRight:
   item.hover_right
     ? `/${item.hover_right.replace(/^\/+/, "")}`
-    : item.image
-    ? `/${item.image.replace(/^\/+/, "")}`
-    : "/placeholder.jpg",
+    : `/pd${productId}-3.jpg`,
 
 banner:
   item.banner
     ? `/${item.banner.replace(/^\/+/, "")}`
-    : "/banner1.jpg",
+    : `/bn${productId}.jpg`,
 
   createdAt: item.created_at ?? "",
 };
