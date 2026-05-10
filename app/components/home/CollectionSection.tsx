@@ -48,7 +48,10 @@ export default function CollectionSection() {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
         {collections.map((item, i) => (
-          <Link key={i} href={`/shop/all/all?collection=${item.slug}`}>
+          <Link
+  key={i}
+  href={`/shop/all/oversized-t-shirt?collection=${item.slug}`}
+>
             <div className="group cursor-pointer">
 
               <div className="relative overflow-hidden rounded-lg">
