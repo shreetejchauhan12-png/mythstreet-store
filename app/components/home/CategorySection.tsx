@@ -5,10 +5,10 @@ import Link from "next/link";
 export default function CategorySection() {
   const categories = [
   {
-    name: "Oversized T-Shirts",
-    type: "oversized",
-    image: "/pk1.jpg",
-  },
+  name: "Oversized T-Shirts",
+  type: "oversized-t-shirt",
+  image: "/pk1.jpg",
+},
   {
     name: "T-Shirts",
     type: "tshirt",
