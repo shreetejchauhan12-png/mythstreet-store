@@ -111,45 +111,23 @@ export default function ProductCard({ product }: { product: Product }) {
           {/* ✅ FIXED RATIO CONTAINER */}
           <div className="relative w-full pt-[120%]">
 
-            {/* BASE IMAGE */}
-<img
-  src={product.image || "/placeholder.jpg"}
-  onError={(e) => {
-    (e.currentTarget as HTMLImageElement).src = "/placeholder.jpg";
-  }}
-  className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-  hoverSide === null ? "opacity-100" : "opacity-0"
-}`}
-/>
-
-{/* LEFT IMAGE */}
-<img
+            <img
   src={
-  product.hoverLeft ||
-  product.hover_left ||
-  product.image
-}
+    hoverSide === "left"
+      ? product.hoverLeft ||
+        product.hover_left ||
+        product.image
+      : hoverSide === "right"
+      ? product.hoverRight ||
+        product.hover_right ||
+        product.image
+      : product.image
+  }
   onError={(e) => {
-    (e.currentTarget as HTMLImageElement).src = product.image;
+    (e.currentTarget as HTMLImageElement).src =
+      product.image || "/placeholder.jpg";
   }}
-  className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-  hoverSide === "left" ? "opacity-100" : "opacity-0"
-}`}
-/>
-
-{/* RIGHT IMAGE */}
-<img
-  src={
-  product.hoverRight ||
-  product.hover_right ||
-  product.image
-}
-  onError={(e) => {
-    (e.currentTarget as HTMLImageElement).src = product.image;
-  }}
-  className={`absolute inset-0 w-full h-full object-cover transition-all duration-300 ${
-  hoverSide === "right" ? "opacity-100" : "opacity-0"
-}`}
+  className="absolute inset-0 w-full h-full object-cover transition-all duration-300"
 />
 
             {/* wishlist */}
