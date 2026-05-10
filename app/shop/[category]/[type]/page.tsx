@@ -186,21 +186,29 @@ export default function TypePage({
 
   <div className="flex flex-wrap gap-2">
 
-    {collections.map((c) => (
-      <button
-        key={c}
-        onClick={() =>
-          router.push(`/shop/${category}/${type}?collection=${c}`)
-        }
-        className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
-          collection === c
-            ? "bg-black text-white border-black"
-            : "text-gray-600 border-gray-300 hover:border-black"
-        }`}
-      >
-        {c}
-      </button>
-    ))}
+    {collections.map((c) => {
+  const active =
+    collection?.toLowerCase().trim() ===
+    c?.toLowerCase().trim();
+
+  return (
+    <button
+      key={c}
+      onClick={() =>
+        router.push(
+          `/shop/${category}/${type}?collection=${c.toLowerCase()}`
+        )
+      }
+      className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+        active
+          ? "bg-black text-white border-black"
+          : "text-gray-600 border-gray-300 hover:border-black"
+      }`}
+    >
+      {c}
+    </button>
+  );
+})}
 
   </div>
 </div>
