@@ -11,7 +11,7 @@ export default function Hero() {
   const slides = [
     "/hr1.jpg",
     "/bn10.jpg",
-    "/banner1.jpg",
+    "/hr3.jpg",
   ];
 
   const [index, setIndex] = useState(0);
