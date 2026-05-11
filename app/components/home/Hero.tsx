@@ -44,29 +44,30 @@ export default function Hero() {
           <div className="absolute inset-0 bg-black/10" />
 
           {/* BUTTON ONLY */}
-          <div className="absolute inset-0 flex items-end md:items-center justify-center md:justify-start p-5 md:p-14">
+<div className="absolute bottom-5 left-5 md:bottom-10 md:left-10 z-10">
 
-            <button
-              onClick={() => router.push("/shop/all/all")}
-              className="
-                bg-[#8B0000]
-                hover:bg-black
-                text-white
-                px-6 py-2.5
-                md:px-9 md:py-3
-                text-sm md:text-base
-                font-medium
-                tracking-wide
-                rounded-md
-                transition-all duration-300
-                shadow-2xl
-                border border-white/10
-              "
-            >
-              SHOP ALL
-            </button>
+  <button
+    onClick={() => router.push("/shop/all/all")}
+    className="
+      bg-[#8B0000]
+      hover:bg-black
+      text-white
+      px-5 py-2
+      md:px-8 md:py-3
+      text-sm md:text-base
+      font-semibold
+      tracking-wide
+      rounded-md
+      transition-all duration-300
+      shadow-2xl
+      border border-white/10
+      hover:scale-[1.03]
+    "
+  >
+    SHOP ALL
+  </button>
 
-          </div>
+</div>
 
           {/* LEFT BUTTON */}
           <button
