@@ -77,7 +77,16 @@ export default function TypePage({
   }
 
   // ===== UNIQUE FILTER VALUES =====
-  const types = Array.from(new Set(products.map((p) => p.type)));
+  const types = Array.from(
+  new Set(
+    products.map((p) =>
+      p.type
+        ?.toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-")
+    )
+  )
+);
   const collections = Array.from(
     new Set(products.map((p) => p.collection))
   );
@@ -160,18 +169,20 @@ export default function TypePage({
 
   return (
     <button
-      key={t}
-      onClick={() =>
-        router.push(`/shop/${category}/${slug}`)
-      }
-        className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
-  active
-    ? "bg-black text-white border-black"
-    : "text-gray-600 border-gray-300 hover:border-black"
-}`}
-      >
-        {t}
-      </button>
+  key={t}
+  onClick={() =>
+    router.push(`/shop/${category}/${slug}`)
+  }
+  className={`capitalize px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
+    active
+      ? "bg-black text-white border-black"
+      : "text-gray-600 border-gray-300 hover:border-black"
+  }`}
+>
+  {t
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (l) => l.toUpperCase())}
+</button>
       );
 })}
 
