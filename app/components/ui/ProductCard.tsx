@@ -12,6 +12,8 @@ type Product = {
   price: number;
   category: string;
 
+  design_id: number;
+
   image: string;
 
   hoverLeft?: string;
@@ -115,7 +117,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
             {/* BASE IMAGE */}
 <img
-  src={product.image}
+  src={`/pd${product.design_id}-1.jpg`}
   className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
     hoverSide === null
       ? "opacity-100 scale-100"
@@ -125,11 +127,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
 {/* LEFT IMAGE */}
 <img
-  src={
-    product.hoverLeft ||
-    product.hover_left ||
-    product.image
-  }
+  src={`/pd${product.design_id}-2.jpg`}
   className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
     hoverSide === "left"
       ? "opacity-100 scale-100"
@@ -139,11 +137,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
 {/* RIGHT IMAGE */}
 <img
-  src={
-    product.hoverRight ||
-    product.hover_right ||
-    product.image
-  }
+  src={`/pd${product.design_id}-3.jpg`}
   className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
     hoverSide === "right"
       ? "opacity-100 scale-100"
