@@ -3,6 +3,7 @@ export const revalidate = 0;
 
 export type Product = {
   id: number;
+  design_id: number;
   title: string;
   price: number;
 
@@ -48,6 +49,7 @@ export async function getProducts(): Promise<Product[]> {
 
 return {
   id: productId,
+  design_id: Number(item.design_id ?? item.id),
 
   title: item.title ?? "",
   price: Number(item.price ?? item.base_price ?? 0),
