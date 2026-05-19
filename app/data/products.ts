@@ -45,7 +45,7 @@ export async function getProducts(): Promise<Product[]> {
 
   return Array.isArray(data)
     ? data.map((item: any): Product => {
-        const productId = Number(item.id);
+        const productId = Number(item.design_id || item.id);
 
 return {
   id: productId,
