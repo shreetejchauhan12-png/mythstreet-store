@@ -126,7 +126,7 @@ const id = params?.id;
 
   useEffect(() => {
     if (product) {
-      setSelectedImage(product.image);
+      setSelectedImage(`/pd${product.design_id}-1.jpg`);
     }
   }, [product]);
 
@@ -257,10 +257,10 @@ const id = params?.id;
 
             <div className="grid grid-cols-4 gap-3">
   {[
-  item.image,
-  item.hoverLeft,
-  item.hoverRight,
-  `/pd${item.id}-4.jpg`,
+  `/pd${item.design_id}-1.jpg`,
+  `/pd${item.design_id}-2.jpg`,
+  `/pd${item.design_id}-3.jpg`,
+  `/pd${item.design_id}-4.jpg`,
 ].map((img, i) => (
     <div
       key={i}
