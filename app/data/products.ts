@@ -97,11 +97,13 @@ return {
       ? `/${item.hover_right.replace(/^\/+/, "")}`
       : `/pd${item.id}-3.jpg`,
 
-  // ✅ BANNER
+  // ✅ BANNER (ONLY HERO PRODUCTS)
 banner:
-  item.banner
-    ? `/${item.banner.replace(/^\/+/, "")}`
-    : `/${item.design}-bn.jpg`,
+  item.is_hero
+    ? item.banner
+      ? `/${item.banner.replace(/^\/+/, "")}`
+      : `/${item.design}-bn.jpg`
+    : "",
 
   createdAt: item.created_at ?? "",
 };
