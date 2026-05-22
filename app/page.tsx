@@ -15,17 +15,18 @@ export default async function Home() {
   return (
     <main className="space-y-2 md:space-y-3">
       <Hero />
-      <CategorySection />
-      <TrustBadges />
+<CategorySection />
+<TrustBadges />
 
-      <NewArrivals products={products} />
+<TrendingBanner products={products} />
 
-      <TrendingBanner products={products} />
+<CollectionSection />
 
-      <LatestDropSlider products={products} />
+<NewArrivals products={products} />
 
-      <CollectionSection />
-      <Newsletter />
+<LatestDropSlider products={products} />
+
+<Newsletter />
     </main>
   );
 }
