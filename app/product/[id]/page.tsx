@@ -1,6 +1,5 @@
 "use client";
 
-import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 import PincodeChecker from "@/app/components/ui/PincodeChecker";
 import { useState, useEffect } from "react";
 import { getProducts } from "@/app/data/products";
@@ -72,13 +71,10 @@ const id = params?.id;
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
-  const [viewers, setViewers] = useState(5);
+  const [stockLeft, setStockLeft] = useState(5);
   const [recent, setRecent] = useState<any[]>([]);
   const [similar, setSimilar] = useState<any[]>([]);
   const [variants, setVariants] = useState<any[]>([]);
-
-const [selectedVariant, setSelectedVariant] =
-  useState<any>(null);
 
   useEffect(() => {
   if (!id) return;
@@ -150,8 +146,10 @@ setSimilar(related.slice(0, 4));
 }, [product]);
 
   useEffect(() => {
-    setViewers(Math.floor(Math.random() * 12) + 3);
-  }, []);
+  setStockLeft(
+    Math.floor(Math.random() * 10) + 1
+  );
+}, []);
 
   // ✅ Recently viewed (cleaned)
   useEffect(() => {
@@ -333,11 +331,9 @@ setSimilar(related.slice(0, 4));
 )}
 
             <div className="mt-2 mb-6 space-y-1 text-sm">
-              <p className="text-orange-600 font-medium">
-                👀 {viewers} people viewing this
-              </p>
+              
               <p className="text-red-500 font-medium">
-                🔥 Only {item.stock} left in stock
+                🔥 Only {stockLeft} left in stock
               </p>
             </div>
 
@@ -443,7 +439,7 @@ setSimilar(related.slice(0, 4));
             <div className="flex gap-3 mb-4">
               <button
   onClick={handleAddToCart}
-  className={`px-8 py-3 flex-1 text-white transition ${
+  className={`py-3 flex-1 text-white transition ${
     size
       ? "bg-[#680000]"
       : "bg-gray-400 cursor-not-allowed"
@@ -454,7 +450,7 @@ setSimilar(related.slice(0, 4));
 
               <button
   onClick={buyNow}
-  className={`px-8 py-3 flex-1 text-white transition ${
+  className={`py-3 flex-1 text-white transition ${
     size
       ? "bg-[#680000]"
       : "bg-gray-400 cursor-not-allowed"
