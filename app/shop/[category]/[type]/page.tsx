@@ -27,9 +27,11 @@ export default function TypePage({
 
   // ===== FILTER LOGIC (same as before) =====
   let filteredProducts = products;
+  if (type === "all") {
   filteredProducts = filteredProducts.filter(
-  (p) => p.is_hero
-);
+    (p) => p.is_hero
+  );
+}
 
   if (category !== "all") {
   filteredProducts = filteredProducts.filter(
