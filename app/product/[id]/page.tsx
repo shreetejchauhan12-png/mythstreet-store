@@ -401,7 +401,7 @@ setSimilar(related.slice(0, 4));
     Quantity
   </p>
 
-  <div className="flex items-center border w-fit">
+  <div className="flex items-center border border-black rounded-lg overflow-hidden w-fit">
 
     <button
       onClick={() =>
@@ -409,12 +409,12 @@ setSimilar(related.slice(0, 4));
           prev > 1 ? prev - 1 : 1
         )
       }
-      className="px-4 py-3 border-r"
+      className="w-12 h-12 flex items-center justify-center border-r hover:bg-gray-100 transition text-lg"
     >
       -
     </button>
 
-    <div className="px-6 py-3 min-w-15 text-center">
+    <div className="w-14 h-12 flex items-center justify-center text-sm font-medium">
       {quantity}
     </div>
 
@@ -422,7 +422,7 @@ setSimilar(related.slice(0, 4));
       onClick={() =>
         setQuantity((prev) => prev + 1)
       }
-      className="px-4 py-3 border-l"
+      className="w-12 h-12 flex items-center justify-center border-l hover:bg-gray-100 transition text-lg"
     >
       +
     </button>
@@ -445,7 +445,7 @@ setSimilar(related.slice(0, 4));
       : "bg-gray-400 cursor-not-allowed"
   }`}
 >
-  {size ? "ADD TO CART" : "SELECT SIZE"}
+  ADD TO CART
 </button>
 
               <button
@@ -456,7 +456,7 @@ setSimilar(related.slice(0, 4));
       : "bg-gray-400 cursor-not-allowed"
   }`}
 >
-  {size ? "BUY NOW" : "SELECT SIZE"}
+  BUY NOW
 </button>
             </div>
 
