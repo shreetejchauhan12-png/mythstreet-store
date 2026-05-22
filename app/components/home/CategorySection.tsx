@@ -42,18 +42,19 @@ export default function CategorySection() {
         <span className="block w-10 h-px bg-[#680000] mx-auto mt-2"></span>
       </div>
 
-      {/* categories */}
-      <div className="grid grid-cols-4 gap-3 md:gap-6">
+      {/* MOBILE */}
+      <div className="flex md:hidden gap-3 overflow-x-auto scrollbar-hide pb-1">
 
         {categories.map((cat, i) => (
           <Link
             key={i}
             href={`/shop/all/${cat.type}`}
+            className="shrink-0"
           >
-            <div className="group cursor-pointer">
+            <div className="group cursor-pointer w-22">
 
-              {/* image card */}
-              <div className="relative overflow-hidden rounded-2xl aspect-square shadow-sm hover:shadow-xl transition duration-300">
+              {/* image */}
+              <div className="relative overflow-hidden rounded-2xl aspect-3/4 shadow-sm">
 
                 <img
                   src={cat.image}
@@ -61,13 +62,12 @@ export default function CategorySection() {
                   className="absolute inset-0 w-full h-full object-cover transition duration-700 ease-out group-hover:scale-110"
                 />
 
-                {/* subtle overlay */}
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition"></div>
 
               </div>
 
-              {/* text BELOW card */}
-              <p className="text-center text-[11px] md:text-sm font-medium mt-2 tracking-wide">
+              {/* text */}
+              <p className="text-center text-[11px] font-medium mt-2 tracking-wide leading-tight">
                 {cat.name}
               </p>
 
@@ -76,6 +76,41 @@ export default function CategorySection() {
         ))}
 
       </div>
+
+      {/* DESKTOP */}
+      <div className="hidden md:grid grid-cols-4 gap-6">
+
+        {categories.map((cat, i) => (
+          <Link
+            key={i}
+            href={`/shop/all/${cat.type}`}
+          >
+            <div className="group cursor-pointer">
+
+              {/* image */}
+              <div className="relative overflow-hidden rounded-2xl aspect-3/4 shadow-sm hover:shadow-xl transition duration-300">
+
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="absolute inset-0 w-full h-full object-cover transition duration-700 ease-out group-hover:scale-110"
+                />
+
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition"></div>
+
+              </div>
+
+              {/* text */}
+              <p className="text-center text-sm font-medium mt-3 tracking-wide">
+                {cat.name}
+              </p>
+
+            </div>
+          </Link>
+        ))}
+
+      </div>
+
     </section>
   );
 }
