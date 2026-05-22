@@ -8,6 +8,7 @@ import { useCart } from "@/app/store/cart";
 import ProductCard from "@/app/components/ui/ProductCard";
 import { useRouter, useParams } from "next/navigation";
 import { Share2 } from "lucide-react";
+import { reviews } from "@/app/data/reviews";
 
 function ShareButton({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
@@ -135,6 +136,10 @@ setSimilar(related.slice(0, 4));
 }, [id]);
 
   const item = product;
+  const reviewData =
+  reviews[
+    item?.design as keyof typeof reviews
+  ];
 
   useEffect(() => {
   if (product) {
@@ -312,6 +317,20 @@ setSimilar(related.slice(0, 4));
             </div>
 
             <p className="text-xl">₹{item.price}</p>
+            {reviewData && (
+  <div className="flex items-center gap-2 mt-2 mb-4">
+
+    <div className="flex text-[#680000] text-sm">
+      ★★★★★
+    </div>
+
+    <p className="text-sm text-gray-600">
+      {reviewData.rating} (
+      {reviewData.count} reviews)
+    </p>
+
+  </div>
+)}
 
             <div className="mt-2 mb-6 space-y-1 text-sm">
               <p className="text-orange-600 font-medium">
@@ -474,7 +493,69 @@ setSimilar(related.slice(0, 4));
             </div>
           </div>
         )}
+{reviewData && (
+  <section className="mt-20">
 
+    <div className="flex items-center justify-between mb-8">
+
+      <div>
+        <h2 className="text-2xl font-semibold">
+          Customer Reviews
+        </h2>
+
+        <div className="flex items-center gap-2 mt-2">
+          <div className="text-[#680000]">
+            ★★★★★
+          </div>
+
+          <p className="text-sm text-gray-600">
+            {reviewData.rating} average •{" "}
+            {reviewData.count} reviews
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-5">
+
+      {reviewData.reviews.map(
+        (review: any, i: number) => (
+          <div
+            key={i}
+            className="border rounded-2xl p-5 bg-white"
+          >
+
+            <div className="flex items-center justify-between mb-3">
+
+              <div>
+                <p className="font-medium">
+                  {review.name}
+                </p>
+
+                <p className="text-xs text-gray-500">
+                  {review.date}
+                </p>
+              </div>
+
+              <div className="text-[#680000] text-sm">
+                {"★".repeat(review.rating)}
+              </div>
+
+            </div>
+
+            <p className="text-sm text-gray-700 leading-6">
+              {review.text}
+            </p>
+
+          </div>
+        )
+      )}
+
+    </div>
+
+  </section>
+)}
       </main>
     </>
   );
