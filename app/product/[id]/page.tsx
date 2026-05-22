@@ -422,15 +422,18 @@ setSimilar(related.slice(0, 4));
           </div>
         </div>
 
-        {recent.length > 0 && (
+        {variants.length > 0 && (
           <div className="mt-16">
             <h2 className="text-xl font-semibold mb-6">
-  Similar Products
+  Available In
 </h2>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {similar.map((item) => (
-  <ProductCard key={item.id} product={item} />
+              {variants.map((item) => (
+  <ProductCard
+    key={item.id}
+    product={item}
+  />
 ))}
             </div>
           </div>
