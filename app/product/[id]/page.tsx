@@ -69,6 +69,7 @@ const id = params?.id;
 
   const [selectedImage, setSelectedImage] = useState("");
   const [size, setSize] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
   const [viewers, setViewers] = useState(5);
   const [recent, setRecent] = useState<any[]>([]);
@@ -200,6 +201,7 @@ setSimilar(related.slice(0, 4));
           title: item.title,
           price: item.price,
           image: item.image,
+          quantity: quantity,
         }),
       }
     );
@@ -230,7 +232,7 @@ setSimilar(related.slice(0, 4));
     title: `${item.title} - ${size}`,
     price: item.price,
     image: item.image,
-    quantity: 1,
+    quantity: quantity,
   };
 
   // ✅ Store separately (NOT cart)
@@ -378,7 +380,41 @@ setSimilar(related.slice(0, 4));
     </div>
 
   </div>
-)}
+)}<div className="mb-6">
+
+  <p className="font-medium mb-3">
+    Quantity
+  </p>
+
+  <div className="flex items-center border w-fit">
+
+    <button
+      onClick={() =>
+        setQuantity((prev) =>
+          prev > 1 ? prev - 1 : 1
+        )
+      }
+      className="px-4 py-3 border-r"
+    >
+      -
+    </button>
+
+    <div className="px-6 py-3 min-w-15 text-center">
+      {quantity}
+    </div>
+
+    <button
+      onClick={() =>
+        setQuantity((prev) => prev + 1)
+      }
+      className="px-4 py-3 border-l"
+    >
+      +
+    </button>
+
+  </div>
+
+</div>
             <PincodeChecker />
 
             {error && (
