@@ -98,10 +98,10 @@ return {
       : `/pd${item.id}-3.jpg`,
 
   // ✅ BANNER
-  banner:
-    item.banner
-      ? `/${item.banner.replace(/^\/+/, "")}`
-      : `/bn${item.id}.jpg`,
+banner:
+  item.banner
+    ? `/${item.banner.replace(/^\/+/, "")}`
+    : `/${item.design}-bn.jpg`,
 
   createdAt: item.created_at ?? "",
 };
