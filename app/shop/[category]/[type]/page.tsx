@@ -27,12 +27,17 @@ export default function TypePage({
 
   // ===== FILTER LOGIC (same as before) =====
   let filteredProducts = products;
+  filteredProducts = filteredProducts.filter(
+  (p) => p.is_hero
+);
 
   if (category !== "all") {
-    filteredProducts = filteredProducts.filter(
-      (p) => p.category === category
-    );
-  }
+  filteredProducts = filteredProducts.filter(
+    (p) =>
+      p.gender_visibility === category ||
+      p.gender_visibility === "unisex"
+  );
+}
 
   if (type !== "all") {
   filteredProducts = filteredProducts.filter((p) => {
@@ -298,7 +303,21 @@ export default function TypePage({
 ) : (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
     {filteredProducts.map((product) => (
-      <ProductCard key={product.id} product={product} />
+      <ProductCard
+  key={product.id}
+  product={{
+    ...product,
+
+    variant_code:
+      type !== "all"
+        ? type
+            .replace("oversized-t-shirt", "os")
+            .replace("hoodie", "hd")
+            .replace("sweatshirt", "ss")
+            .replace("tshirt", "ts")
+        : product.hero_type || product.variant_code,
+  }}
+/>
     ))}
   </div>
 )}

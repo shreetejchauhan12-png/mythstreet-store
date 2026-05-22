@@ -73,6 +73,10 @@ const id = params?.id;
   const [viewers, setViewers] = useState(5);
   const [recent, setRecent] = useState<any[]>([]);
   const [similar, setSimilar] = useState<any[]>([]);
+  const [variants, setVariants] = useState<any[]>([]);
+
+const [selectedVariant, setSelectedVariant] =
+  useState<any>(null);
 
   useEffect(() => {
   if (!id) return;
@@ -106,13 +110,20 @@ const id = params?.id;
       setProduct(freshProduct);
 
       if (freshProduct.design) {
-        const same = data.filter(
-          (p: any) =>
-            p.design === freshProduct.design &&
-            String(p.id) !== String(freshProduct.id)
-        );
+        const sameDesign = data.filter(
+  (p: any) =>
+    p.design_id === freshProduct.design_id
+);
 
-        setSimilar(same.slice(0, 4));
+setVariants(sameDesign);
+
+const related = data.filter(
+  (p: any) =>
+    p.design === freshProduct.design &&
+    p.design_id !== freshProduct.design_id
+);
+
+setSimilar(related.slice(0, 4));
       }
     } catch (err) {
       console.error("❌ ERROR LOADING PRODUCT:", err);
@@ -125,10 +136,12 @@ const id = params?.id;
   const item = product;
 
   useEffect(() => {
-    if (product) {
-      setSelectedImage(`/pd${product.design_id}-1.jpg`);
-    }
-  }, [product]);
+  if (product) {
+    setSelectedImage(
+      `/${product.design}-${product.variant_code}-1.jpg`
+    );
+  }
+}, [product]);
 
   useEffect(() => {
     setViewers(Math.floor(Math.random() * 12) + 3);
@@ -255,29 +268,35 @@ const id = params?.id;
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-3">
-  {[
-  `/pd${item.design_id}-1.jpg`,
-  `/pd${item.design_id}-2.jpg`,
-  `/pd${item.design_id}-3.jpg`,
-  `/pd${item.design_id}-4.jpg`,
-].map((img, i) => (
-    <div
-      key={i}
-      onClick={() => setSelectedImage(img)}
-      className={`cursor-pointer border rounded overflow-hidden ${
-        selectedImage === img ? "border-[#680000]" : ""
-      }`}
-    >
-      {/* ✅ SAME RATIO AS MAIN IMAGE */}
-      <div className="pt-[125%] relative">
-        <img
-          src={img}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+            <div className="grid grid-cols-3 gap-3">
+
+  {Array.from({ length: 6 }).map((_, i) => {
+
+    const img =
+      `/${item.design}-${item.variant_code}-${i + 1}.jpg`;
+
+    return (
+      <div
+        key={i}
+        onClick={() => setSelectedImage(img)}
+        className={`cursor-pointer border rounded overflow-hidden ${
+          selectedImage === img
+            ? "border-[#680000]"
+            : ""
+        }`}
+      >
+
+        <div className="pt-[125%] relative">
+          <img
+            src={img}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+
       </div>
-    </div>
-  ))}
+    );
+  })}
+
 </div>
           </div>
 
@@ -330,7 +349,36 @@ const id = params?.id;
                 ))}
               </div>
             </div>
+{variants.length > 0 && (
+  <div className="mb-6">
 
+    <p className="font-medium mb-3">
+      Available In
+    </p>
+
+    <div className="flex flex-wrap gap-3">
+
+      {variants.map((variant: any) => (
+        <button
+          key={variant.id}
+          onClick={() => {
+            router.push(`/product/${variant.id}`);
+          }}
+          className={`border px-4 py-2 capitalize transition ${
+            item.id === variant.id
+              ? "bg-[#680000] text-white border-[#680000]"
+              : "hover:border-black"
+          }`}
+        >
+          {variant.type
+            .replaceAll("-", " ")}
+        </button>
+      ))}
+
+    </div>
+
+  </div>
+)}
             <PincodeChecker />
 
             {error && (

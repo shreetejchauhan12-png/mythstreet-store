@@ -13,7 +13,9 @@ export default function NewArrivals({
       new Date(a.created_at || a.createdAt).getTime()
   );
 
-  const latestProducts = sorted.slice(0, 8);
+  const latestProducts = sorted
+  .filter((p) => p.is_hero)
+  .slice(0, 8);
 
   return (
     <section className="max-w-7xl mx-auto px-4 py-12">

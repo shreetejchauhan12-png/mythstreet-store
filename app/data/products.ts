@@ -4,6 +4,10 @@ export const revalidate = 0;
 export type Product = {
   id: number;
   design_id: number;
+  variant_code: string;
+is_hero: boolean;
+gender_visibility: string;
+hero_type: string;
   title: string;
   price: number;
 
@@ -48,38 +52,56 @@ export async function getProducts(): Promise<Product[]> {
         const productId = Number(item.design_id || item.id);
 
 return {
-  id: productId,
+  id: Number(item.id),
+
   design_id: Number(item.design_id ?? item.id),
 
+  variant_code: item.variant_code ?? "",
+
+  is_hero: Boolean(item.is_hero),
+
+  gender_visibility:
+    item.gender_visibility ?? "unisex",
+
+  hero_type: item.hero_type ?? "",
+
   title: item.title ?? "",
-  price: Number(item.price ?? item.base_price ?? 0),
+
+  price: Number(
+    item.price ?? item.base_price ?? 0
+  ),
 
   category: item.category ?? "",
+
   type: item.type ?? "",
+
   collection: item.collection ?? "",
 
   design: item.design ?? "",
 
-  // MAIN IMAGE
+  // ✅ MAIN IMAGE
   image:
-  item.image
-    ? `/${item.image.replace(/^\/+/, "")}`
-    : `/pd${productId}-1.jpg`,
+    item.image
+      ? `/${item.image.replace(/^\/+/, "")}`
+      : `/pd${item.id}-1.jpg`,
 
-hoverLeft:
-  item.hover_left
-    ? `/${item.hover_left.replace(/^\/+/, "")}`
-    : `/pd${productId}-2.jpg`,
+  // ✅ HOVER LEFT
+  hoverLeft:
+    item.hover_left
+      ? `/${item.hover_left.replace(/^\/+/, "")}`
+      : `/pd${item.id}-2.jpg`,
 
-hoverRight:
-  item.hover_right
-    ? `/${item.hover_right.replace(/^\/+/, "")}`
-    : `/pd${productId}-3.jpg`,
+  // ✅ HOVER RIGHT
+  hoverRight:
+    item.hover_right
+      ? `/${item.hover_right.replace(/^\/+/, "")}`
+      : `/pd${item.id}-3.jpg`,
 
-banner:
-  item.banner
-    ? `/${item.banner.replace(/^\/+/, "")}`
-    : `/bn${productId}.jpg`,
+  // ✅ BANNER
+  banner:
+    item.banner
+      ? `/${item.banner.replace(/^\/+/, "")}`
+      : `/bn${item.id}.jpg`,
 
   createdAt: item.created_at ?? "",
 };
