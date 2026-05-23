@@ -32,60 +32,65 @@ export default function CollectionSection() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-5 md:py-8">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-2">
 
-      {/* heading */}
-      <div className="text-center mb-6 md:mb-10">
+      {/* TITLE */}
+      <div className="text-center mb-5">
 
-        <p className="text-[10px] tracking-[0.3em] text-gray-400 uppercase mb-1">
-          Shop By
+        <p className="text-[10px] tracking-[0.3em] text-gray-400 mb-1">
+          SHOP BY
         </p>
 
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-wide">
+        <h2 className="text-[34px] md:text-5xl font-black tracking-tight leading-none uppercase">
           COLLECTIONS
         </h2>
 
-        <div className="w-10 h-px bg-[#680000] mx-auto mt-2"></div>
+        <span className="block w-10 h-px bg-[#680000] mx-auto mt-3"></span>
 
       </div>
 
-      {/* mobile horizontal scroll */}
-      <div className="md:hidden overflow-x-auto scrollbar-hide">
-        <div className="flex gap-3 w-max pb-1">
+      {/* MOBILE */}
+      <div className="flex md:hidden gap-3 overflow-x-auto scrollbar-hide pb-1">
 
-          {collections.map((item, i) => (
-            <Link
-              key={i}
-              href={`/shop/all/all?collection=${item.slug}`}
-            >
-              <div className="group cursor-pointer w-23.75 shrink-0">
+        {collections.map((item, i) => (
+          <Link
+            key={i}
+            href={`/shop/all/all?collection=${item.slug}`}
+            className="shrink-0"
+          >
+            <div className="group cursor-pointer w-22">
 
-                {/* image */}
-                <div className="relative overflow-hidden rounded-2xl aspect-square shadow-sm">
+              {/* IMAGE */}
+              <div className="relative overflow-hidden rounded-[28px] aspect-3/4 shadow-sm">
 
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                  />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="
+                    absolute inset-0
+                    w-full h-full
+                    object-cover
+                    transition duration-700 ease-out
+                    group-hover:scale-110
+                  "
+                />
 
-                  <div className="absolute inset-0 bg-black/10"></div>
-
-                </div>
-
-                {/* text */}
-                <p className="mt-2 text-[11px] font-medium text-center tracking-wide">
-                  {item.name}
-                </p>
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition"></div>
 
               </div>
-            </Link>
-          ))}
 
-        </div>
+              {/* TEXT */}
+              <p className="text-center text-lg font-medium mt-3 tracking-tight leading-tight">
+                {item.name}
+              </p>
+
+            </div>
+          </Link>
+        ))}
+
       </div>
 
-      {/* desktop grid */}
+      {/* DESKTOP */}
       <div className="hidden md:grid grid-cols-5 gap-6">
 
         {collections.map((item, i) => (
@@ -95,19 +100,27 @@ export default function CollectionSection() {
           >
             <div className="group cursor-pointer">
 
-              <div className="relative overflow-hidden rounded-2xl shadow-sm">
-
-                <div className="pt-[125%]" />
+              {/* IMAGE */}
+              <div className="relative overflow-hidden rounded-[28px] aspect-3/4 shadow-sm hover:shadow-xl transition duration-300">
 
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                  className="
+                    absolute inset-0
+                    w-full h-full
+                    object-cover
+                    transition duration-700 ease-out
+                    group-hover:scale-110
+                  "
                 />
+
+                <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition"></div>
 
               </div>
 
-              <p className="mt-3 text-sm md:text-base font-medium text-center">
+              {/* TEXT */}
+              <p className="text-center text-lg font-medium mt-3 tracking-tight">
                 {item.name}
               </p>
 
