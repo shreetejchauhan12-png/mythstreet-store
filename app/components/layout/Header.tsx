@@ -205,13 +205,19 @@ products.filter((p: any) =>
 
   return (
     <>
-  <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b">
+  <header className="
+sticky top-0 z-50
+bg-white/75
+backdrop-blur-2xl
+border-b border-black/5
+shadow-[0_4px_30px_rgba(0,0,0,0.03)]
+">
 
     <div className="w-full px-3 md:px-8">
 
   {/* TOP ROW */}
   {/* TOP ROW */}
-<div className="h-14 md:h-16 flex items-center">
+<div className="h-13 md:h-15 flex items-center">
 
   {/* LEFT */}
   <div className="flex-1 flex items-center gap-3 md:gap-8">
@@ -226,13 +232,41 @@ products.filter((p: any) =>
   <div className="hidden md:flex items-center gap-6 text-sm font-medium">
 
     <Link href="/shop/men/all">
-  <span className="cursor-pointer hover:text-[#680000] transition">
+  <span className="
+cursor-pointer
+tracking-wide
+hover:text-[#680000]
+transition-all duration-300
+relative
+after:absolute
+after:left-0
+after:-bottom-1
+after:w-0
+after:h-px
+after:bg-[#680000]
+after:transition-all
+hover:after:w-full
+">
     MEN
   </span>
 </Link>
 
 <Link href="/shop/women/all">
-  <span className="cursor-pointer hover:text-[#680000] transition">
+  <span className="
+cursor-pointer
+tracking-wide
+hover:text-[#680000]
+transition-all duration-300
+relative
+after:absolute
+after:left-0
+after:-bottom-1
+after:w-0
+after:h-px
+after:bg-[#680000]
+after:transition-all
+hover:after:w-full
+">
     WOMEN
   </span>
 </Link>
@@ -243,7 +277,15 @@ products.filter((p: any) =>
 
   {/* CENTER */}
   <Link href="/" className="flex justify-center flexshrink-0">
-    <img src="/logo.png" className="h-8 md:h-10" />
+    <img
+  src="/logo.png"
+  className="
+    h-7 md:h-9
+    object-contain
+    transition duration-300
+    hover:opacity-80
+  "
+/>
   </Link>
 
   {/* RIGHT */}
@@ -265,7 +307,7 @@ products.filter((p: any) =>
             {user.name ? user.name.charAt(0).toUpperCase() : "U"}
           </div>
         ) : (
-          <User className="w-5 h-5" />
+          <User className="w-4.75 h-4.75" />
         )}
       </div>
 
@@ -359,7 +401,16 @@ products.filter((p: any) =>
 </div>
       
 {/* announcement bar */}
-<div className="bg-[#680000] text-white text-sm text-center py-2">
+<div className="
+bg-black
+text-white/90
+text-[11px]
+tracking-[0.25em]
+uppercase
+text-center
+py-2
+border-t border-white/5
+">
   Free Shipping on All Orders • New Drop Live • Limited Stock
 </div>
 
@@ -451,7 +502,18 @@ products.filter((p: any) =>
     />
 
     {/* PANEL */}
-    <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
+    <div className="
+absolute right-0 top-0
+h-full w-[92%] md:w-96
+
+bg-white/95
+backdrop-blur-2xl
+
+p-6
+shadow-[0_0_40px_rgba(0,0,0,0.12)]
+
+overflow-y-auto
+">
 
       <div className="flex justify-between mb-6">
         <h2 className="font-semibold text-lg">
@@ -677,7 +739,18 @@ products.filter((p: any) =>
         </div>
 
         <Link href="/checkout" onClick={() => setCartOpen(false)}>
-          <button className="w-full bg-[#680000] text-white py-3">
+          <button className="
+w-full
+bg-black
+hover:bg-[#680000]
+text-white
+py-3
+rounded-xl
+tracking-[0.2em]
+text-sm
+font-semibold
+transition-all duration-300
+">
             CHECKOUT
           </button>
         </Link>

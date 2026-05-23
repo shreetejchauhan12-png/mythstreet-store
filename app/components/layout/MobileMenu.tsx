@@ -17,29 +17,69 @@ export default function MobileMenu({ open, setOpen }: Props) {
     <>
       {open && (
         <div
-          className="fixed inset-0 bg-black/40 z-40"
+          className="
+fixed inset-0
+bg-black/50
+backdrop-blur-sm
+z-40
+transition-opacity duration-300
+"
           onClick={() => setOpen(false)}
         />
       )}
 
       <div
-  className={`fixed top-0 left-0 h-full w-[88%] max-w-sm bg-white z-50 transition-transform duration-300 ease-out overflow-y-auto shadow-2xl ${
+  className={`
+    style={{
+  background:
+    "linear-gradient(to bottom, rgba(255,255,255,0.96), rgba(255,255,255,0.92))",
+}}
+fixed top-0 left-0
+h-full w-[90%] max-w-sm
+
+bg-white/95
+backdrop-blur-2xl
+
+z-50
+transition-transform duration-500 ease-out
+
+overflow-y-auto
+
+shadow-[0_0_40px_rgba(0,0,0,0.12)]
+
+${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b">
-  <h2 className="text-sm tracking-[0.2em] text-gray-500 uppercase">
+        <div className="
+flex items-center justify-between
+px-6 py-5
+border-b border-black/5
+">
+  <h2 className="
+text-[11px]
+tracking-[0.35em]
+text-black/40
+uppercase
+font-medium
+">
     Menu
   </h2>
 
           <X
-            className="cursor-pointer"
+  className="
+    cursor-pointer
+    w-5 h-5
+    text-black/70
+    hover:rotate-90
+    transition duration-300
+  "
             onClick={() => setOpen(false)}
           />
         </div>
 
-        <div className="p-4">
+        <div className="px-6 py-3">
 
           {/* MEN */}
           <div className="py-4 border-b border-gray-100">
@@ -47,26 +87,56 @@ export default function MobileMenu({ open, setOpen }: Props) {
               className="flex justify-between items-center cursor-pointer"
               onClick={() => setMenOpen(!menOpen)}
             >
-              <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
+              <p className="text-[11px] tracking-[0.35em] text-black/40 uppercase font-medium">
   Men
 </p>
               <ChevronDown
-                className={`transition ${
+                className={`
+w-4 h-4
+text-black/50
+transition duration-300
+${
                   menOpen ? "rotate-180" : ""
                 }`}
               />
             </div>
 
             {menOpen && (
-              <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
+              <div className="
+mt-5
+grid grid-cols-2
+gap-y-4 gap-x-6
+text-sm
+pl-1
+">
 
-                <Link href="/shop/men/all" onClick={() => setOpen(false)}>
+                <Link
+  href="/shop/men/all"
+  onClick={() => setOpen(false)}
+  className="
+    text-[15px]
+    tracking-wide
+    text-black/75
+    hover:text-[#680000]
+    transition-all duration-300
+  "
+>
   All
 </Link>
 
-                <Link href="/shop/men/oversized" onClick={() => setOpen(false)}>
-                  Oversized
-                </Link>
+                <Link
+  href="/shop/men/oversized"
+  onClick={() => setOpen(false)}
+  className="
+    text-[15px]
+    tracking-wide
+    text-black/75
+    hover:text-[#680000]
+    transition-all duration-300
+  "
+>
+  Oversized
+</Link>
 
                 <Link
   href="/shop/men/tshirt"
@@ -76,13 +146,33 @@ export default function MobileMenu({ open, setOpen }: Props) {
   T-Shirts
 </Link>
 
-                <Link href="/shop/men/hoodie" onClick={() => setOpen(false)}>
-                  Hoodies
-                </Link>
+                <Link
+  href="/shop/men/hoodie"
+  onClick={() => setOpen(false)}
+  className="
+    text-[15px]
+    tracking-wide
+    text-black/75
+    hover:text-[#680000]
+    transition-all duration-300
+  "
+>
+  Hoodies
+</Link>
 
-                <Link href="/shop/men/sweatshirt" onClick={() => setOpen(false)}>
-                  Sweatshirts
-                </Link>
+                <Link
+  href="/shop/men/sweatshirt"
+  onClick={() => setOpen(false)}
+  className="
+    text-[15px]
+    tracking-wide
+    text-black/75
+    hover:text-[#680000]
+    transition-all duration-300
+  "
+>
+  Sweatshirts
+</Link>
 
               </div>
             )}
@@ -94,7 +184,7 @@ export default function MobileMenu({ open, setOpen }: Props) {
               className="flex justify-between items-center cursor-pointer py-2 active:opacity-60"
               onClick={() => setWomenOpen(!womenOpen)}
             >
-              <p className="text-xs tracking-[0.2em] text-gray-500 uppercase">
+              <p className="text-[11px] tracking-[0.35em] text-black/40 uppercase font-medium">
   Women
 </p>
               <ChevronDown
@@ -105,7 +195,13 @@ export default function MobileMenu({ open, setOpen }: Props) {
             </div>
 
             {womenOpen && (
-              <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+              <div className="
+mt-5
+grid grid-cols-2
+gap-y-4 gap-x-6
+text-sm
+pl-1
+">
 
                 <Link href="/shop/women/all" onClick={() => setOpen(false)}>
   All
@@ -137,7 +233,15 @@ export default function MobileMenu({ open, setOpen }: Props) {
             <Link
               href="/shop/all/all"
               onClick={() => setOpen(false)}
-              className="block text-gray-700 hover:text-black transition py-1.5"
+              className="
+block
+text-[15px]
+tracking-wide
+text-black/75
+hover:text-[#680000]
+transition-all duration-300
+py-2
+"
             >
               New Arrivals
             </Link>
@@ -145,7 +249,15 @@ export default function MobileMenu({ open, setOpen }: Props) {
             <Link
               href="/shop/all/oversized"
               onClick={() => setOpen(false)}
-              className="block text-gray-700 hover:text-black transition py-1.5"
+              className="
+block
+text-[15px]
+tracking-wide
+text-black/75
+hover:text-[#680000]
+transition-all duration-300
+py-2
+"
             >
               Oversized
             </Link>
@@ -170,11 +282,46 @@ export default function MobileMenu({ open, setOpen }: Props) {
             <Link
               href="/wishlist"
               onClick={() => setOpen(false)}
-              className="block text-gray-700 hover:text-black transition py-1.5"
+              className="
+block
+text-[15px]
+tracking-wide
+text-black/75
+hover:text-[#680000]
+transition-all duration-300
+py-2
+"
+
             >
               Wishlist
             </Link>
+<div className="pt-10 pb-6">
 
+  <div className="h-px bg-black/10 mb-6" />
+
+  <p className="
+    text-[10px]
+    tracking-[0.35em]
+    uppercase
+    text-black/35
+    mb-3
+  ">
+    MythStreet
+  </p>
+
+  <h2 className="
+    text-3xl
+    font-black
+    tracking-tight
+    leading-none
+  ">
+    BUILT FOR
+    <span className="block text-[#680000]">
+      THE STREETS
+    </span>
+  </h2>
+
+</div>
           </div>
 
         </div>

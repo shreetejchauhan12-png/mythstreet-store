@@ -110,12 +110,18 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="group cursor-pointer">
 
         <div
-  className="relative overflow-hidden bg-gray-100 rounded-xl shadow-sm hover:shadow-xl transition-all duration-500"
+  className="
+relative overflow-hidden
+bg-[#f5f5f5]
+rounded-3x1
+transition-all duration-500
+group
+"
   onMouseMove={handleMove}
   onMouseLeave={handleLeave}
 >
           {/* ✅ FIXED RATIO CONTAINER */}
-          <div className="relative w-full pt-[120%]">
+          <div className="relative aspect-3/4 overflow-hidden">
 
             {/* BASE IMAGE */}
 <img
@@ -158,7 +164,17 @@ export default function ProductCard({ product }: { product: Product }) {
                   image: product.image,
                 });
               }}
-              className="absolute top-3 right-3 bg-white p-2 rounded-full shadow"
+              className="
+absolute top-3 right-3 z-10
+w-10 h-10
+rounded-full
+bg-white/90
+backdrop-blur-md
+flex items-center justify-center
+shadow-lg
+transition
+hover:scale-110
+"
             >
               <Heart
                 className={`w-4 h-4 ${
@@ -171,8 +187,16 @@ export default function ProductCard({ product }: { product: Product }) {
 {/* STOCK BADGE */}
 {/* BADGES */}
 {/* BADGE */}
-<div className="absolute top-3 left-3">
-  <span className="bg-black text-white text-[10px] px-2 py-1 rounded">
+<div className="absolute top-3 left-3 z-10">
+  <span className="
+    bg-black/90
+    backdrop-blur-md
+    text-white
+    text-[10px]
+    tracking-[0.15em]
+    px-3 py-1.5
+    rounded-full
+  ">
     {["NEW DROP","BEST SELLER","LIMITED STOCK","HOT PICK","STREET FAVORITE","EXCLUSIVE"][product.id % 6]}
   </span>
 </div>
@@ -190,30 +214,49 @@ export default function ProductCard({ product }: { product: Product }) {
             )}
 
             {/* sizes */}
-            <div className="absolute bottom-0 left-0 right-0 bg-[#680000] text-white p-3 translate-y-full group-hover:translate-y-0 transition">
-              <div className="flex justify-center gap-2 text-xs md:text-sm">
-                {["S", "M", "L", "XL"].map((size) => (
-                  <button
-                    key={size}
-                    onClick={(e) => addItem(e, size)}
-                    className="border border-white px-2 py-1 rounded hover:bg-white hover:text-[#680000]"
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <button
+  onClick={(e) => addItem(e, "M")}
+  className="
+    absolute bottom-4 left-1/2 -translate-x-1/2 z-10
+
+    bg-white text-black
+    text-[11px]
+    tracking-[0.2em]
+    font-semibold
+
+    px-5 py-3
+    rounded-full
+
+    opacity-0 translate-y-4
+    group-hover:opacity-100
+    group-hover:translate-y-0
+
+    transition-all duration-300
+    shadow-2xl
+  "
+>
+  QUICK ADD
+</button>
 
           </div>
         </div>
 
         {/* TEXT */}
-        <div className="mt-3">
-          <h3 className="font-medium text-sm md:text-base">
+        <div className="pt-4 px-1">
+          <h3 className="
+  font-medium
+  text-sm md:text-base
+  tracking-wide
+  line-clamp-1
+">
             {product.title}
           </h3>
 
-          <p className="text-xs md:text-sm text-gray-600">
+          <p className="
+  text-sm md:text-base
+  text-black/70
+  mt-1
+">
             ₹{product.price}
           </p>
         </div>
