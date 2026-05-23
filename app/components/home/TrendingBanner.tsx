@@ -42,29 +42,14 @@ export default function TrendingBanner({
   const current = slides[index];
 
   return (
-    <section className="pt-2 md:pt-6 pb-4 md:pb-8">
+    <section className="pt-1 pb-4">
 
-      {/* HEADER */}
-      <div className="text-center mb-5 md:mb-7">
-
-        <p className="text-[11px] tracking-[0.35em] text-gray-400 uppercase mb-2">
-          Trending
-        </p>
-
-        <h2 className="text-[34px] md:text-5xl font-black tracking-tight leading-none uppercase">
-          TRENDING NOW
-        </h2>
-
-        <div className="w-14 h-px bg-[#680000] mx-auto mt-4"></div>
-
-      </div>
-
-      {/* BANNER */}
-      <div className="max-w-7xl mx-auto px-4">
+      {/* FULL WIDTH */}
+      <div className="w-full">
 
         <Link href={`/product/${current.id}`}>
 
-          <div className="group relative overflow-hidden rounded-[28px] bg-black cursor-pointer shadow-2xl">
+          <div className="group relative overflow-hidden bg-black cursor-pointer">
 
             {/* HERO RATIO */}
             <div className="pt-[45%] md:pt-[42%]" />
@@ -83,15 +68,17 @@ export default function TrendingBanner({
             />
 
             {/* OVERLAYS */}
-            <div className="absolute inset-0 bg-black/20" />
+            <div className="absolute inset-0 bg-black/15" />
 
             <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
 
             {/* MINI BUTTONS */}
-            <div className="
-              absolute bottom-4 left-4 z-20
-              flex gap-2
-            ">
+            <div
+              className="
+                absolute bottom-4 left-4 z-20
+                flex gap-2
+              "
+            >
 
               {/* SHOP */}
               <button
@@ -111,7 +98,7 @@ export default function TrendingBanner({
                 Shop
               </button>
 
-              {/* CATEGORY */}
+              {/* TAG */}
               <button
                 className="
                   bg-zinc-800/70
@@ -132,14 +119,16 @@ export default function TrendingBanner({
             </div>
 
             {/* DOTS */}
-            <div className="
-              absolute
-              bottom-3 md:bottom-6
-              left-1/2
-              -translate-x-1/2
-              flex gap-2
-              z-20
-            ">
+            <div
+              className="
+                absolute
+                bottom-3
+                left-1/2
+                -translate-x-1/2
+                flex gap-2
+                z-20
+              "
+            >
 
               {slides.map((_, i) => (
                 <div
