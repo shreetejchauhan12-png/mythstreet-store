@@ -41,7 +41,7 @@ export default function Hero() {
         <div className="relative overflow-hidden rounded-[28px] bg-black shadow-2xl">
 
           {/* HEIGHT */}
-          <div className="h-[520px] md:h-[620px]" />
+          <div className="pt-[45%] md:pt-[42%]" />
 
           {/* IMAGE */}
           <img
