@@ -41,7 +41,7 @@ export default function Hero() {
         <div className="relative overflow-hidden rounded-[28px] bg-black shadow-2xl">
 
           {/* HEIGHT */}
-          <div className="h-57.5 sm:h-80 md:h-130" />
+          <div className="h-[520px] md:h-[620px]" />
 
           {/* IMAGE */}
           <img
@@ -59,102 +59,56 @@ export default function Hero() {
           {/* CINEMATIC OVERLAYS */}
           <div className="absolute inset-0 bg-black/20" />
 
-          <div className="absolute inset-0 bg-linear-to-r from-black/55 via-black/10 to-transparent" />
 
           <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
 
-          {/* CONTENT */}
-          <div className="absolute inset-0 z-10 flex flex-col justify-end">
+          {/* MINI BUTTONS */}
+<div className="
+absolute bottom-4 left-4 z-20
+flex gap-2
+">
 
-            <div className="p-5 md:p-12">
+  {/* SHOP */}
+  <button
+    onClick={() => router.push("/shop/all/all")}
+    className="
+    bg-[#680000]/90
+    backdrop-blur-xl
+    text-white
+    px-4 py-2
+    rounded-xl
+    text-[10px]
+    tracking-[0.18em]
+    uppercase
+    font-medium
+    border border-white/10
+    "
+  >
+    Shop
+  </button>
 
-              {/* MINI TEXT */}
-              <p className="
-                text-[10px] md:text-sm
-                tracking-[0.35em]
-                text-white/70
-                uppercase
-                mb-2
-              ">
-                Premium Streetwear
-              </p>
+  {/* CATEGORY */}
+  <button
+    onClick={() => router.push("/shop/all/oversized-t-shirt")}
+    className="
+    bg-black/40
+    backdrop-blur-xl
+    text-white
+    px-4 py-2
+    rounded-xl
+    text-[10px]
+    tracking-[0.18em]
+    uppercase
+    font-medium
+    border border-white/10
+    "
+  >
+    Oversized
+  </button>
 
-              {/* MAIN TEXT */}
-              <h1 className="
-                text-3xl
-                md:text-6xl
-                font-black
-                leading-none
-                tracking-tight
-                text-white
-                max-w-xl
-              ">
-                BUILT FOR
-                <span className="block text-[#8B0000]">
-                  THE STREETS
-                </span>
-              </h1>
+</div>
 
-              {/* SUBTEXT */}
-              <p className="
-                mt-3
-                text-xs md:text-base
-                text-white/75
-                max-w-md
-                leading-relaxed
-              ">
-                Premium oversized streetwear crafted for bold identity,
-                luxury aesthetics, and modern culture.
-              </p>
-
-              {/* CTA */}
-              <div className="flex gap-3 mt-5">
-
-                <button
-                  onClick={() => router.push("/shop/all/all")}
-                  className="
-                    bg-[#8B0000]
-                    hover:bg-white
-                    hover:text-black
-                    text-white
-                    px-5 py-3
-                    md:px-8
-                    rounded-xl
-                    font-semibold
-                    tracking-wide
-                    transition-all duration-300
-                    shadow-2xl
-                    hover:scale-105
-                  "
-                >
-                  SHOP NOW
-                </button>
-
-                <button
-                  onClick={() => router.push("/shop/all/oversized-t-shirt")}
-                  className="
-                    border border-white/20
-                    bg-white/10
-                    backdrop-blur-md
-                    hover:bg-white
-                    hover:text-black
-                    text-white
-                    px-5 py-3
-                    md:px-8
-                    rounded-xl
-                    font-semibold
-                    tracking-wide
-                    transition-all duration-300
-                  "
-                >
-                  OVERSIZED
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
+         
 
           {/* LEFT */}
           <button
@@ -166,7 +120,7 @@ export default function Hero() {
               -translate-y-1/2
               z-20
 
-              w-10 h-10 md:w-12 md:h-12
+              w-9 h-9 md:w-11 md:h-11
               rounded-full
 
               bg-black/35
@@ -194,7 +148,7 @@ export default function Hero() {
               -translate-y-1/2
               z-20
 
-              w-10 h-10 md:w-12 md:h-12
+              w-9 h-9 md:w-11 md:h-11
               rounded-full
 
               bg-black/35
@@ -215,7 +169,7 @@ export default function Hero() {
           {/* DOTS */}
           <div className="
             absolute
-            bottom-4 md:bottom-6
+            bottom-3 md:bottom-6
             left-1/2
             -translate-x-1/2
             flex gap-2
@@ -231,7 +185,7 @@ export default function Hero() {
 
                   ${
                     i === index
-                      ? "w-8 h-2 bg-white"
+                      ? "w-6 h-1.5 bg-white"
                       : "w-2 h-2 bg-white/40"
                   }
                 `}
