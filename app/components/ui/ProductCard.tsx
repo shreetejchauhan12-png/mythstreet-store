@@ -169,8 +169,8 @@ group
                 });
               }}
               className="
-absolute top-3 right-3 z-10
-w-10 h-10
+absolute top-2 right-2 z-10
+w-8 h-8
 rounded-full
 bg-white/90
 backdrop-blur-md
@@ -181,7 +181,7 @@ hover:scale-110
 "
             >
               <Heart
-                className={`w-4 h-4 ${
+                className={`w-3.5 h-3.5 ${
                   isWishlisted
                     ? "fill-red-500 text-red-500"
                     : ""
