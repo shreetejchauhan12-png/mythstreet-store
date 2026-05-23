@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 export default function Hero() {
@@ -91,7 +90,7 @@ flex gap-2
   <button
     onClick={() => router.push("/shop/all/oversized-t-shirt")}
     className="
-    bg-black/40
+   bg-zinc-800/70
     backdrop-blur-xl
     text-white
     px-4 py-2
@@ -107,64 +106,6 @@ flex gap-2
   </button>
 
 </div>
-
-         
-
-          {/* LEFT */}
-          <button
-            onClick={prev}
-            className="
-              absolute
-              left-3 md:left-5
-              top-1/2
-              -translate-y-1/2
-              z-20
-
-              w-9 h-9 md:w-11 md:h-11
-              rounded-full
-
-              bg-black/35
-              hover:bg-[#8B0000]
-
-              backdrop-blur-xl
-              border border-white/10
-
-              flex items-center justify-center
-
-              text-white
-              transition-all duration-300
-            "
-          >
-            <ChevronLeft size={22} />
-          </button>
-
-          {/* RIGHT */}
-          <button
-            onClick={next}
-            className="
-              absolute
-              right-3 md:right-5
-              top-1/2
-              -translate-y-1/2
-              z-20
-
-              w-9 h-9 md:w-11 md:h-11
-              rounded-full
-
-              bg-black/35
-              hover:bg-[#8B0000]
-
-              backdrop-blur-xl
-              border border-white/10
-
-              flex items-center justify-center
-
-              text-white
-              transition-all duration-300
-            "
-          >
-            <ChevronRight size={22} />
-          </button>
 
           {/* DOTS */}
           <div className="
