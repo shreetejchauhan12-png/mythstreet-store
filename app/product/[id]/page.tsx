@@ -1,7 +1,11 @@
 "use client";
 
 import PincodeChecker from "@/app/components/ui/PincodeChecker";
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import { getProducts } from "@/app/data/products";
 import { useCart } from "@/app/store/cart";
 import ProductCard from "@/app/components/ui/ProductCard";
@@ -76,11 +80,8 @@ const id = params?.id;
   const [similar, setSimilar] = useState<any[]>([]);
   const [variants, setVariants] = useState<any[]>([]);
 
-  useEffect(() => {
-  window.scrollTo({
-    top: 0,
-    behavior: "instant",
-  });
+  useLayoutEffect(() => {
+  window.scrollTo(0, 0);
 }, [id]);
 
   useEffect(() => {
