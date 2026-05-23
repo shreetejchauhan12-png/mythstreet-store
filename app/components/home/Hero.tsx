@@ -14,10 +14,6 @@ export default function Hero() {
 
   const [index, setIndex] = useState(0);
 
-  function prev() {
-    setIndex((prev) => (prev - 1 + slides.length) % slides.length);
-  }
-
   function next() {
     setIndex((prev) => (prev + 1) % slides.length);
   }
@@ -34,12 +30,20 @@ export default function Hero() {
   return (
     <section className="pt-2 md:pt-4 pb-1 md:pb-3">
 
-      <div className="max-w-7xl mx-auto px-2 md:px-4">
+      {/* MOBILE FULL WIDTH + DESKTOP CONTAINER */}
+      <div className="w-full md:max-w-7xl md:mx-auto md:px-4">
 
         {/* HERO */}
-        <div className="relative overflow-hidden rounded-[28px] bg-black shadow-2xl">
+        <div
+          className="
+            relative overflow-hidden bg-black
 
-          {/* HEIGHT */}
+            md:rounded-[28px]
+            shadow-2xl
+          "
+        >
+
+          {/* HERO RATIO */}
           <div className="pt-[45%] md:pt-[42%]" />
 
           {/* IMAGE */}
@@ -55,67 +59,72 @@ export default function Hero() {
             "
           />
 
-          {/* CINEMATIC OVERLAYS */}
-          <div className="absolute inset-0 bg-black/20" />
-
+          {/* OVERLAY */}
+          <div className="absolute inset-0 bg-black/15" />
 
           <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
 
           {/* MINI BUTTONS */}
-<div className="
-absolute bottom-4 left-4 z-20
-flex gap-2
-">
+          <div
+            className="
+              absolute bottom-4 left-4 z-20
+              flex gap-2
+            "
+          >
 
-  {/* SHOP */}
-  <button
-    onClick={() => router.push("/shop/all/all")}
-    className="
-    bg-[#680000]/90
-    backdrop-blur-xl
-    text-white
-    px-4 py-2
-    rounded-xl
-    text-[10px]
-    tracking-[0.18em]
-    uppercase
-    font-medium
-    border border-white/10
-    "
-  >
-    Shop
-  </button>
+            {/* SHOP */}
+            <button
+              onClick={() => router.push("/shop/all/all")}
+              className="
+                bg-[#680000]/90
+                backdrop-blur-xl
+                text-white
+                px-4 py-2
+                rounded-xl
+                text-[10px]
+                tracking-[0.18em]
+                uppercase
+                font-medium
+                border border-white/10
+              "
+            >
+              Shop
+            </button>
 
-  {/* CATEGORY */}
-  <button
-    onClick={() => router.push("/shop/all/oversized-t-shirt")}
-    className="
-   bg-zinc-800/70
-    backdrop-blur-xl
-    text-white
-    px-4 py-2
-    rounded-xl
-    text-[10px]
-    tracking-[0.18em]
-    uppercase
-    font-medium
-    border border-white/10
-    "
-  >
-    Oversized
-  </button>
+            {/* CATEGORY */}
+            <button
+              onClick={() =>
+                router.push("/shop/all/oversized-t-shirt")
+              }
+              className="
+                bg-zinc-800/70
+                backdrop-blur-xl
+                text-white
+                px-4 py-2
+                rounded-xl
+                text-[10px]
+                tracking-[0.18em]
+                uppercase
+                font-medium
+                border border-white/10
+              "
+            >
+              Oversized
+            </button>
 
-</div>
+          </div>
 
           {/* DOTS */}
-          <div className="
-            absolute
-            bottom-3 md:bottom-6
-            left-1/2
-            -translate-x-1/2
-            flex gap-2
-            z-20
-          ">
+          <div
+            className="
+              absolute
+              bottom-3 md:bottom-6
+              left-1/2
+              -translate-x-1/2
+              flex gap-2
+              z-20
+            "
+          >
 
             {slides.map((_, i) => (
               <button
@@ -123,7 +132,6 @@ flex gap-2
                 onClick={() => setIndex(i)}
                 className={`
                   transition-all duration-300 rounded-full
-
                   ${
                     i === index
                       ? "w-6 h-1.5 bg-white"
@@ -136,7 +144,9 @@ flex gap-2
           </div>
 
         </div>
+
       </div>
+
     </section>
   );
 }
