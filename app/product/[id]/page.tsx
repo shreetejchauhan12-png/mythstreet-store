@@ -77,6 +77,13 @@ const id = params?.id;
   const [variants, setVariants] = useState<any[]>([]);
 
   useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: "instant",
+  });
+}, [id]);
+
+  useEffect(() => {
   if (!id) return;
 
   async function load() {
