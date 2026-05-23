@@ -2,17 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Heart } from "lucide-react";
 
 export default function LatestDropSlider({
   products,
 }: {
   products: any[];
 }) {
-  const [items, setItems] = useState<any[]>([]);
-  const [start, setStart] = useState(0);
+  const [slides, setSlides] = useState<any[]>([]);
+  const [index, setIndex] = useState(0);
 
-  // LATEST PRODUCTS
+  // LATEST 3 PRODUCTS
   useEffect(() => {
     const clean = Array.isArray(products)
       ? products
@@ -22,34 +21,37 @@ export default function LatestDropSlider({
       (a, b) => Number(b.id) - Number(a.id)
     );
 
-    setItems(sorted.slice(0, 10));
+    setSlides(sorted.slice(0, 3));
   }, [products]);
 
-  function next() {
-    if (start < items.length - 2) {
-      setStart(start + 1);
-    }
-  }
+  // AUTO SLIDE
+  useEffect(() => {
+    if (!slides.length) return;
 
-  function prev() {
-    if (start > 0) {
-      setStart(start - 1);
-    }
-  }
+    const timer = setInterval(() => {
+      setIndex((prev) =>
+        (prev + 1) % slides.length
+      );
+    }, 4500);
 
-  if (!items.length) return null;
+    return () => clearInterval(timer);
+  }, [slides]);
+
+  if (!slides.length) return null;
+
+  const current = slides[index];
 
   return (
-    <section className="pt-3 md:pt-8 pb-4 md:pb-10">
+    <section className="pt-1 pb-3 md:pb-6">
 
       {/* HEADER */}
-      <div className="text-center mb-5 md:mb-8">
+      <div className="text-center mb-4 md:mb-6">
 
         <p className="text-[11px] tracking-[0.35em] text-gray-400 uppercase mb-2">
           Latest
         </p>
 
-        <h2 className="text-[34px] md:text-5xl font-semibold tracking-wide leading-none">
+        <h2 className="text-[34px] md:text-5xl font-black tracking-tight leading-none uppercase">
           LATEST DROPS
         </h2>
 
@@ -57,138 +59,108 @@ export default function LatestDropSlider({
 
       </div>
 
-      {/* SLIDER */}
-      <div className="relative max-w-7xl mx-auto px-4">
+      {/* FULL WIDTH */}
+      <div className="max-w-7xl mx-auto md:px-4">
 
-        {/* LEFT */}
-        <button
-          onClick={prev}
-          className="
-            hidden md:flex
-            absolute left-0 top-1/2 -translate-y-1/2 z-20
-            w-11 h-11
-            items-center justify-center
-            rounded-full
-            bg-white shadow-xl
-            border
-            hover:scale-110
-            transition
-          "
-        >
-          <ChevronLeft size={20} />
-        </button>
+        <Link href={`/product/${current.id}`}>
 
-        {/* RIGHT */}
-        <button
-          onClick={next}
-          className="
-            hidden md:flex
-            absolute right-0 top-1/2 -translate-y-1/2 z-20
-            w-11 h-11
-            items-center justify-center
-            rounded-full
-            bg-white shadow-xl
-            border
-            hover:scale-110
-            transition
-          "
-        >
-          <ChevronRight size={20} />
-        </button>
+          <div className="group relative overflow-hidden bg-black cursor-pointer md:rounded-[28px] shadow-2xl">
 
-        {/* PRODUCTS */}
-        <div className="overflow-x-auto scrollbar-hide">
+            {/* SAME RATIO AS HERO */}
+            <div className="pt-[45%] md:pt-[42%]" />
 
-          <div className="flex gap-4 md:gap-6">
+            {/* IMAGE */}
+            <img
+              src={current.banner || current.image}
+              alt={current.title}
+              className="
+                absolute inset-0
+                w-full h-full
+                object-cover
+                transition-all duration-700
+                group-hover:scale-[1.03]
+              "
+            />
 
-            {items.map((item) => (
-              <Link
-                key={item.id}
-                href={`/product/${item.id}`}
+            {/* OVERLAYS */}
+            <div className="absolute inset-0 bg-black/15" />
+
+            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
+
+            {/* BUTTONS */}
+            <div
+              className="
+                absolute bottom-4 left-4 z-20
+                flex gap-2
+              "
+            >
+
+              {/* SHOP */}
+              <button
                 className="
-                  min-w-45
-                  md:min-w-70
-                  group
+                  bg-[#680000]/90
+                  backdrop-blur-xl
+                  text-white
+                  px-4 py-2
+                  rounded-xl
+                  text-[10px]
+                  tracking-[0.18em]
+                  uppercase
+                  font-medium
+                  border border-white/10
                 "
               >
+                Shop
+              </button>
 
-                {/* CARD */}
-                <div className="relative overflow-hidden rounded-3x1 bg-[#f5f5f5]">
+              {/* TAG */}
+              <button
+                className="
+                  bg-zinc-800/70
+                  backdrop-blur-xl
+                  text-white
+                  px-4 py-2
+                  rounded-xl
+                  text-[10px]
+                  tracking-[0.18em]
+                  uppercase
+                  font-medium
+                  border border-white/10
+                "
+              >
+                Latest
+              </button>
 
-                  {/* IMAGE */}
-                  <div className="relative aspect-3/4 overflow-hidden">
+            </div>
 
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="
-                        absolute inset-0
-                        w-full h-full
-                        object-cover
-                        transition duration-700
-                        group-hover:scale-[1.04]
-                      "
-                    />
+            {/* DOTS */}
+            <div
+              className="
+                absolute
+                bottom-3
+                left-1/2
+                -translate-x-1/2
+                flex gap-2
+                z-20
+              "
+            >
 
-                    {/* HOVER IMAGE */}
-                    {item.hoverRight && (
-                      <img
-                        src={item.hoverRight}
-                        alt={item.title}
-                        className="
-                          absolute inset-0
-                          w-full h-full
-                          object-cover
-                          opacity-0
-                          group-hover:opacity-100
-                          transition duration-700
-                        "
-                      />
-                    )}
+              {slides.map((_, i) => (
+                <div
+                  key={i}
+                  className={`rounded-full transition-all duration-300 ${
+                    i === index
+                      ? "w-6 h-1.5 bg-white"
+                      : "w-2 h-2 bg-white/40"
+                  }`}
+                />
+              ))}
 
-                    {/* BADGE */}
-                    <div className="absolute top-3 left-3 bg-black text-white text-[10px] tracking-widest px-3 py-1 rounded-md">
-                      NEW DROP
-                    </div>
-
-                    {/* WISHLIST */}
-                    <button
-                      className="
-                        absolute top-3 right-3
-                        w-10 h-10
-                        rounded-full
-                        bg-white/90
-                        backdrop-blur-md
-                        flex items-center justify-center
-                        shadow-lg
-                      "
-                    >
-                      <Heart size={18} />
-                    </button>
-
-                  </div>
-
-                </div>
-
-                {/* INFO */}
-                <div className="pt-3">
-
-                  <h3 className="text-sm md:text-base font-medium line-clamp-1">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-sm md:text-base mt-1 text-black/70">
-                    ₹{item.price}
-                  </p>
-
-                </div>
-
-              </Link>
-            ))}
+            </div>
 
           </div>
 
-        </div>
+        </Link>
 
       </div>
 
