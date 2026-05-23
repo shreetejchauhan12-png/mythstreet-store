@@ -27,19 +27,21 @@ export default function CategorySection() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-2">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-0 md:pt-2 pb-3 md:pb-6">
 
-      {/* title */}
-      <div className="text-center mb-5">
-        <p className="text-[10px] tracking-[0.3em] text-gray-400 mb-1">
-          SHOP BY
+      {/* TITLE */}
+      <div className="text-center mb-3 md:mb-6">
+
+        <p className="text-[11px] tracking-[0.35em] text-gray-400 mb-1 uppercase">
+          Shop By
         </p>
 
-        <h2 className="text-2xl md:text-3xl font-semibold tracking-wide">
-          CATEGORIES
+        <h2 className="text-4xl md:text-5xl font-black tracking-tight uppercase leading-none">
+          Categories
         </h2>
 
-        <span className="block w-10 h-px bg-[#680000] mx-auto mt-2"></span>
+        <span className="block w-14 h-px bg-[#680000] mx-auto mt-3"></span>
+
       </div>
 
       {/* MOBILE */}
@@ -51,10 +53,10 @@ export default function CategorySection() {
             href={`/shop/all/${cat.type}`}
             className="shrink-0"
           >
-            <div className="group cursor-pointer w-22">
+            <div className="group cursor-pointer w-[105px]">
 
-              {/* image */}
-              <div className="relative overflow-hidden rounded-2xl aspect-3/4 shadow-sm">
+              {/* IMAGE */}
+              <div className="relative overflow-hidden rounded-[22px] aspect-[3/4] shadow-sm">
 
                 <img
                   src={cat.image}
@@ -66,8 +68,8 @@ export default function CategorySection() {
 
               </div>
 
-              {/* text */}
-              <p className="text-center text-[11px] font-medium mt-2 tracking-wide leading-tight">
+              {/* TEXT */}
+              <p className="text-center text-[15px] font-medium mt-1.5 tracking-tight leading-tight">
                 {cat.name}
               </p>
 
@@ -87,8 +89,8 @@ export default function CategorySection() {
           >
             <div className="group cursor-pointer">
 
-              {/* image */}
-              <div className="relative overflow-hidden rounded-2xl aspect-3/4 shadow-sm hover:shadow-xl transition duration-300">
+              {/* IMAGE */}
+              <div className="relative overflow-hidden rounded-[28px] aspect-[3/4] shadow-sm hover:shadow-xl transition duration-300">
 
                 <img
                   src={cat.image}
@@ -100,8 +102,8 @@ export default function CategorySection() {
 
               </div>
 
-              {/* text */}
-              <p className="text-center text-sm font-medium mt-3 tracking-wide">
+              {/* TEXT */}
+              <p className="text-center text-lg font-medium mt-3 tracking-tight">
                 {cat.name}
               </p>
 
