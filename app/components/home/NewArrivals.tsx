@@ -17,7 +17,7 @@ export default function NewArrivals({
   if (!featured.length) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 pb-4 md:pb-8">
+    <section className="max-w-7xl mx-auto px-4 pt-0 md:pt-2 pb-4 md:pb-8">
 
       {/* HEADER */}
       <div className="flex items-end justify-between mb-5 md:mb-8">

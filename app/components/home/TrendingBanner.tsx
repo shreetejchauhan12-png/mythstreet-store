@@ -42,7 +42,7 @@ export default function TrendingBanner({
   const current = slides[index];
 
   return (
-    <section className="pt-1 pb-4">
+    <section className="pt-0 pb-0">
 
       {/* FULL WIDTH */}
       <div className="max-w-7xl mx-auto md:px-4">
