@@ -22,11 +22,11 @@ export default async function Home() {
 
 <NewArrivals products={products} />
 
+<LatestDropSlider products={products} />
+
 <CollectionSection />
 
 
-
-<LatestDropSlider products={products} />
 
 <Newsletter />
     </main>
