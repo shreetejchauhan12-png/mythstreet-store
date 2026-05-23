@@ -106,7 +106,11 @@ export default function ProductCard({ product }: { product: Product }) {
 }
 
   return (
-    <Link href={`/product/${product.id}`} className="block">
+    <Link
+  href={`/product/${product.id}`}
+  scroll={true}
+  className="block"
+>
       <div className="group cursor-pointer">
 
         <div
