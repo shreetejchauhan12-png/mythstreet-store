@@ -20,9 +20,11 @@ export default async function Home() {
 
 <TrendingBanner products={products} />
 
+<NewArrivals products={products} />
+
 <CollectionSection />
 
-<NewArrivals products={products} />
+
 
 <LatestDropSlider products={products} />
 

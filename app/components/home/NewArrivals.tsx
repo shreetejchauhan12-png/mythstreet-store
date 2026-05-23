@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ProductCard from "@/app/components/ui/ProductCard";
 
 export default function NewArrivals({
@@ -16,7 +17,7 @@ export default function NewArrivals({
   if (!featured.length) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 pb-2 md:pb-6">
+    <section className="max-w-7xl mx-auto px-4 pt-4 md:pt-8 pb-4 md:pb-8">
 
       {/* HEADER */}
       <div className="flex items-end justify-between mb-5 md:mb-8">
@@ -24,26 +25,31 @@ export default function NewArrivals({
         <div>
 
           <p className="text-[11px] tracking-[0.35em] text-gray-400 uppercase mb-2">
-            Curated
+            Latest
           </p>
 
-          <h2 className="text-[32px] md:text-5xl font-semibold leading-none tracking-wide">
-            EDITOR’S PICKS
+          <h2 className="text-[34px] md:text-5xl font-black tracking-tight leading-none uppercase">
+            NEW ARRIVALS
           </h2>
+
+          <div className="w-14 h-px bg-[#680000] mt-4"></div>
 
         </div>
 
-        <button
+        {/* VIEW ALL */}
+        <Link
+          href="/shop/all/all"
           className="
             hidden md:block
-            text-sm tracking-widest
+            text-sm tracking-[0.2em]
+            uppercase
             border-b border-black
             hover:opacity-60
             transition
           "
         >
-          VIEW ALL
-        </button>
+          View All
+        </Link>
 
       </div>
 
