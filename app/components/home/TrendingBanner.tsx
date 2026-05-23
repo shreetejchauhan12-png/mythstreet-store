@@ -51,7 +51,7 @@ export default function TrendingBanner({
           Trending
         </p>
 
-        <h2 className="text-[34px] md:text-5xl font-semibold tracking-wide leading-none">
+        <h2 className="text-[34px] md:text-5xl font-black tracking-tight leading-none uppercase">
           TRENDING NOW
         </h2>
 
@@ -66,8 +66,8 @@ export default function TrendingBanner({
 
           <div className="group relative overflow-hidden rounded-[28px] bg-black cursor-pointer shadow-2xl">
 
-            {/* HEIGHT */}
-            <div className="h-55 sm:h-80 md:h-130" />
+            {/* HERO RATIO */}
+            <div className="pt-[45%] md:pt-[42%]" />
 
             {/* IMAGE */}
             <img
@@ -82,64 +82,71 @@ export default function TrendingBanner({
               "
             />
 
-            {/* CINEMATIC OVERLAYS */}
+            {/* OVERLAYS */}
             <div className="absolute inset-0 bg-black/20" />
-
-            <div className="absolute inset-0 bg-linear-to-r from-black/70 via-black/10 to-transparent" />
 
             <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
 
-            {/* CONTENT */}
-            <div className="absolute inset-0 z-10 flex flex-col justify-end">
+            {/* MINI BUTTONS */}
+            <div className="
+              absolute bottom-4 left-4 z-20
+              flex gap-2
+            ">
 
-              <div className="p-5 md:p-12 max-w-125">
+              {/* SHOP */}
+              <button
+                className="
+                  bg-[#680000]/90
+                  backdrop-blur-xl
+                  text-white
+                  px-4 py-2
+                  rounded-xl
+                  text-[10px]
+                  tracking-[0.18em]
+                  uppercase
+                  font-medium
+                  border border-white/10
+                "
+              >
+                Shop
+              </button>
 
-                <p className="text-white/70 text-[10px] md:text-xs tracking-[0.3em] uppercase mb-3">
-                  MythStreet Exclusive
-                </p>
-
-                <h3 className="text-white text-2xl md:text-6xl font-semibold leading-none mb-3">
-                  {current.title}
-                </h3>
-
-                <p className="hidden md:block text-white/70 text-sm leading-relaxed mb-6">
-                  Premium streetwear crafted for the bold.
-                  Designed to dominate the streets.
-                </p>
-
-                {/* BUTTON */}
-                <button
-                  className="
-                    bg-[#680000]
-                    hover:bg-white
-                    hover:text-black
-                    text-white
-                    px-6 py-3
-                    md:px-8 md:py-4
-                    text-xs md:text-sm
-                    font-semibold
-                    tracking-[0.2em]
-                    rounded-lg
-                    transition-all duration-300
-                    shadow-2xl
-                  "
-                >
-                  SHOP NOW
-                </button>
-
-              </div>
+              {/* CATEGORY */}
+              <button
+                className="
+                  bg-zinc-800/70
+                  backdrop-blur-xl
+                  text-white
+                  px-4 py-2
+                  rounded-xl
+                  text-[10px]
+                  tracking-[0.18em]
+                  uppercase
+                  font-medium
+                  border border-white/10
+                "
+              >
+                Trending
+              </button>
 
             </div>
 
-            {/* SLIDE INDICATORS */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            {/* DOTS */}
+            <div className="
+              absolute
+              bottom-3 md:bottom-6
+              left-1/2
+              -translate-x-1/2
+              flex gap-2
+              z-20
+            ">
 
               {slides.map((_, i) => (
                 <div
                   key={i}
                   className={`rounded-full transition-all duration-300 ${
                     i === index
-                      ? "w-7 h-2 bg-white"
+                      ? "w-6 h-1.5 bg-white"
                       : "w-2 h-2 bg-white/40"
                   }`}
                 />
