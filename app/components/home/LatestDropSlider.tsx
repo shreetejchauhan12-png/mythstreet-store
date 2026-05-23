@@ -21,7 +21,11 @@ export default function LatestDropSlider({
       (a, b) => Number(b.id) - Number(a.id)
     );
 
-    setSlides(sorted.slice(0, 3));
+    const heroProducts = sorted.filter(
+  (p) => p.is_hero
+);
+
+setSlides(heroProducts.slice(0, 3));
   }, [products]);
 
   // AUTO SLIDE
