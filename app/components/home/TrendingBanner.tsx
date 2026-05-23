@@ -45,11 +45,11 @@ export default function TrendingBanner({
     <section className="pt-1 pb-4">
 
       {/* FULL WIDTH */}
-      <div className="w-full">
+      <div className="max-w-7xl mx-auto md:px-4">
 
         <Link href={`/product/${current.id}`}>
 
-          <div className="group relative overflow-hidden bg-black cursor-pointer">
+          <div className="group relative overflow-hidden bg-black cursor-pointer md:rounded-[28px] shadow-2xl">
 
             {/* HERO RATIO */}
             <div className="pt-[45%] md:pt-[42%]" />
@@ -142,7 +142,6 @@ export default function TrendingBanner({
               ))}
 
             </div>
-
           </div>
 
         </Link>
