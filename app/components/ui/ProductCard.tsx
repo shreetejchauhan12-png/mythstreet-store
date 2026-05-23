@@ -191,15 +191,16 @@ hover:scale-110
 {/* STOCK BADGE */}
 {/* BADGES */}
 {/* BADGE */}
-<div className="absolute top-3 left-3 z-10">
+<div className="absolute top-2 left-2 z-10">
   <span className="
     bg-black/90
     backdrop-blur-md
     text-white
-    text-[10px]
-    tracking-[0.15em]
-    px-3 py-1.5
+    text-[8px]
+    tracking-[0.12em]
+    px-2 py-1
     rounded-full
+    leading-none
   ">
     {["NEW DROP","BEST SELLER","LIMITED STOCK","HOT PICK","STREET FAVORITE","EXCLUSIVE"][product.id % 6]}
   </span>
