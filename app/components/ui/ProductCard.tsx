@@ -113,7 +113,7 @@ export default function ProductCard({ product }: { product: Product }) {
   className="
 relative overflow-hidden
 bg-[#f5f5f5]
-rounded-3x1
+rounded-[22px]
 transition-all duration-500
 group
 "
@@ -121,7 +121,7 @@ group
   onMouseLeave={handleLeave}
 >
           {/* ✅ FIXED RATIO CONTAINER */}
-          <div className="relative aspect-3/4 overflow-hidden">
+          <div className="relative aspect-[5/6] overflow-hidden rounded-[22px]">
 
             {/* BASE IMAGE */}
 <img
@@ -200,43 +200,11 @@ hover:scale-110
     {["NEW DROP","BEST SELLER","LIMITED STOCK","HOT PICK","STREET FAVORITE","EXCLUSIVE"][product.id % 6]}
   </span>
 </div>
-{/* QUICK ADD BUTTON */}
-<button
-  onClick={(e) => addItem(e, "M")}
-  className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black text-white text-xs px-4 py-2 rounded opacity-0 group-hover:opacity-100 transition"
->
-  Quick Add
-</button>
             {added && (
   <div className="absolute top-10 left-3 bg-black text-white text-xs px-3 py-1 rounded">
                 Added to cart
               </div>
             )}
-
-            {/* sizes */}
-            <button
-  onClick={(e) => addItem(e, "M")}
-  className="
-    absolute bottom-4 left-1/2 -translate-x-1/2 z-10
-
-    bg-white text-black
-    text-[11px]
-    tracking-[0.2em]
-    font-semibold
-
-    px-5 py-3
-    rounded-full
-
-    opacity-0 translate-y-4
-    group-hover:opacity-100
-    group-hover:translate-y-0
-
-    transition-all duration-300
-    shadow-2xl
-  "
->
-  QUICK ADD
-</button>
 
           </div>
         </div>
