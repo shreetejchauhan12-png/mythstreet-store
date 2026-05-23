@@ -404,14 +404,16 @@ hover:after:w-full
 <div className="
 bg-black
 text-white/90
-text-[11px]
-tracking-[0.25em]
+text-[10px] md:text-[11px]
+tracking-[0.18em]
 uppercase
 text-center
 py-2
 border-t border-white/5
+whitespace-nowrap
+overflow-hidden
 ">
-  Free Shipping on All Orders • New Drop Live • Limited Stock
+  Free Shipping On All Orders
 </div>
 
 </header>
