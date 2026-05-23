@@ -32,7 +32,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="pt-2 md:pt-4 pb-4 md:pb-6">
+    <section className="pt-2 md:pt-4 pb-1 md:pb-3">
 
       <div className="max-w-7xl mx-auto px-2 md:px-4">
 
