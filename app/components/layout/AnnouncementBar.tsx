@@ -1,16 +1,21 @@
 export default function AnnouncementBar() {
   return (
     <div className="bg-[#680000] text-white overflow-hidden">
-      
+
       <div
         className="
           text-center
-          text-[11px] md:text-sm
+          text-[10px] md:text-sm
           py-2
-          px-3
-          tracking-[0.22em] md:tracking-[0.15em]
+          px-2
+
+          tracking-[0.12em]
+          md:tracking-[0.15em]
+
           uppercase
           whitespace-nowrap
+
+          leading-none
         "
       >
         Free Shipping on All Orders • New Drop Live • Limited Stock
