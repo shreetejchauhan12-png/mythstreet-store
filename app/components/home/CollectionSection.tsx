@@ -58,7 +58,7 @@ export default function CollectionSection() {
             href={`/shop/all/all?collection=${item.slug}`}
             className="shrink-0"
           >
-            <div className="group cursor-pointer w-22">
+            <div className="group cursor-pointer w-[122px]">
 
               {/* IMAGE */}
               <div className="relative overflow-hidden rounded-[28px] aspect-3/4 shadow-sm">
@@ -101,7 +101,7 @@ export default function CollectionSection() {
             <div className="group cursor-pointer">
 
               {/* IMAGE */}
-              <div className="relative overflow-hidden rounded-[28px] aspect-3/4 shadow-sm hover:shadow-xl transition duration-300">
+              <div className="relative overflow-hidden rounded-[28px] aspect-3/4 shadow-sm hover:shadow-xl transition duration-300 max-w-[260px] mx-auto">
 
                 <img
                   src={item.image}
