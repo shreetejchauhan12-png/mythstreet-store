@@ -7,18 +7,12 @@ export default function AnnouncementBar() {
           text-center
           text-[10px] md:text-sm
           py-2
-          px-2
-
-          tracking-[0.12em]
-          md:tracking-[0.15em]
-
+          tracking-[0.18em]
           uppercase
           whitespace-nowrap
-
-          leading-none
         "
       >
-        Free Shipping on All Orders • New Drop Live • Limited Stock
+        Free Shipping On All Orders
       </div>
 
     </div>
