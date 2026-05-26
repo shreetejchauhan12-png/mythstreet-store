@@ -121,7 +121,7 @@ setAccountOpen(false);
 };
   // search
   const [search, setSearch] = useState("");
-  const filtered: any[] = [];
+  const [filtered, setFiltered] = useState<any[]>([]);
 
   useEffect(() => {
 
@@ -181,6 +181,29 @@ useEffect(() => {
   const wishlist = useWishlist((state) => state.wishlist);
   const toggleWishlist = useWishlist((s) => s.toggleWishlist);
 
+  useEffect(() => {
+  if (!search.trim()) {
+    setFiltered([]);
+    return;
+  }
+
+  const delay = setTimeout(async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/products/search?q=${search}`
+      );
+
+      const data = await res.json();
+
+      setFiltered(data);
+    } catch (error) {
+      console.error("Search failed", error);
+    }
+  }, 250);
+
+  return () => clearTimeout(delay);
+
+}, [search]);
   const totalItems = useMemo(() =>
   cart.reduce(
     (acc, item) => acc + item.quantity,
@@ -202,7 +225,7 @@ useEffect(() => {
   <header className="
 sticky top-0 z-50
 bg-white/75
-backdrop-blur-2xl
+backdrop-blur-xl
 border-b border-black/5
 shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 ">
@@ -270,7 +293,7 @@ hover:after:w-full
 </div>
 
   {/* CENTER */}
-  <Link href="/" className="flex justify-center flexshrink-0">
+  <Link href="/" className="flex justify-center flex-shrink-0">
     <Image
   src="/logo.png"
   alt="MythStreet"
@@ -464,10 +487,14 @@ overflow-hidden
         onClick={() => setSearchOpen(false)}
       >
         <div className="flex gap-3 p-3 hover:bg-gray-100 border-b">
-          <img
-            src={item.image}
-            className="w-14 h-16 object-cover"
-          />
+          <Image
+  src={item.image}
+  alt={item.title}
+  width={56}
+  height={64}
+  quality={70}
+  className="w-14 h-16 object-cover rounded-md"
+/>
 
           <div>
             <p className="text-sm font-medium">
