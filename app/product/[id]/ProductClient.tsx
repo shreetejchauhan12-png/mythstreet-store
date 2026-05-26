@@ -275,7 +275,7 @@ const freshProduct = await res.json();
 
             <div className="flex gap-3 overflow-x-auto overflow-y-hidden pb-2 md:grid md:grid-cols-3 scrollbar-hide max-w-full">
 
-  {[1, 2, 3, 4].map((i) => {
+  {[1, 2, 3, 4, 5, 6].map((i) => {
 
     const img =
       `/${item.design}-${item.variant_code}-${i}.webp`;
