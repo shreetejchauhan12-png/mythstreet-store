@@ -27,22 +27,19 @@ variant_code: string;
 };
 
 function ProductCard({ product }: { product: Product }) {
-  const [hoverSide, setHoverSide] = useState<"left" | "right" | null>(null);
   const [added, setAdded] = useState(false);
-
-  const addToCart = useCart((state) => state.addToCart);
 
   const toggleWishlist = useWishlist(
     (state) => state.toggleWishlist
   );
 
-  const isWishlisted = useWishlist((state) =>
-    state.isWishlisted(product.id)
-  );
+  const wishlistItems = useWishlist(
+  (state) => state.wishlist
+);
 
-  function handleLeave() {
-    setHoverSide(null);
-  }
+const isWishlisted = wishlistItems.some(
+  (item: any) => item.id === product.id
+);
 
   async function addItem(e: React.MouseEvent, size: string) {
   e.preventDefault();
@@ -109,22 +106,9 @@ rounded-[22px]
 transition-transform duration-500
 group
 "
-  onMouseLeave={handleLeave}
 >
           {/* ✅ FIXED RATIO CONTAINER */}
           <div className="relative aspect-[5/6] overflow-hidden rounded-[22px]">
-          
-          {/* LEFT HOVER ZONE */}
-<div
-  className="absolute left-0 top-0 z-10 hidden h-full w-1/2 md:block"
-  onMouseEnter={() => setHoverSide("left")}
-/>
-
-{/* RIGHT HOVER ZONE */}
-<div
-  className="absolute right-0 top-0 z-10 hidden h-full w-1/2 md:block"
-  onMouseEnter={() => setHoverSide("right")}
-/>
 
             {/* BASE IMAGE */}
 <Image
@@ -133,11 +117,7 @@ group
   fill
   sizes="(max-width: 768px) 50vw, 25vw"
   quality={75}
-  className={`absolute inset-0 object-cover pointer-events-none transition-transform transition-opacity duration-500 ease-out ${
-    hoverSide === null
-      ? "opacity-100 scale-100"
-      : "opacity-0 scale-105"
-  }`}
+  className="absolute inset-0 object-cover pointer-events-none transition-transform duration-500 ease-out group-hover:scale-[1.03]"
 />
 
 {/* LEFT IMAGE */}
@@ -148,11 +128,7 @@ group
   sizes="(max-width: 768px) 50vw, 25vw"
   quality={75}
   loading="lazy"
-  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform transition-opacity duration-500 ease-out ${
-    hoverSide === "left"
-      ? "opacity-100 scale-100"
-      : "opacity-0 scale-105"
-  }`}
+  className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
 />
 
 {/* RIGHT IMAGE */}
@@ -163,11 +139,7 @@ group
   sizes="(max-width: 768px) 50vw, 25vw"
   quality={75}
   loading="lazy"
-  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform transition-opacity duration-500 ease-out ${
-    hoverSide === "right"
-      ? "opacity-100 scale-100"
-      : "opacity-0 scale-105"
-  }`}
+  className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
 />
 
             {/* wishlist */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useMemo, use } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ProductCard from "@/app/components/ui/ProductCard";
 import { getProducts, Product } from "@/app/data/products";
@@ -16,87 +16,139 @@ export default function TypePage({
   const searchParams = useSearchParams();
   const collection = searchParams.get("collection");
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const products = use(getProducts());
   const [sort, setSort] = useState("latest");
   const [price, setPrice] = useState(2000);
 
   // fetch products
-  useEffect(() => {
-    getProducts().then(setProducts);
-  }, []);
 
   // ===== FILTER LOGIC (same as before) =====
-  let filteredProducts = products;
+  const filteredProducts = useMemo(() => {
+  let filtered = products;
+
   if (type === "all") {
-  filteredProducts = filteredProducts.filter(
-    (p) => p.is_hero
-  );
-}
+    filtered = filtered.filter(
+      (p) => p.is_hero
+    );
+  }
 
   if (category !== "all") {
-  filteredProducts = filteredProducts.filter(
-    (p) =>
-      p.gender_visibility === category ||
-      p.gender_visibility === "unisex"
-  );
-}
+    filtered = filtered.filter(
+      (p) =>
+        p.gender_visibility === category ||
+        p.gender_visibility === "unisex"
+    );
+  }
 
   if (type !== "all") {
-  filteredProducts = filteredProducts.filter((p) => {
-    const productType = p.type
-      ?.toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-");
+    filtered = filtered.filter((p) => {
+      const productType = p.type
+        ?.toLowerCase()
+        .trim()
+        .replace(/\s+/g, "-");
 
-    const urlType = decodeURIComponent(type)
-      .toLowerCase()
-      .trim();
+      const urlType = decodeURIComponent(type)
+        .toLowerCase()
+        .trim();
 
-    return productType === urlType;
-  });
-}
+      return productType === urlType;
+    });
+  }
 
   if (collection) {
-  filteredProducts = filteredProducts.filter((p) => {
-    return (
-      p.collection
-        ?.toLowerCase()
-        .trim() ===
-      collection.toLowerCase().trim()
-    );
-  });
-}
+    filtered = filtered.filter((p) => {
+      return (
+        p.collection
+          ?.toLowerCase()
+          .trim() ===
+        collection.toLowerCase().trim()
+      );
+    });
+  }
 
-  filteredProducts = filteredProducts.filter(
+  filtered = filtered.filter(
     (p) => p.price <= price
   );
 
   if (sort === "low") {
-    filteredProducts = [...filteredProducts].sort(
+    filtered = [...filtered].sort(
       (a, b) => a.price - b.price
     );
   }
 
   if (sort === "high") {
-    filteredProducts = [...filteredProducts].sort(
+    filtered = [...filtered].sort(
       (a, b) => b.price - a.price
     );
   }
 
+  return filtered;
+
+}, [
+  products,
+  type,
+  category,
+  collection,
+  price,
+  sort,
+]);
+
   // ===== UNIQUE FILTER VALUES =====
-  const types = Array.from(
-  new Set(
-    products.map((p) =>
-      p.type
-        ?.toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
+  const types = useMemo(() => {
+  return Array.from(
+    new Set(
+      products.map((p) =>
+        p.type
+          ?.toLowerCase()
+          .trim()
+          .replace(/\s+/g, "-")
+      )
     )
-  )
-);
-  const collections = Array.from(
+  );
+}, [products]);
+  const collections = useMemo(() => {
+  return Array.from(
     new Set(products.map((p) => p.collection))
   );
+}, [products]);
+
+if (!products.length) {
+  return (
+    <main className="max-w-7xl mx-auto px-4 py-10 animate-pulse">
+
+      <div className="grid md:grid-cols-[260px_1fr] gap-10">
+
+        {/* SIDEBAR */}
+        <div className="hidden md:block bg-gray-200 rounded-2xl h-[500px]" />
+
+        {/* PRODUCTS */}
+        <div>
+
+          <div className="h-8 w-40 bg-gray-200 rounded-lg mb-8" />
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i}>
+
+                <div className="bg-gray-200 rounded-2xl aspect-[4/5] mb-3" />
+
+                <div className="h-4 bg-gray-200 rounded mb-2" />
+
+                <div className="h-4 w-20 bg-gray-200 rounded" />
+
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+  );
+}
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-10">
