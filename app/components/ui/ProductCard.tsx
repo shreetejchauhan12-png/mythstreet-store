@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -26,7 +26,7 @@ variant_code: string;
   hover_right?: string;
 };
 
-export default function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product }: { product: Product }) {
   const [hoverSide, setHoverSide] = useState<"left" | "right" | null>(null);
   const [added, setAdded] = useState(false);
 
@@ -251,3 +251,5 @@ hover:scale-110
     </Link>
   );
 }
+
+export default memo(ProductCard);
