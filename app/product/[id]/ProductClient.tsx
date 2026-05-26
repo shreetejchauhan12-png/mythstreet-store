@@ -273,7 +273,7 @@ const freshProduct = await res.json();
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 scrollbar-hide">
 
   {[1, 2, 3, 4].map((i) => {
 
@@ -284,7 +284,7 @@ const freshProduct = await res.json();
       <div
         key={i}
         onClick={() => setSelectedImage(img)}
-        className={`cursor-pointer border rounded overflow-hidden ${
+        className={`min-w-[90px] md:min-w-0 cursor-pointer border rounded overflow-hidden transition ${
           selectedImage === img
             ? "border-[#680000]"
             : ""
@@ -359,7 +359,7 @@ const freshProduct = await res.json();
     setError("");
   }
 }}
-                    className={`border px-4 py-2 ${
+                    className={`min-w-[56px] h-12 border rounded-lg transition active:scale-[0.97] ${
                       size === s
                         ? "bg-[#680000] text-white border-[#680000]"
                         : ""
@@ -512,6 +512,37 @@ const freshProduct = await res.json();
   </section>
 )}
       </main>
+      {/* MOBILE STICKY CTA */}
+<div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-white/95 backdrop-blur-xl p-3 md:hidden">
+
+  <div className="flex items-center gap-3">
+
+    {/* PRICE */}
+    <div className="flex-1">
+      <p className="text-xs text-gray-500">
+        Price
+      </p>
+
+      <p className="font-semibold text-lg">
+        ₹{item.price}
+      </p>
+    </div>
+
+    {/* BUTTON */}
+    <button
+      onClick={handleAddToCart}
+      className={`h-12 px-6 rounded-xl text-sm font-medium text-white transition active:scale-[0.98] ${
+        size
+          ? "bg-[#680000]"
+          : "bg-gray-400"
+      }`}
+    >
+      ADD TO CART
+    </button>
+
+  </div>
+
+</div>
     </>
   );
 }
