@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Heart } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/app/store/cart";
 import { useWishlist } from "@/app/store/wishlist";
 
@@ -38,19 +39,6 @@ export default function ProductCard({ product }: { product: Product }) {
   const isWishlisted = useWishlist((state) =>
     state.isWishlisted(product.id)
   );
-
-  function handleMove(e: React.MouseEvent<HTMLDivElement>) {
-  const { left, width } =
-    e.currentTarget.getBoundingClientRect();
-
-  const x = e.clientX - left;
-
-  if (x <= width / 2) {
-    setHoverSide("left");
-  } else {
-    setHoverSide("right");
-  }
-}
 
   function handleLeave() {
     setHoverSide(null);
@@ -118,19 +106,34 @@ export default function ProductCard({ product }: { product: Product }) {
 relative overflow-hidden
 bg-[#f5f5f5]
 rounded-[22px]
-transition-all duration-500
+transition-transform duration-500
 group
 "
-  onMouseMove={handleMove}
   onMouseLeave={handleLeave}
 >
           {/* ✅ FIXED RATIO CONTAINER */}
           <div className="relative aspect-[5/6] overflow-hidden rounded-[22px]">
+          
+          {/* LEFT HOVER ZONE */}
+<div
+  className="absolute left-0 top-0 z-10 hidden h-full w-1/2 md:block"
+  onMouseEnter={() => setHoverSide("left")}
+/>
+
+{/* RIGHT HOVER ZONE */}
+<div
+  className="absolute right-0 top-0 z-10 hidden h-full w-1/2 md:block"
+  onMouseEnter={() => setHoverSide("right")}
+/>
 
             {/* BASE IMAGE */}
-<img
-  src={`/${product.design}-${product.variant_code}-1.jpg`}
-  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
+<Image
+  src={`/${product.design}-${product.variant_code}-1.webp`}
+  alt={product.title}
+  fill
+  sizes="(max-width: 768px) 50vw, 25vw"
+  quality={75}
+  className={`absolute inset-0 object-cover pointer-events-none transition-transform transition-opacity duration-500 ease-out ${
     hoverSide === null
       ? "opacity-100 scale-100"
       : "opacity-0 scale-105"
@@ -138,9 +141,14 @@ group
 />
 
 {/* LEFT IMAGE */}
-<img
-  src={`/${product.design}-${product.variant_code}-2.jpg`}
-  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
+<Image
+  src={`/${product.design}-${product.variant_code}-2.webp`}
+  alt={product.title}
+  fill
+  sizes="(max-width: 768px) 50vw, 25vw"
+  quality={75}
+  loading="lazy"
+  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform transition-opacity duration-500 ease-out ${
     hoverSide === "left"
       ? "opacity-100 scale-100"
       : "opacity-0 scale-105"
@@ -148,9 +156,14 @@ group
 />
 
 {/* RIGHT IMAGE */}
-<img
-  src={`/${product.design}-${product.variant_code}-3.jpg`}
-  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-all duration-500 ease-out ${
+<Image
+  src={`/${product.design}-${product.variant_code}-3.webp`}
+  alt={product.title}
+  fill
+  sizes="(max-width: 768px) 50vw, 25vw"
+  quality={75}
+  loading="lazy"
+  className={`absolute inset-0 w-full h-full object-cover pointer-events-none transition-transform transition-opacity duration-500 ease-out ${
     hoverSide === "right"
       ? "opacity-100 scale-100"
       : "opacity-0 scale-105"
