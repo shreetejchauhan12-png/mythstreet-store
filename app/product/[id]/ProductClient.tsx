@@ -284,9 +284,9 @@ const freshProduct = await res.json();
       <div
         key={i}
         onClick={() => setSelectedImage(img)}
-        className={`cursor-pointer border rounded overflow-hidden transition ${
+        className={`cursor-pointer rounded-xl overflow-hidden border transition-all duration-300 ${
           selectedImage === img
-            ? "border-[#680000]"
+            ? "border-[#680000] ring-2 ring-[#680000]/20 scale-[1.03] shadow-sm"
             : ""
         }`}
       >
