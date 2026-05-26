@@ -1,8 +1,8 @@
 "use client";
 
-import { getProducts } from "@/app/data/products";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Menu,
   Heart,
@@ -18,14 +18,12 @@ import { useWishlist } from "@/app/store/wishlist";
 import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const [products, setProducts] = useState<any[]>([]);
   const pathname = usePathname();
 
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [wishlistOpen, setWishlistOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [hover, setHover] = useState<"men" | "women" | null>(null);
 
   // account
   const [accountOpen, setAccountOpen] = useState(false);
@@ -123,12 +121,9 @@ setAccountOpen(false);
 };
   // search
   const [search, setSearch] = useState("");
-  const filtered = products.filter((p: any) =>
-  p.title.toLowerCase().includes(search.toLowerCase())
-);
+  const filtered: any[] = [];
 
   useEffect(() => {
-  getProducts().then(setProducts);
 
   const script = document.createElement("script");
   script.src = "https://verify.msg91.com/otp-provider.js";
@@ -186,22 +181,21 @@ useEffect(() => {
   const wishlist = useWishlist((state) => state.wishlist);
   const toggleWishlist = useWishlist((s) => s.toggleWishlist);
 
-  const totalItems = cart.reduce(
+  const totalItems = useMemo(() =>
+  cart.reduce(
     (acc, item) => acc + item.quantity,
     0
-  );
+), [cart]);
 
-  const subtotal = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const subtotal = useMemo(() => {
+    return cart.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+  }, [cart]);
 
   const isMen = pathname?.includes("/men");
   const isWomen = pathname?.includes("/women");
-
-products.filter((p: any) =>
-    p.title.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <>
@@ -217,7 +211,7 @@ shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 
   {/* TOP ROW */}
   {/* TOP ROW */}
-<div className="h-13 md:h-15 flex items-center">
+<div className="h-14 md:h-16 flex items-center">
 
   {/* LEFT */}
   <div className="flex-1 flex items-center gap-3 md:gap-8">
@@ -277,8 +271,12 @@ hover:after:w-full
 
   {/* CENTER */}
   <Link href="/" className="flex justify-center flexshrink-0">
-    <img
+    <Image
   src="/logo.png"
+  alt="MythStreet"
+  width={160}
+  height={40}
+  priority
   className="
     h-7 md:h-9
     object-contain
@@ -289,7 +287,7 @@ hover:after:w-full
   </Link>
 
   {/* RIGHT */}
-  <div className="flex-1 flex items-center justify-end gap-3 md:gap-5">
+  <div className="flex-1 flex items-center justify-end gap-4 md:gap-5">
 
     <Search
       className="w-5 h-5 cursor-pointer"
@@ -300,7 +298,7 @@ hover:after:w-full
     <div className="relative" ref={accountRef}>
       <div
         onClick={() => setAccountOpen(!accountOpen)}
-        className="cursor-pointer"
+       className="cursor-pointer p-1"
       >
         {user ? (
           <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
@@ -371,7 +369,7 @@ hover:after:w-full
 
     {/* WISHLIST */}
     <div
-      className="relative cursor-pointer"
+      className="relative cursor-pointer p-1"
       onClick={() => setWishlistOpen(true)}
     >
       <Heart className="w-5 h-5" />
@@ -384,7 +382,7 @@ hover:after:w-full
 
     {/* CART */}
     <div
-      className="relative cursor-pointer"
+      className="relative cursor-pointer p-1"
       onClick={() => setCartOpen(true)}
     >
       <ShoppingBag className="w-5 h-5" />
@@ -509,7 +507,7 @@ absolute right-0 top-0
 h-full w-[92%] md:w-96
 
 bg-white/95
-backdrop-blur-2xl
+backdrop-blur-xl
 
 p-6
 shadow-[0_0_40px_rgba(0,0,0,0.12)]
@@ -637,7 +635,7 @@ overflow-y-auto
         </h2>
 
         <X
-          className="cursor-pointer"
+          className="cursor-pointer p-1"
           onClick={() => setCartOpen(false)}
         />
       </div>
