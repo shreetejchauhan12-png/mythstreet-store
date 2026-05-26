@@ -1,5 +1,4 @@
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
 
 export type Product = {
   id: number;
@@ -35,7 +34,7 @@ export async function getProducts(): Promise<Product[]> {
 
   try {
     const res = await fetch(`${BASE_URL}/api/products`, {
-      cache: "no-store",
+      next: { revalidate: 300 },
     });
 
     if (res.ok) {

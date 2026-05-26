@@ -1,31 +1,11 @@
-"use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
-  const router = useRouter();
 
-  const slides = [
-    "/hr1.jpg",
-    "/bn10.jpg",
-    "/hr3.jpg",
-  ];
-
-  const [index, setIndex] = useState(0);
-
-  function next() {
-    setIndex((prev) => (prev + 1) % slides.length);
-  }
-
-  // AUTO SLIDE
-  useEffect(() => {
-    const interval = setInterval(() => {
-      next();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
+  const heroImage = "/hr1.webp";
 
   return (
     <section className="pt-2 md:pt-4 pb-1 md:pb-3">
@@ -47,17 +27,18 @@ export default function Hero() {
           <div className="pt-[45%] md:pt-[42%]" />
 
           {/* IMAGE */}
-          <img
-            src={slides[index]}
-            alt="MythStreet Hero"
-            className="
-              absolute inset-0
-              w-full h-full
-              object-cover
-              transition-all duration-700
-              scale-[1.02]
-            "
-          />
+          <Image
+  src={heroImage}
+  alt="MythStreet Hero"
+  fill
+  priority
+  sizes="100vw"
+  className="
+    object-cover
+    transition-all duration-700
+    scale-[1.02]
+  "
+/>
 
           {/* OVERLAY */}
           <div className="absolute inset-0 bg-black/15" />
@@ -73,73 +54,42 @@ export default function Hero() {
           >
 
             {/* SHOP */}
-            <button
-              onClick={() => router.push("/shop/all/all")}
-              className="
-                bg-[#680000]/90
-                backdrop-blur-xl
-                text-white
-                px-4 py-2
-                rounded-xl
-                text-[10px]
-                tracking-[0.18em]
-                uppercase
-                font-medium
-                border border-white/10
-              "
-            >
-              Shop
-            </button>
+            <Link
+  href="/shop/all/all"
+  className="
+    bg-[#680000]/90
+    backdrop-blur-xl
+    text-white
+    px-4 py-2
+    rounded-xl
+    text-[10px]
+    tracking-[0.18em]
+    uppercase
+    font-medium
+    border border-white/10
+  "
+>
+  Shop
+</Link>
 
             {/* CATEGORY */}
-            <button
-              onClick={() =>
-                router.push("/shop/all/oversized-t-shirt")
-              }
-              className="
-                bg-zinc-800/70
-                backdrop-blur-xl
-                text-white
-                px-4 py-2
-                rounded-xl
-                text-[10px]
-                tracking-[0.18em]
-                uppercase
-                font-medium
-                border border-white/10
-              "
-            >
-              Oversized
-            </button>
-
-          </div>
-
-          {/* DOTS */}
-          <div
-            className="
-              absolute
-              bottom-3 md:bottom-6
-              left-1/2
-              -translate-x-1/2
-              flex gap-2
-              z-20
-            "
-          >
-
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setIndex(i)}
-                className={`
-                  transition-all duration-300 rounded-full
-                  ${
-                    i === index
-                      ? "w-6 h-1.5 bg-white"
-                      : "w-2 h-2 bg-white/40"
-                  }
-                `}
-              />
-            ))}
+            <Link
+  href="/shop/all/oversized-t-shirt"
+  className="
+    bg-zinc-800/70
+    backdrop-blur-xl
+    text-white
+    px-4 py-2
+    rounded-xl
+    text-[10px]
+    tracking-[0.18em]
+    uppercase
+    font-medium
+    border border-white/10
+  "
+>
+  Oversized
+</Link>
 
           </div>
 
