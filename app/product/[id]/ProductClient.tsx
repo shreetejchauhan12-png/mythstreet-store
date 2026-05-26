@@ -113,7 +113,7 @@ const freshProduct = await res.json();
   useEffect(() => {
   if (product) {
     setSelectedImage(
-      `/${product.design}-${product.variant_code}-1.jpg`
+      `/${product.design}-${product.variant_code}-1.webp`
     );
   }
 }, [product]);
@@ -278,7 +278,7 @@ const freshProduct = await res.json();
   {[1, 2, 3, 4].map((i) => {
 
     const img =
-      `/${item.design}-${item.variant_code}-${i}.jpg`;
+      `/${item.design}-${item.variant_code}-${i}.webp`;
 
     return (
       <div
