@@ -273,7 +273,7 @@ const freshProduct = await res.json();
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-3">
 
   {[1, 2, 3, 4, 5, 6].map((i) => {
 
