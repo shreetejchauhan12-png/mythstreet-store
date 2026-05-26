@@ -273,7 +273,7 @@ const freshProduct = await res.json();
               </div>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto pb-2 md:grid md:grid-cols-3 scrollbar-hide">
+            <div className="flex gap-3 overflow-x-auto overflow-y-hidden pb-2 md:grid md:grid-cols-3 scrollbar-hide max-w-full">
 
   {[1, 2, 3, 4].map((i) => {
 
@@ -284,7 +284,7 @@ const freshProduct = await res.json();
       <div
         key={i}
         onClick={() => setSelectedImage(img)}
-        className={`min-w-[90px] md:min-w-0 cursor-pointer border rounded overflow-hidden transition ${
+        className={`w-[84px] flex-shrink-0 md:min-w-0 cursor-pointer border rounded overflow-hidden transition ${
           selectedImage === img
             ? "border-[#680000]"
             : ""
@@ -411,10 +411,10 @@ const freshProduct = await res.json();
               <p className="text-red-500 text-sm mb-4">{error}</p>
             )}
 
-            <div className="flex gap-3 mb-4">
+            <div className="flex gap-3 mb-4 min-w-0">
               <button
   onClick={handleAddToCart}
-  className={`py-3 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
+  className={`py-3 min-w-0 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
     size
       ? "bg-[#680000]"
       : "bg-gray-400 cursor-not-allowed"
@@ -425,7 +425,7 @@ const freshProduct = await res.json();
 
               <button
   onClick={buyNow}
-  className={`py-3 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
+  className={`py-3 min-w-0 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
     size
       ? "bg-[#680000]"
       : "bg-gray-400 cursor-not-allowed"
