@@ -273,7 +273,7 @@ const freshProduct = await res.json();
               </div>
             </div>
 
-            <div className="flex gap-3 overflow-x-auto overflow-y-hidden pb-2 md:grid md:grid-cols-3 scrollbar-hide max-w-full">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
 
   {[1, 2, 3, 4, 5, 6].map((i) => {
 
@@ -284,7 +284,7 @@ const freshProduct = await res.json();
       <div
         key={i}
         onClick={() => setSelectedImage(img)}
-        className={`w-[84px] flex-shrink-0 md:min-w-0 cursor-pointer border rounded overflow-hidden transition ${
+        className={`cursor-pointer border rounded overflow-hidden transition ${
           selectedImage === img
             ? "border-[#680000]"
             : ""
