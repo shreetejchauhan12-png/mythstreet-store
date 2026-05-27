@@ -64,12 +64,12 @@ const isWishlisted = wishlistItems.some(
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          product_id: product.id,
-          size: size,
-          title: product.title,
-          price: product.price,
-          image: product.image,
-        }),
+  product_id: product.id,
+  size: size,
+  title: product.title,
+  price: product.price,
+  image: `/${product.design}-${product.variant_code}-1.webp`,
+}),
       }
     );
 
@@ -143,11 +143,11 @@ group
               onClick={(e) => {
                 e.preventDefault();
                 toggleWishlist({
-                  id: product.id,
-                  title: product.title,
-                  price: product.price,
-                  image: product.image,
-                });
+  id: product.id,
+  title: product.title,
+  price: product.price,
+  image: `/${product.design}-${product.variant_code}-1.webp`,
+});
               }}
               className="
 absolute top-2 right-2 z-10
