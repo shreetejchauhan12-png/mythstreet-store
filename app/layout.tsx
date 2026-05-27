@@ -4,7 +4,8 @@ import Header from "@/app/components/layout/Header";
 import Footer from "@/app/components/layout/Footer";
 import RecentPurchasePopup from "@/app/components/ui/RecentPurchasePopup";
 import Script from "next/script";
-import dynamic from "next/dynamic";
+import CartInitializer from "./CartInitializer";
+
 
 import { Montserrat, Bebas_Neue } from "next/font/google";
 
@@ -26,12 +27,6 @@ const bebas = Bebas_Neue({
   weight: "400",
   variable: "--font-heading",
 });
-const CartInitializer = dynamic(
-  () => import("./CartInitializer"),
-  {
-    ssr: false,
-  }
-);
 
 export default function RootLayout({
   children,
