@@ -86,7 +86,15 @@ if (!phone) return alert("Enter phone number");
             })
           );
 
+          // 🔥 FETCH USER CART AFTER LOGIN
+const fetchCart = (
+  await import("@/app/store/cart")
+).useCart.getState().fetchCart;
+
+await fetchCart();
+
           alert("Login Successful ✅");
+          
 
           // 🔥 REDIRECT
           const params = new URLSearchParams(window.location.search);

@@ -145,7 +145,9 @@ const freshProduct = await res.json();
     );
   }, [item]);
 
+  
   async function handleAddToCart() {
+
   if (!size) {
     setError("Please select size");
     return;
@@ -154,6 +156,7 @@ const freshProduct = await res.json();
   setError("");
 
   try {
+
     const token = localStorage.getItem("token");
 
     if (!token) {
@@ -161,6 +164,16 @@ const freshProduct = await res.json();
       return;
     }
 
+    // ✅ FRONTEND INSTANT UPDATE
+    addToCart({
+      id: `${item.id}-${size}`,
+      title: `${item.title} (${size})`,
+      price: item.price,
+      image: item.image,
+      quantity: quantity,
+    });
+
+    // ✅ BACKEND SAVE
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
       {
@@ -172,9 +185,6 @@ const freshProduct = await res.json();
         body: JSON.stringify({
           product_id: item.id,
           size: size,
-          title: item.title,
-          price: item.price,
-          image: item.image,
           quantity: quantity,
         }),
       }
@@ -184,11 +194,15 @@ const freshProduct = await res.json();
 
     console.log("ADD TO CART RESPONSE:", data);
 
-    // 🔥 AFTER BACKEND SUCCESS → SYNC FRONTEND
+    // ✅ FINAL SYNC
     await useCart.getState().fetchCart();
 
+    alert("Added to cart ✅");
+
   } catch (error) {
+
     console.error("ADD TO CART ERROR:", error);
+
   }
 }
 
