@@ -96,12 +96,18 @@ const isWishlisted = wishlistItems.some(
   scroll={true}
   className="block"
 >
-      <div className="group cursor-pointer">
+      <div className="
+group cursor-pointer
+transition-all duration-500
+hover:-translate-y-1
+">
 
         <div
   className="
 relative overflow-hidden
 bg-[#f5f5f5]
+shadow-[0_4px_20px_rgba(0,0,0,0.04)]
+hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)]
 rounded-[22px]
 transition-transform duration-500
 group
@@ -131,16 +137,6 @@ group
   className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
 />
 
-{/* RIGHT IMAGE */}
-<Image
-  src={`/${product.design}-${product.variant_code}-3.webp`}
-  alt={product.title}
-  fill
-  sizes="(max-width: 768px) 50vw, 25vw"
-  quality={75}
-  loading="lazy"
-  className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-/>
 
             {/* wishlist */}
             <button

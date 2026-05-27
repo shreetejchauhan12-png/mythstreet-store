@@ -13,7 +13,7 @@ export async function generateMetadata({
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/products/${params.id}`,
       {
-        cache: "no-store",
+        next: { revalidate: 3600 },
       }
     );
 
@@ -22,7 +22,7 @@ export async function generateMetadata({
     return {
       title: `${product.title} | MythStreet`,
       description:
-        "Premium anime streetwear by MythStreet.",
+  `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`,
 
       openGraph: {
         title: product.title,
@@ -53,6 +53,60 @@ export async function generateMetadata({
   }
 }
 
-export default function Page() {
-  return <ProductClient />;
+async function getProduct(id: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
+    {
+      next: { revalidate: 3600 },
+    }
+  );
+
+  return res.json();
+}
+
+export default async function Page({
+  params,
+}: Props) {
+
+  const product = await getProduct(params.id);
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+
+    name: product.title,
+
+    image: [
+      `https://mythstreet.in/${product.image}`,
+    ],
+
+    description:
+      `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`,
+
+    brand: {
+      "@type": "Brand",
+      name: "MythStreet",
+    },
+
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "INR",
+      price: product.price,
+      availability:
+        "https://schema.org/InStock",
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(schema),
+        }}
+      />
+
+      <ProductClient />
+    </>
+  );
 }

@@ -1,8 +1,10 @@
 "use client";
-
+import WishlistDrawer from "./WishlistDrawer";
+import CartDrawer from "./CartDrawer";
 import { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import {
   Menu,
   Heart,
@@ -16,6 +18,13 @@ import MobileMenu from "./MobileMenu";
 import { useCart } from "@/app/store/cart";
 import { useWishlist } from "@/app/store/wishlist";
 import { usePathname } from "next/navigation";
+
+const SearchOverlay = dynamic(
+  () => import("./SearchOverlay"),
+  {
+    ssr: false,
+  }
+);
 
 export default function Header() {
   const pathname = usePathname();
@@ -120,9 +129,6 @@ setAccountOpen(false);
   });
 };
   // search
-  const [search, setSearch] = useState("");
-  const [filtered, setFiltered] = useState<any[]>([]);
-
   useEffect(() => {
 
   const script = document.createElement("script");
@@ -181,29 +187,6 @@ useEffect(() => {
   const wishlist = useWishlist((state) => state.wishlist);
   const toggleWishlist = useWishlist((s) => s.toggleWishlist);
 
-  useEffect(() => {
-  if (!search.trim()) {
-    setFiltered([]);
-    return;
-  }
-
-  const delay = setTimeout(async () => {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/search?q=${search}`
-      );
-
-      const data = await res.json();
-
-      setFiltered(data);
-    } catch (error) {
-      console.error("Search failed", error);
-    }
-  }, 250);
-
-  return () => clearTimeout(delay);
-
-}, [search]);
   const totalItems = useMemo(() =>
   cart.reduce(
     (acc, item) => acc + item.quantity,
@@ -440,352 +423,30 @@ overflow-hidden
 </header>
 
       <MobileMenu open={open} setOpen={setOpen} />
-            
-      {searchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40">
-
-          <div className="bg-white p-6 shadow-xl">
-
-            <div className="max-w-4xl mx-auto">
-
-              <div className="flex gap-4 items-center">
-
-                <Search className="w-5 h-5" />
-
-                <input
-                  placeholder="Search for products..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      window.location.href = `/search?q=${search}`;
-                      }
-                      }}
-                      className="flex-1 outline-none text-lg"
-                />
-
-                <X
-                  className="cursor-pointer"
-                  onClick={() => setSearchOpen(false)}
-                />
-
-              </div>
-
-              {search && (
-  <div className="mt-6 max-h-80 overflow-y-auto">
-
-    {filtered.length === 0 && (
-      <div className="p-6 text-center text-sm text-gray-500">
-        No products found
-      </div>
-    )}
-
-    {filtered.map((item) => (
-      <Link
-        key={item.id}
-        href={`/product/${item.id}`}
-        onClick={() => setSearchOpen(false)}
-      >
-        <div className="flex gap-3 p-3 hover:bg-gray-100 border-b">
-          <Image
-  src={item.image}
-  alt={item.title}
-  width={56}
-  height={64}
-  quality={70}
-  className="w-14 h-16 object-cover rounded-md"
+  
+  <SearchOverlay
+  open={searchOpen}
+  onClose={() => setSearchOpen(false)}
+  
 />
 
-          <div>
-            <p className="text-sm font-medium">
-              {item.title}
-            </p>
-
-            <p className="text-sm text-gray-500">
-              ₹{item.price}
-            </p>
-          </div>
-        </div>
-      </Link>
-    ))}
-
-  </div>
-)}
-
-            </div>
-
-          </div>
-
-        </div>
-      )}
+<CartDrawer
+  open={cartOpen}
+  onClose={() => setCartOpen(false)}
+  cart={cart}
+  subtotal={subtotal}
+  addToCart={addToCart}
+  decrease={decrease}
+  removeFromCart={removeFromCart}
+/>
             {/* WISHLIST DRAWER */}
-{wishlistOpen && (
-  <div className="fixed inset-0 z-50">
-
-    {/* BACKDROP */}
-    <div
-      className="absolute inset-0 bg-black/40"
-      onClick={() => setWishlistOpen(false)}
-    />
-
-    {/* PANEL */}
-    <div className="
-absolute right-0 top-0
-h-full w-[92%] md:w-96
-
-bg-white/95
-backdrop-blur-xl
-
-p-6
-shadow-[0_0_40px_rgba(0,0,0,0.12)]
-
-overflow-y-auto
-">
-
-      <div className="flex justify-between mb-6">
-        <h2 className="font-semibold text-lg">
-          Wishlist
-        </h2>
-
-        <X
-          className="cursor-pointer"
-          onClick={() => setWishlistOpen(false)}
-        />
-      </div>
-
-      {wishlist.length === 0 ? (
-
-  <div className="h-[70vh] flex flex-col items-center justify-center text-center px-6">
-
-    <Heart className="w-16 h-16 text-gray-300 mb-5" />
-
-    <h3 className="text-2xl font-semibold mb-2">
-      Your wishlist is empty
-    </h3>
-
-    <p className="text-gray-500 text-sm leading-6 max-w-xs mb-6">
-      Save your favorite anime and streetwear drops here.
-    </p>
-
-    <button
-      onClick={() => {
-        setWishlistOpen(false);
-        window.location.href = "/shop/all/all";
-      }}
-      className="bg-[#680000] text-white px-6 py-3 rounded-lg text-sm tracking-wide hover:opacity-90 transition"
-    >
-      EXPLORE PRODUCTS
-    </button>
-
-  </div>
-
-) : (
-
-  wishlist.map((item, index) => (
-    <div
-      key={`${item.id}-${index}`}
-      className="flex gap-3 border-b pb-4 mb-4"
-    >
-      <Link
-        href={`/product/${item.id}`}
-        onClick={() => setWishlistOpen(false)}
-      >
-        <img
-          src={item.image}
-          className="w-16 h-20 object-cover cursor-pointer"
-        />
-      </Link>
-
-      <div className="flex-1">
-        <Link
-          href={`/product/${item.id}`}
-          onClick={() => setWishlistOpen(false)}
-        >
-          <p className="text-sm font-medium cursor-pointer hover:underline">
-            {item.title}
-          </p>
-        </Link>
-
-        <p className="text-sm text-gray-500">
-          ₹{item.price}
-        </p>
-
-        <button
-          onClick={() => {
-            addToCart({
-              id: String(item.id),
-              title: item.title,
-              price: item.price,
-              image: item.image,
-              quantity: 1,
-            });
-
-            toggleWishlist(item);
-          }}
-          className="text-xs text-[#680000]"
-        >
-          Move to cart
-        </button>
-      </div>
-
-      <button
-        onClick={() => toggleWishlist(item)}
-        className="text-xs text-red-500"
-      >
-        Remove
-      </button>
-    </div>
-  ))
-
-)}
-
-    </div>
-  </div>
-)}
-
-      {/* CART DRAWER */}
-{cartOpen && (
-  <div className="fixed inset-0 z-50">
-
-    {/* BACKDROP */}
-    <div
-      className="absolute inset-0 bg-black/40"
-      onClick={() => setCartOpen(false)}
-    />
-
-    {/* PANEL */}
-    <div className="absolute right-0 top-0 h-full w-96 bg-white p-6 shadow-xl overflow-y-auto">
-
-      <div className="flex justify-between mb-6">
-        <h2 className="font-semibold text-lg">
-          Your Cart
-        </h2>
-
-        <X
-          className="cursor-pointer p-1"
-          onClick={() => setCartOpen(false)}
-        />
-      </div>
-
-      {cart.length === 0 ? (
-
-  <div className="h-[65vh] flex flex-col items-center justify-center text-center px-6">
-
-    <ShoppingBag className="w-16 h-16 text-gray-300 mb-5" />
-
-    <h3 className="text-2xl font-semibold mb-2">
-      Your cart feels lonely
-    </h3>
-
-    <p className="text-gray-500 text-sm leading-6 max-w-xs mb-6">
-      Add your favorite anime and streetwear drops to continue shopping.
-    </p>
-
-    <button
-      onClick={() => {
-        setCartOpen(false);
-        window.location.href = "/shop/all/all";
-      }}
-      className="bg-[#680000] text-white px-6 py-3 rounded-lg text-sm tracking-wide hover:opacity-90 transition"
-    >
-      START SHOPPING
-    </button>
-
-  </div>
-
-) : (
-
-  cart.map((item, index) => (
-    <div
-      key={`${item.id}-${index}`}
-      className="flex gap-3 border-b pb-4 mb-4"
-    >
-      <Link
-        href={`/product/${item.id.split("-")[0]}`}
-        onClick={() => setCartOpen(false)}
-      >
-        <img
-          src={item.image}
-          className="w-16 h-20 object-cover cursor-pointer"
-        />
-      </Link>
-
-      <div className="flex-1">
-        <Link
-          href={`/product/${item.id.split("-")[0]}`}
-          onClick={() => setCartOpen(false)}
-        >
-          <p className="text-sm font-medium cursor-pointer hover:underline">
-            {item.title}
-          </p>
-        </Link>
-
-        <p className="text-sm text-gray-500">
-          ₹{item.price}
-        </p>
-
-        <div className="flex gap-2 mt-2">
-          <button
-            onClick={() => decrease(item.id)}
-            className="border px-2"
-          >
-            -
-          </button>
-
-          <span>{item.quantity}</span>
-
-          <button
-            onClick={() =>
-              addToCart({
-                ...item,
-                quantity: 1,
-              })
-            }
-            className="border px-2"
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      <button
-        onClick={() => removeFromCart(item.id)}
-        className="text-xs text-red-500"
-      >
-        Remove
-      </button>
-    </div>
-  ))
-
-)}
-
-      <div className="border-t pt-4">
-        <div className="flex justify-between mb-4">
-          <span>Subtotal</span>
-          <span>₹{subtotal}</span>
-        </div>
-
-        <Link href="/checkout" onClick={() => setCartOpen(false)}>
-          <button className="
-w-full
-bg-black
-hover:bg-[#680000]
-text-white
-py-3
-rounded-xl
-tracking-[0.2em]
-text-sm
-font-semibold
-transition-all duration-300
-">
-            CHECKOUT
-          </button>
-        </Link>
-      </div>
-
-    </div>
-  </div>
-)}
+<WishlistDrawer
+  open={wishlistOpen}
+  onClose={() => setWishlistOpen(false)}
+  wishlist={wishlist}
+  addToCart={addToCart}
+  toggleWishlist={toggleWishlist}
+/>
 
     </>
   );

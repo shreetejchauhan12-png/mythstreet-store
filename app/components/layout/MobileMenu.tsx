@@ -29,11 +29,11 @@ transition-opacity duration-300
       )}
 
       <div
+  style={{
+    background:
+      "linear-gradient(to bottom, rgba(255,255,255,0.96), rgba(255,255,255,0.92))",
+  }}
   className={`
-    style={{
-  background:
-    "linear-gradient(to bottom, rgba(255,255,255,0.96), rgba(255,255,255,0.92))",
-}}
 fixed top-0 left-0
 h-full w-[90%] max-w-sm
 
@@ -141,7 +141,13 @@ pl-1
                 <Link
   href="/shop/men/tshirt"
   onClick={() => setOpen(false)}
-  className="text-gray-700 hover:text-black transition"
+  className="
+text-[15px]
+tracking-wide
+text-black/75
+hover:text-[#680000]
+transition-all duration-300
+"
 >
   T-Shirts
 </Link>
