@@ -166,12 +166,12 @@ const freshProduct = await res.json();
 
     // ✅ FRONTEND INSTANT UPDATE
     addToCart({
-      id: `${item.id}-${size}`,
-      title: `${item.title} (${size})`,
-      price: item.price,
-      image: item.image,
-      quantity: quantity,
-    });
+  id: `${item.id}-${size}`,
+  title: `${item.title} (${size})`,
+  price: item.price,
+  image: `/${item.design}-${item.variant_code}-1.webp`,
+  quantity: quantity,
+});
 
     // ✅ BACKEND SAVE
     const res = await fetch(
@@ -219,7 +219,7 @@ const freshProduct = await res.json();
     id: `${item.id}-${size}`,
     title: `${item.title} - ${size}`,
     price: item.price,
-    image: item.image,
+    image: `/${item.design}-${item.variant_code}-1.webp`,
     quantity: quantity,
   };
 
