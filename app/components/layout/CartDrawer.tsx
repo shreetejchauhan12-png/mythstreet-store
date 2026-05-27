@@ -6,6 +6,7 @@ import {
   ShoppingBag,
   X,
 } from "lucide-react";
+
 type Props = {
   open: boolean;
   onClose: () => void;
@@ -64,9 +65,9 @@ overflow-y-auto
 
         </div>
 
-              {cart.length === 0 ? (
+        {cart.length === 0 ? (
 
-        <div className="
+          <div className="
 h-[65vh]
 flex flex-col
 items-center
@@ -75,37 +76,37 @@ text-center
 px-6
 ">
 
-          <ShoppingBag className="
+            <ShoppingBag className="
 w-16 h-16
 text-gray-300
 mb-5
 " />
 
-          <h3 className="
+            <h3 className="
 text-2xl
 font-semibold
 mb-2
 ">
-            Your cart feels lonely
-          </h3>
+              Your cart feels lonely
+            </h3>
 
-          <p className="
+            <p className="
 text-gray-500
 text-sm
 leading-6
 max-w-xs
 mb-6
 ">
-            Add your favorite anime and streetwear drops to continue shopping.
-          </p>
+              Add your favorite anime and streetwear drops to continue shopping.
+            </p>
 
-          <button
-            onClick={() => {
-              onClose();
-              window.location.href =
-                "/shop/all/all";
-            }}
-            className="
+            <button
+              onClick={() => {
+                onClose();
+                window.location.href =
+                  "/shop/all/all";
+              }}
+              className="
 bg-[#680000]
 text-white
 px-6 py-3
@@ -115,76 +116,79 @@ tracking-wide
 hover:opacity-90
 transition
 "
-          >
-            START SHOPPING
-          </button>
+            >
+              START SHOPPING
+            </button>
 
-        </div>
+          </div>
 
-      ) : (
-                cart.map((item, index) => (
-          <div
-            key={`${item.id}-${index}`}
-            className="
+        ) : (
+
+          <>
+            {cart.map((item, index) => (
+
+              <div
+                key={`${item.id}-${index}`}
+                className="
 flex gap-3
 border-b
 pb-4
 mb-4
 "
-          >
+              >
 
-            <Link
-              href={`/product/${item.id.split("-")[0]}`}
-              onClick={onClose}
-            >
+                <Link
+                  href={`/product/${item.id.split("-")[0]}`}
+                  onClick={onClose}
+                >
 
-              <img
-                src={item.image}
-                className="
+                  <img
+                    src={item.image}
+                    className="
 w-16 h-20
 object-cover
 cursor-pointer
 "
-              />
+                  />
 
-            </Link>
+                </Link>
 
-            <div className="flex-1">
+                <div className="flex-1">
 
-              <Link
-                href={`/product/${item.id.split("-")[0]}`}
-                onClick={onClose}
-              >
+                  <Link
+                    href={`/product/${item.id.split("-")[0]}`}
+                    onClick={onClose}
+                  >
 
-                <p className="
+                    <p className="
 text-sm
 font-medium
 cursor-pointer
 hover:underline
 ">
-                  {item.title}
-                </p>
+                      {item.title}
+                    </p>
 
-              </Link>
+                  </Link>
 
-              <p className="
+                  <p className="
 text-sm
 text-gray-500
 ">
-                ₹{item.price}
-              </p>
+                    ₹{item.price}
+                  </p>
 
-              <div className="
+                  <div className="
 flex items-center
 gap-3
 mt-3
 ">
 
-                <button
-                  onClick={() =>
-                    decrease(item.id)
-                  }
-                  className="
+                    <button
+                      onClick={() =>
+                        decrease(item.id)
+                      }
+                      className="
 w-8 h-8
 rounded-full
 border
@@ -193,27 +197,27 @@ hover:bg-black
 hover:text-white
 transition-all duration-300
 "
-                >
-                  -
-                </button>
+                    >
+                      -
+                    </button>
 
-                <span className="
+                    <span className="
 text-sm
 font-medium
 min-w-[16px]
 text-center
 ">
-                  {item.quantity}
-                </span>
+                      {item.quantity}
+                    </span>
 
-                <button
-                  onClick={() =>
-                    addToCart({
-                      ...item,
-                      quantity: 1,
-                    })
-                  }
-                  className="
+                    <button
+                      onClick={() =>
+                        addToCart({
+                          ...item,
+                          quantity: 1,
+                        })
+                      }
+                      className="
 w-8 h-8
 rounded-full
 border
@@ -222,58 +226,56 @@ hover:bg-black
 hover:text-white
 transition-all duration-300
 "
+                    >
+                      +
+                    </button>
+
+                  </div>
+
+                </div>
+
+                <button
+                  onClick={() =>
+                    removeFromCart(item.id)
+                  }
+                  className="
+text-xs
+text-red-500
+"
                 >
-                  +
+                  Remove
                 </button>
 
               </div>
 
-            </div>
+            ))}
 
-            <button
-              onClick={() =>
-                removeFromCart(item.id)
-              }
-              className="
-text-xs
-text-red-500
-"
-            >
-              Remove
-            </button>
-
-          </div>
-                ))
-                      )}
-
-            {cart.length > 0 && (
-
-      <div className="
+            <div className="
 border-t
 pt-4
 ">
 
-        <div className="
+              <div className="
 flex justify-between
 mb-4
 ">
 
-          <span>
-            Subtotal
-          </span>
+                <span>
+                  Subtotal
+                </span>
 
-          <span>
-            ₹{subtotal}
-          </span>
+                <span>
+                  ₹{subtotal}
+                </span>
 
-        </div>
+              </div>
 
-        <Link
-          href="/checkout"
-          onClick={onClose}
-        >
+              <Link
+                href="/checkout"
+                onClick={onClose}
+              >
 
-          <button className="
+                <button className="
 w-full
 bg-black
 hover:bg-[#680000]
@@ -286,14 +288,17 @@ font-semibold
 transition-all duration-300
 ">
 
-            CHECKOUT
+                  CHECKOUT
 
-          </button>
+                </button>
 
-        </Link>
+              </Link>
 
             </div>
-    )}
+
+          </>
+
+        )}
 
       </div>
 
