@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,6 +28,17 @@ variant_code: string;
 
 function ProductCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
+  useEffect(() => {
+
+  if (!added) return;
+
+  const timer = setTimeout(() => {
+    setAdded(false);
+  }, 2000);
+
+  return () => clearTimeout(timer);
+
+}, [added]);
 
   const toggleWishlist = useWishlist(
     (state) => state.toggleWishlist
@@ -87,7 +98,7 @@ const isWishlisted = wishlistItems.some(
 
   // ✅ UI FEEDBACK
   setAdded(true);
-  setTimeout(() => setAdded(false), 1500);
+
 }
 
   return (
@@ -187,10 +198,36 @@ hover:scale-110
   </span>
 </div>
             {added && (
-  <div className="absolute top-10 left-3 bg-black text-white text-xs px-3 py-1 rounded">
-                Added to cart
-              </div>
-            )}
+
+  <div
+    className="
+absolute
+bottom-3
+left-1/2
+-z-0
+-translate-x-1/2
+
+bg-black/90
+backdrop-blur-md
+
+text-white
+text-xs
+tracking-wide
+
+px-4 py-2
+rounded-full
+
+shadow-2xl
+
+animate-[fadeIn_.25s_ease]
+
+pointer-events-none
+"
+  >
+    Added to cart ✓
+  </div>
+
+)}
 
           </div>
         </div>
