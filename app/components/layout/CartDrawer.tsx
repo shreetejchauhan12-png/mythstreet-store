@@ -292,13 +292,11 @@ transition-all duration-300
 
         </Link>
 
+            </div>
+    )}
+
       </div>
-            )}
 
-  </div>
-  
-
-</div>
-
-);
+    </div>
+  );
 }
