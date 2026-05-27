@@ -11,12 +11,18 @@ export async function generateMetadata({
   params,
 }: Props) {
 
-  const category =
-    params.category.charAt(0).toUpperCase() +
-    params.category.slice(1);
+  const safeCategory =
+  params?.category || "all";
 
-  const type =
-    params.type === "all"
+const category =
+  safeCategory.charAt(0).toUpperCase() +
+  safeCategory.slice(1);
+
+  const safeType =
+  params?.type || "all";
+
+const type =
+  safeType === "all"
       ? "Streetwear"
       : params.type
           .replace(/-/g, " ")

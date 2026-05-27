@@ -11,11 +11,11 @@ export default function TypePage() {
 
   const params = useParams();
 
-  const category =
-    params.category as string;
+const category =
+  (params?.category as string) || "all";
 
-  const type =
-    params.type as string;
+const type =
+  (params?.type as string) || "all";
 
   const router = useRouter();
   const searchParams = useSearchParams();
