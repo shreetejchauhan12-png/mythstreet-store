@@ -326,9 +326,32 @@ function prevImage() {
   className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.03]"
 />
               </div>
-            </div>
 
-            <div className="grid grid-cols-3 gap-3">
+{/* GALLERY INDICATORS */}
+<div className="flex items-center justify-center gap-2 mt-4 mb-2">
+
+  {images.map((_, index) => (
+
+    <div
+      key={index}
+      className={`transition-all duration-300 rounded-full ${
+        currentIndex === index
+          ? "w-6 h-2 bg-black"
+          : "w-2 h-2 bg-gray-300"
+      }`}
+    />
+
+  ))}
+
+</div>
+
+<p className="text-center text-xs text-gray-500 mb-4">
+  {currentIndex + 1} / {images.length}
+</p>
+
+</div>
+
+<div className="grid grid-cols-3 gap-3">
 
   {[1, 2, 3, 4, 5, 6].map((i) => {
 
