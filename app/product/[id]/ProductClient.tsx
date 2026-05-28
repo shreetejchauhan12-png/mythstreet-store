@@ -197,8 +197,6 @@ const freshProduct = await res.json();
     // ✅ FINAL SYNC
     await useCart.getState().fetchCart();
 
-    alert("Added to cart ✅");
-
   } catch (error) {
 
     console.error("ADD TO CART ERROR:", error);
