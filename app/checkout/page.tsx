@@ -232,7 +232,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 if (!email.trim()) {
   errors.push("Email Address");
-} else if (!emailRegex.test(email)) {
+} else if (!emailRegex.test(email.trim())) {
   setEmailError("Invalid email address");
   errors.push("Valid Email Address");
 }
@@ -293,7 +293,7 @@ if (errors.length > 0) {
       return;
     }
 
-    if (!email.trim() || !emailRegex.test(email)) {
+    if (!email.trim() || !emailRegex.test(email.trim())) {
       document
         .querySelector('input[placeholder="Email Address"]')
         ?.scrollIntoView({
