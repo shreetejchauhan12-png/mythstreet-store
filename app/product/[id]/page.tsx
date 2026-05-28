@@ -20,9 +20,13 @@ export async function generateMetadata({
     const product = await res.json();
 
     return {
-      title: `${product.title} | MythStreet`,
+      title: product?.title
+  ? `${product.title} | MythStreet`
+  : "MythStreet",
       description:
-  `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`,
+  product?.title
+    ? `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`
+    : "Premium anime streetwear by MythStreet.",
 
       openGraph: {
         title: product.title,
