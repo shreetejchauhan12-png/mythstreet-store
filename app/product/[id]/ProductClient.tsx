@@ -529,7 +529,7 @@ const freshProduct = await res.json();
 )}
       </main>
       {/* MOBILE STICKY CTA */}
-<div className="fixed bottom-4 left-3 right-3 z-50 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-2xl md:hidden">
+<div className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl px-3 pt-3 pb-6 md:hidden">
 
   <div className="flex items-center gap-3">
 
@@ -547,7 +547,7 @@ const freshProduct = await res.json();
     {/* BUTTON */}
     <button
       onClick={handleAddToCart}
-      className={`h-12 px-6 rounded-xl text-sm font-medium text-white transition active:scale-[0.98] ${
+      className={`h-14 px-6 rounded-2xl text-sm font-medium text-white transition active:scale-[0.98] ${
         size
           ? "bg-[#680000]"
           : "bg-gray-400"
