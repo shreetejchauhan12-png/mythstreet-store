@@ -183,10 +183,14 @@ const freshProduct = await res.json();
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          product_id: item.id,
-          size: size,
-          quantity: quantity,
-        }),
+  product_id: item.id,
+  size: size,
+  quantity: quantity,
+
+  title: `${item.title} (${size})`,
+  price: item.price,
+  image: `/${item.design}-${item.variant_code}-1.webp`,
+}),
       }
     );
 
