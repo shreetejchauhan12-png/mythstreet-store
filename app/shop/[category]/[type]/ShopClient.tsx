@@ -640,7 +640,9 @@ c?.toLowerCase().trim();
 
     router.push(url);
 
-    setMobileFiltersOpen(false);
+router.refresh();
+
+setMobileFiltersOpen(false);
 
   }}
   className="
