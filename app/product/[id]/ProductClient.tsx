@@ -317,7 +317,7 @@ function prevImage() {
 >
                 <div className="pt-[125%]" />
                 <Image
-  src={selectedImage || "/placeholder.png"}
+  src={selectedImage || "/placeholder.webp"}
   alt={item.title}
   fill
   priority

@@ -10,8 +10,19 @@ import CartInitializer from "./CartInitializer";
 import { Montserrat, Bebas_Neue } from "next/font/google";
 
 export const metadata = {
-  title: "Mythstreet",
-  description: "Premium Streetwear Brand",
+  metadataBase: new URL("https://mythstreet.com"),
+
+  title: {
+    default: "MYTHSTREET - Premium Anime Streetwear",
+    template: "%s | MYTHSTREET",
+  },
+
+  description:
+    "Premium anime streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by Japanese anime culture.",
+
+  alternates: {
+    canonical: "https://mythstreet.com",
+  },
 };
 
 /* BODY FONT */
@@ -62,6 +73,30 @@ export default function RootLayout({
 
         {/* RECENT PURCHASE POPUP */}
         <RecentPurchasePopup />
+
+        {/* ORGANIZATION SCHEMA */}
+<script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+
+      name: "MYTHSTREET",
+
+      url: "https://mythstreet.com",
+
+      logo: "https://mythstreet.com/logo.webp",
+
+      description:
+        "Premium streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by anime and street culture.",
+
+      sameAs: [
+        "https://instagram.com/mythstreet",
+      ],
+    }),
+  }}
+/>
 
         {/* RAZORPAY */}
         <Script

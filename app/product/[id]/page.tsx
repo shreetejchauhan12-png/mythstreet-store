@@ -1,17 +1,21 @@
 import ProductClient from "./ProductClient";
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({
   params,
 }: Props) {
+
+  const { id } = await params;
+
   try {
+
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/${params.id}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
       {
         next: { revalidate: 3600 },
       }
@@ -21,43 +25,54 @@ export async function generateMetadata({
 
     return {
       title: product?.title
-  ? `${product.title} | MythStreet`
-  : "MythStreet",
-      description:
-  product?.title
-    ? `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`
-    : "Premium anime streetwear by MythStreet.",
+        ? `${product.title} | MythStreet`
+        : "MythStreet",
+
+      description: product?.title
+        ? `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`
+        : "Premium anime streetwear by MythStreet.",
+
+      alternates: {
+        canonical: `https://mythstreet.com/product/${id}`,
+      },
 
       openGraph: {
-        title: product.title,
+        title: product?.title,
         description:
           "Premium anime streetwear by MythStreet.",
+
         images: [
           {
-            url: `https://mythstreet.in/${product.image}`,
+            url: `https://mythstreet.com/${product.image}`,
           },
         ],
       },
 
       twitter: {
         card: "summary_large_image",
-        title: product.title,
+
+        title: product?.title,
+
         description:
           "Premium anime streetwear by MythStreet.",
+
         images: [
-          `https://mythstreet.in/${product.image}`,
+          `https://mythstreet.com/${product.image}`,
         ],
       },
     };
 
   } catch {
+
     return {
       title: "MythStreet",
     };
+
   }
 }
 
 async function getProduct(id: string) {
+
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
     {
@@ -72,7 +87,9 @@ export default async function Page({
   params,
 }: Props) {
 
-  const product = await getProduct(params.id);
+  const { id } = await params;
+
+  const product = await getProduct(id);
 
   const schema = {
     "@context": "https://schema.org",
@@ -81,7 +98,7 @@ export default async function Page({
     name: product.title,
 
     image: [
-      `https://mythstreet.in/${product.image}`,
+      `https://mythstreet.com/${product.image}`,
     ],
 
     description:

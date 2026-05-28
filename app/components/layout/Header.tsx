@@ -278,17 +278,18 @@ hover:after:w-full
   {/* CENTER */}
   <Link href="/" className="flex justify-center flex-shrink-0">
     <Image
-  src="/logo.png"
+  src="/logo.webp"
   alt="MythStreet"
   width={160}
   height={40}
   priority
   className="
-    h-7 md:h-9
-    object-contain
-    transition duration-300
-    hover:opacity-80
-  "
+  w-auto
+  h-7 md:h-9
+  object-contain
+  transition duration-300
+  hover:opacity-80
+"
 />
   </Link>
 
