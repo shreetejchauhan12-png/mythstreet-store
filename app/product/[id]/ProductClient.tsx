@@ -73,6 +73,8 @@ const id = params?.id;
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
   const [stockLeft, setStockLeft] = useState(5);
+  const [touchStart, setTouchStart] = useState(0);
+const [touchEnd, setTouchEnd] = useState(0);
 
   useEffect(() => {
   window.scrollTo({
@@ -105,6 +107,24 @@ const freshProduct = await res.json();
 }, [id]);
 
   const item = product;
+  const images = [1, 2, 3, 4, 5, 6].map(
+  (i) =>
+    `/${item?.design}-${item?.variant_code}-${i}.webp`
+);
+
+const currentIndex = images.indexOf(selectedImage);
+
+function nextImage() {
+  if (currentIndex < images.length - 1) {
+    setSelectedImage(images[currentIndex + 1]);
+  }
+}
+
+function prevImage() {
+  if (currentIndex > 0) {
+    setSelectedImage(images[currentIndex - 1]);
+  }
+}
   const reviewData =
   reviews[
     item?.design as keyof typeof reviews
@@ -275,7 +295,26 @@ const freshProduct = await res.json();
           {/* LEFT */}
           <div>
             <div className="mb-4">
-              <div className="relative overflow-hidden rounded-lg">
+              <div
+  className="relative overflow-hidden rounded-lg"
+  onTouchStart={(e) =>
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+  onTouchMove={(e) =>
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+  onTouchEnd={() => {
+
+    if (touchStart - touchEnd > 75) {
+      nextImage();
+    }
+
+    if (touchStart - touchEnd < -75) {
+      prevImage();
+    }
+
+  }}
+>
                 <div className="pt-[125%]" />
                 <Image
   src={selectedImage || "/placeholder.png"}
