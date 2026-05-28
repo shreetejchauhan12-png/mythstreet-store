@@ -495,7 +495,7 @@ function prevImage() {
   className={`py-3 min-w-0 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
     size
   ? "bg-[#680000]"
-  : "bg-[#680000]/60"
+  : "bg-[#680000]"
   }`}
 >
   ADD TO CART
@@ -506,7 +506,7 @@ function prevImage() {
   className={`py-3 min-w-0 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
     size
       ? "bg-[#680000]"
-      : "bg-[#680000]/60"
+      : "bg-[#680000]"
   }`}
 >
   BUY NOW
