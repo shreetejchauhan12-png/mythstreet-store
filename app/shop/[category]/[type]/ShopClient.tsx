@@ -483,7 +483,7 @@ c?.toLowerCase().trim();
   setTempCategory("men");
 }}
             className={`px-4 py-2 rounded-full text-sm border ${
-              category === "men"
+              tempCategory === "men"
                 ? "bg-black text-white border-black"
                 : "border-gray-300"
             }`}
@@ -496,7 +496,7 @@ c?.toLowerCase().trim();
   setTempCategory("women");
 }}
             className={`px-4 py-2 rounded-full text-sm border ${
-              category === "women"
+              tempCategory === "women"
                 ? "bg-black text-white border-black"
                 : "border-gray-300"
             }`}
@@ -522,7 +522,7 @@ c?.toLowerCase().trim();
   setTempType("all");
 }}
       className={`px-4 py-2 rounded-full text-sm border ${
-        type === "all"
+        tempType === "all"
           ? "bg-black text-white border-black"
           : "border-gray-300"
       }`}
@@ -537,9 +537,7 @@ c?.toLowerCase().trim();
         .replace(/\s+/g, "-");
 
       const active =
-        decodeURIComponent(type)
-          .toLowerCase()
-          .trim() === slug;
+  tempType === slug;
 
       return (
         <button
@@ -575,8 +573,8 @@ c?.toLowerCase().trim();
 
     {collections.map((c) => {
       const active =
-        collection?.toLowerCase().trim() ===
-        c?.toLowerCase().trim();
+  tempCollection ===
+  c?.toLowerCase().trim();
 
       return (
         <button
