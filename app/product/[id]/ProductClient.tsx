@@ -529,7 +529,7 @@ const freshProduct = await res.json();
 )}
       </main>
       {/* MOBILE STICKY CTA */}
-<div className="fixed left-0 right-0 z-50 bg-white/95 backdrop-blur-xl px-3 pt-3 md:hidden"
+<div className="fixed left-0 right-0 bottom-20 z-50 bg-white/95 backdrop-blur-xl px-3 py-3 md:hidden"
 style={{
   bottom: "env(safe-area-inset-bottom)",
   paddingBottom: "calc(env(safe-area-inset-bottom) + 16px)",
