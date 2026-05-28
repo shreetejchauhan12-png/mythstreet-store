@@ -25,6 +25,11 @@ const type =
   const [sort, setSort] = useState("latest");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [price, setPrice] = useState(2000);
+  const [tempCategory, setTempCategory] = useState(category);
+const [tempType, setTempType] = useState(type);
+const [tempCollection, setTempCollection] = useState(
+  collection || ""
+);
   useEffect(() => {
 
   async function loadProducts() {
@@ -191,7 +196,7 @@ if (!products.length) {
     <button
       onClick={() => router.push("/shop/men/all")}
       className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
-        category === "men"
+        tempCategory === "men"
           ? "bg-black text-white border-black"
           : "text-gray-600 border-gray-300 hover:border-black"
       }`}
@@ -202,7 +207,7 @@ if (!products.length) {
     <button
       onClick={() => router.push("/shop/women/all")}
       className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
-        category === "women"
+        tempCategory === "women"
           ? "bg-black text-white border-black"
           : "text-gray-600 border-gray-300 hover:border-black"
       }`}
@@ -224,7 +229,7 @@ if (!products.length) {
     <button
       onClick={() => router.push(`/shop/${category}/all`)}
       className={`px-4 py-1.5 rounded-full text-xs border transition-all duration-200 ease-out hover:scale-[1.03] ${
-        type === "all"
+        tempType === "all"
           ? "bg-black text-white border-black"
           : "text-gray-600 border-gray-300 hover:border-black"
       }`}
@@ -239,9 +244,7 @@ if (!products.length) {
     .replace(/\s+/g, "-");
 
   const active =
-    decodeURIComponent(type)
-      .toLowerCase()
-      .trim() === slug;
+    tempType === slug;
 
   return (
     <button
@@ -275,8 +278,8 @@ if (!products.length) {
 
     {collections.map((c) => {
   const active =
-    collection?.toLowerCase().trim() ===
-    c?.toLowerCase().trim();
+    tempCollection ===
+c?.toLowerCase().trim();
 
   return (
     <button
@@ -477,9 +480,8 @@ if (!products.length) {
 
           <button
             onClick={() => {
-              router.push("/shop/men/all");
-              setMobileFiltersOpen(false);
-            }}
+  setTempCategory("men");
+}}
             className={`px-4 py-2 rounded-full text-sm border ${
               category === "men"
                 ? "bg-black text-white border-black"
@@ -491,9 +493,8 @@ if (!products.length) {
 
           <button
             onClick={() => {
-              router.push("/shop/women/all");
-              setMobileFiltersOpen(false);
-            }}
+  setTempCategory("women");
+}}
             className={`px-4 py-2 rounded-full text-sm border ${
               category === "women"
                 ? "bg-black text-white border-black"
@@ -518,9 +519,8 @@ if (!products.length) {
 
     <button
       onClick={() => {
-        router.push(`/shop/${category}/all`);
-        setMobileFiltersOpen(false);
-      }}
+  setTempType("all");
+}}
       className={`px-4 py-2 rounded-full text-sm border ${
         type === "all"
           ? "bg-black text-white border-black"
@@ -545,9 +545,8 @@ if (!products.length) {
         <button
           key={t}
           onClick={() => {
-            router.push(`/shop/${category}/${slug}`);
-            setMobileFiltersOpen(false);
-          }}
+  setTempType(slug);
+}}
           className={`capitalize px-4 py-2 rounded-full text-sm border ${
             active
               ? "bg-black text-white border-black"
@@ -583,12 +582,8 @@ if (!products.length) {
         <button
           key={c}
           onClick={() => {
-            router.push(
-              `/shop/${category}/${type}?collection=${c.toLowerCase()}`
-            );
-
-            setMobileFiltersOpen(false);
-          }}
+  setTempCollection(c.toLowerCase());
+}}
           className={`capitalize px-4 py-2 rounded-full text-sm border ${
             active
               ? "bg-black text-white border-black"
@@ -628,6 +623,36 @@ if (!products.length) {
         </div>
 
       </div>
+
+      <button
+  onClick={() => {
+
+    const url =
+      `/shop/${tempCategory}/${tempType}` +
+      (tempCollection
+        ? `?collection=${tempCollection}`
+        : "");
+
+    router.push(url);
+
+    setMobileFiltersOpen(false);
+
+  }}
+  className="
+w-full
+bg-black
+text-white
+py-4
+rounded-2xl
+font-medium
+tracking-wide
+mt-4
+sticky
+bottom-0
+"
+>
+  APPLY FILTERS
+</button>
 
     </div>
 
