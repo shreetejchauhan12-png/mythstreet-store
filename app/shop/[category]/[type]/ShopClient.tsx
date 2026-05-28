@@ -456,7 +456,7 @@ c?.toLowerCase().trim();
 />
 
     {/* DRAWER */}
-    <div className="absolute bottom-0 left-0 right-0 z-10 bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto pb-32 animate-in slide-in-from-bottom duration-300">
+    <div className="absolute bottom-0 left-0 right-0 z-10 bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto pb-40 pb-32 animate-in slide-in-from-bottom duration-300">
 
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
@@ -476,6 +476,8 @@ c?.toLowerCase().trim();
 
       </div>
 
+      <div className="sticky bottom-0 bg-white pt-4 pb-6 mt-6">
+
       <button
   onClick={() => {
 
@@ -493,26 +495,18 @@ setMobileFiltersOpen(false);
 
   }}
   className="
-fixed
-bottom-5
-left-5
-right-5
-
+w-full
 bg-black
 text-white
-
 py-4
 rounded-2xl
-
 font-medium
 tracking-wide
-
-shadow-2xl
-z-50
 "
 >
   APPLY FILTERS
 </button>
+</div>
 
       {/* CATEGORY */}
       <div className="mb-6">
