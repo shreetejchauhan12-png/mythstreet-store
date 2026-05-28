@@ -654,8 +654,6 @@ rounded-2xl
 font-medium
 tracking-wide
 mt-4
-sticky
-bottom-0
 "
 >
   APPLY FILTERS
