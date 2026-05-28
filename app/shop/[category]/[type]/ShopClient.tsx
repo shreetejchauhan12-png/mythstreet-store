@@ -456,7 +456,7 @@ c?.toLowerCase().trim();
 />
 
     {/* DRAWER */}
-    <div className="absolute bottom-0 left-0 right-0 z-10 bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto pb-40 pb-32 animate-in slide-in-from-bottom duration-300">
+    <div className="absolute bottom-0 left-0 right-0 z-10 bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto pb-40 animate-in slide-in-from-bottom duration-300">
 
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
@@ -475,38 +475,6 @@ c?.toLowerCase().trim();
         </button>
 
       </div>
-
-      <div className="sticky bottom-0 bg-white pt-4 pb-6 mt-6">
-
-      <button
-  onClick={() => {
-
-    const url =
-      `/shop/${tempCategory}/${tempType}` +
-      (tempCollection
-        ? `?collection=${tempCollection}`
-        : "");
-
-    router.push(url);
-
-router.refresh();
-
-setMobileFiltersOpen(false);
-
-  }}
-  className="
-w-full
-bg-black
-text-white
-py-4
-rounded-2xl
-font-medium
-tracking-wide
-"
->
-  APPLY FILTERS
-</button>
-</div>
 
       {/* CATEGORY */}
       <div className="mb-6">
@@ -661,8 +629,39 @@ tracking-wide
 
       </div>
 
-      
+      <div className="sticky bottom-0 bg-white pt-4 pb-6 mt-6">
 
+      <button
+  onClick={() => {
+
+    const url =
+      `/shop/${tempCategory}/${tempType}` +
+      (tempCollection
+        ? `?collection=${tempCollection}`
+        : "");
+
+    router.push(url);
+
+router.refresh();
+
+setMobileFiltersOpen(false);
+
+  }}
+  className="
+w-full
+bg-black
+text-white
+py-4
+rounded-2xl
+font-medium
+tracking-wide
+"
+>
+  APPLY FILTERS
+</button>
+</div>
+
+    
     </div>
 
   </div>
