@@ -476,6 +476,36 @@ c?.toLowerCase().trim();
 
       </div>
 
+      <button
+  onClick={() => {
+
+    const url =
+      `/shop/${tempCategory}/${tempType}` +
+      (tempCollection
+        ? `?collection=${tempCollection}`
+        : "");
+
+    router.push(url);
+
+router.refresh();
+
+setMobileFiltersOpen(false);
+
+  }}
+  className="
+w-full
+bg-black
+text-white
+py-4
+rounded-2xl
+font-medium
+tracking-wide
+mt-4
+"
+>
+  APPLY FILTERS
+</button>
+
       {/* CATEGORY */}
       <div className="mb-6">
 
@@ -629,35 +659,7 @@ c?.toLowerCase().trim();
 
       </div>
 
-      <button
-  onClick={() => {
-
-    const url =
-      `/shop/${tempCategory}/${tempType}` +
-      (tempCollection
-        ? `?collection=${tempCollection}`
-        : "");
-
-    router.push(url);
-
-router.refresh();
-
-setMobileFiltersOpen(false);
-
-  }}
-  className="
-w-full
-bg-black
-text-white
-py-4
-rounded-2xl
-font-medium
-tracking-wide
-mt-4
-"
->
-  APPLY FILTERS
-</button>
+      
 
     </div>
 
