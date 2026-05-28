@@ -30,6 +30,13 @@ const [tempType, setTempType] = useState(type);
 const [tempCollection, setTempCollection] = useState(
   collection || ""
 );
+useEffect(() => {
+
+  setTempCategory(category);
+  setTempType(type);
+  setTempCollection(collection || "");
+
+}, [category, type, collection]);
   useEffect(() => {
 
   async function loadProducts() {
