@@ -528,41 +528,6 @@ const freshProduct = await res.json();
   </section>
 )}
       </main>
-      {/* MOBILE STICKY CTA */}
-<div className="fixed left-0 right-0 bottom-20 z-50 bg-white/95 backdrop-blur-xl px-3 py-3 md:hidden"
-style={{
-  bottom: "env(safe-area-inset-bottom)",
-  paddingBottom: "calc(env(safe-area-inset-bottom) + 16px)",
-}}>
-
-  <div className="flex items-center gap-3">
-
-    {/* PRICE */}
-    <div className="flex-1">
-      <p className="text-xs text-gray-500">
-        Price
-      </p>
-
-      <p className="font-semibold text-lg">
-        ₹{item.price}
-      </p>
-    </div>
-
-    {/* BUTTON */}
-    <button
-      onClick={handleAddToCart}
-      className={`h-14 px-6 rounded-2xl text-sm font-medium text-white transition active:scale-[0.98] ${
-        size
-          ? "bg-[#680000]"
-          : "bg-gray-400"
-      }`}
-    >
-      ADD TO CART
-    </button>
-
-  </div>
-
-</div>
     </>
   );
 }
