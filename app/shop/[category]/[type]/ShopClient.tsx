@@ -451,12 +451,12 @@ c?.toLowerCase().trim();
 
     {/* BACKDROP */}
     <div
-      onClick={() => setMobileFiltersOpen(false)}
-      className="absolute inset-0 bg-black/40 backdrop-blur-sm"
-    />
+  onClick={() => setMobileFiltersOpen(false)}
+  className="absolute inset-0 bg-black/40 backdrop-blur-sm z-0"
+/>
 
     {/* DRAWER */}
-    <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
+    <div className="absolute bottom-0 left-0 right-0 z-10 bg-white rounded-t-3xl p-5 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-300">
 
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
