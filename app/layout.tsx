@@ -6,22 +6,72 @@ import RecentPurchasePopup from "@/app/components/ui/RecentPurchasePopup";
 import Script from "next/script";
 import CartInitializer from "./CartInitializer";
 
-
 import { Montserrat, Bebas_Neue } from "next/font/google";
 
 export const metadata = {
   metadataBase: new URL("https://mythstreet.com"),
 
   title: {
-    default: "MYTHSTREET - Premium Anime Streetwear",
+    default: "MYTHSTREET - Premium Streetwear",
     template: "%s | MYTHSTREET",
   },
 
   description:
-    "Premium anime streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by Japanese anime culture.",
+    "Premium streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by anime and modern street culture.",
+
+  keywords: [
+    "anime streetwear",
+    "oversized t shirts",
+    "streetwear india",
+    "anime hoodies",
+    "anime fashion",
+    "japanese streetwear",
+    "MYTHSTREET",
+  ],
 
   alternates: {
     canonical: "https://mythstreet.com",
+  },
+
+  openGraph: {
+    title: "MYTHSTREET - Premium Streetwear",
+
+    description:
+      "Premium streetwear inspired by anime and modern street culture.",
+
+    url: "https://mythstreet.com",
+
+    siteName: "MYTHSTREET",
+
+    images: [
+      {
+        url: "/og-banner.webp",
+        width: 1200,
+        height: 630,
+        alt: "MYTHSTREET",
+      },
+    ],
+
+    locale: "en_IN",
+
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+
+    title: "MYTHSTREET - Premium Streetwear",
+
+    description:
+      "Premium streetwear inspired by anime and modern street culture.",
+
+    images: ["/og-banner.webp"],
+  },
+
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 
@@ -33,7 +83,6 @@ const montserrat = Montserrat({
 
 /* HEADING FONT */
 const bebas = Bebas_Neue({
-  
   subsets: ["latin"],
   weight: "400",
   variable: "--font-heading",
@@ -75,28 +124,30 @@ export default function RootLayout({
         <RecentPurchasePopup />
 
         {/* ORGANIZATION SCHEMA */}
-<script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Organization",
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
 
-      name: "MYTHSTREET",
+              name: "MYTHSTREET",
 
-      url: "https://mythstreet.com",
+              url: "https://mythstreet.com",
 
-      logo: "https://mythstreet.com/logo.webp",
+              logo: "https://mythstreet.com/logo.webp",
 
-      description:
-        "Premium streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by anime and street culture.",
+              description:
+                "Premium streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by anime and street culture.",
 
-      sameAs: [
-        "https://instagram.com/mythstreet",
-      ],
-    }),
-  }}
-/>
+              sameAs: [
+                "https://instagram.com/mythstreet",
+              ],
+            }),
+          }}
+        />
 
         {/* RAZORPAY */}
         <Script

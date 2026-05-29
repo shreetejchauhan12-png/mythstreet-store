@@ -9,6 +9,7 @@ import { useRouter, useParams } from "next/navigation";
 import { Share2 } from "lucide-react";
 import { reviews } from "@/app/data/reviews";
 import Image from "next/image";
+import Script from "next/script";
 
 function ShareButton({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
@@ -129,6 +130,41 @@ function prevImage() {
   reviews[
     item?.design as keyof typeof reviews
   ];
+
+  const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: "https://mythstreet.com",
+    },
+
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: item?.category || "Category",
+      item: `https://mythstreet.com/shop/${item?.category}`,
+    },
+
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: item?.type || "Product Type",
+      item: `https://mythstreet.com/shop/${item?.category}/${item?.type}`,
+    },
+
+    {
+      "@type": "ListItem",
+      position: 4,
+      name: item?.title || "Product",
+      item: `https://mythstreet.com/product/${item?.id}`,
+    },
+  ],
+};
 
   useEffect(() => {
   if (product) {
@@ -285,6 +321,13 @@ function prevImage() {
 
   return (
     <>
+    <Script
+  id="breadcrumb-schema"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(breadcrumbSchema),
+  }}
+/>
       <main className="max-w-7xl mx-auto px-4 py-10 pb-24">
 
         <p className="text-sm text-gray-500 mb-6">
@@ -318,7 +361,7 @@ function prevImage() {
                 <div className="pt-[125%]" />
                 <Image
   src={selectedImage || "/placeholder.webp"}
-  alt={item.title}
+  alt={`${item.title} Premium Streetwear by MYTHSTREET`}
   fill
   priority
   quality={85}
@@ -372,7 +415,7 @@ function prevImage() {
         <div className="pt-[125%] relative">
           <Image
   src={img}
-  alt={`${item.title} ${i}`}
+  alt={`${item.title} view ${i} - Premium Streetwear by MYTHSTREET`}
   fill
   quality={70}
   sizes="120px"

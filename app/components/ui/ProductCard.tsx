@@ -117,17 +117,18 @@ group
             {/* BASE IMAGE */}
 <Image
   src={`/${product.design}-${product.variant_code}-1.webp`}
-  alt={product.title}
+  alt={`${product.title} by MYTHSTREET premium streetwear`}
   fill
   sizes="(max-width: 768px) 50vw, 25vw"
   quality={75}
+  priority
   className="absolute inset-0 object-cover pointer-events-none transition-transform duration-500 ease-out group-hover:scale-[1.03]"
 />
 
 {/* LEFT IMAGE */}
 <Image
   src={`/${product.design}-${product.variant_code}-2.webp`}
-  alt={product.title}
+  alt={`${product.title} alternate view by MYTHSTREET`}
   fill
   sizes="(max-width: 768px) 50vw, 25vw"
   quality={75}

@@ -26,13 +26,20 @@ export default function Hero() {
           {/* HERO RATIO */}
           <div className="pt-[45%] md:pt-[42%]" />
 
+
+
+
+
+
+
           {/* IMAGE */}
           <Image
   src={heroImage}
-  alt="MythStreet Hero"
+  alt="MythStreet Premium Streetwear Hero Banner"
   fill
   priority
   sizes="100vw"
+  quality={85}
   className="
     object-cover
     transition-all duration-700
