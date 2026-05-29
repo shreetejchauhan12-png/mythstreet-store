@@ -29,6 +29,13 @@ description:
     "MYTHSTREET",
   ],
 
+  verification: {
+  other: {
+    "msvalidate.01":
+      "8775150F1803757DEB5F74296F206057",
+  },
+},
+
   alternates: {
     canonical: "https://mythstreet.com",
   },
