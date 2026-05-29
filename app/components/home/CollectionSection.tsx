@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CollectionSection() {
   const collections = [
@@ -63,17 +64,17 @@ export default function CollectionSection() {
               {/* IMAGE */}
               <div className="relative overflow-hidden rounded-[28px] aspect-3/4 shadow-sm">
 
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="
-                    absolute inset-0
-                    w-full h-full
-                    object-cover
-                    transition duration-700 ease-out
-                    group-hover:scale-110
-                  "
-                />
+                <Image
+  src={item.image}
+  alt={`${item.name} Collection`}
+  fill
+  sizes="122px"
+  className="
+    object-cover
+    transition duration-700 ease-out
+    group-hover:scale-110
+  "
+/>
 
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition"></div>
 

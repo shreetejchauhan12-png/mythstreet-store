@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function TrendingBanner({
   products,
@@ -55,17 +56,17 @@ export default function TrendingBanner({
             <div className="pt-[45%] md:pt-[42%]" />
 
             {/* IMAGE */}
-            <img
-              src={current.banner || current.image}
-              alt={current.title}
-              className="
-                absolute inset-0
-                w-full h-full
-                object-cover
-                transition-all duration-700
-                group-hover:scale-[1.03]
-              "
-            />
+            <Image
+  src={current.banner || current.image}
+  alt={current.title}
+  fill
+  sizes="100vw"
+  className="
+    object-cover
+    transition-all duration-700
+    group-hover:scale-[1.03]
+  "
+/>
 
             {/* OVERLAYS */}
             <div className="absolute inset-0 bg-black/15" />
