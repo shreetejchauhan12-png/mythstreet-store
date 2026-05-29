@@ -1,4 +1,5 @@
 import ProductClient from "./ProductClient";
+import Script from "next/script";
 
 type Props = {
   params: Promise<{
@@ -104,19 +105,31 @@ export default async function Page({
     description:
       `${product.title} by MythStreet. Premium anime streetwear crafted for everyday comfort and street culture.`,
 
-    brand: {
-      "@type": "Brand",
-      name: "MythStreet",
-    },
+    sku: `${product.id}`,
 
-    offers: {
-      "@type": "Offer",
-      url: `https://mythstreet.com/product/${id}`,
-      priceCurrency: "INR",
-      price: product.price,
-      availability:
-        "https://schema.org/InStock",
-    },
+brand: {
+  "@type": "Brand",
+  name: "MythStreet",
+},
+
+category: product.type,
+identifier_exists: false,
+
+offers: {
+  "@type": "Offer",
+
+  url: `https://mythstreet.com/product/${id}`,
+
+  priceCurrency: "INR",
+
+  price: product.price,
+
+  availability:
+    "https://schema.org/InStock",
+
+  itemCondition:
+    "https://schema.org/NewCondition",
+},
   };
 
   const breadcrumbSchema = {
@@ -156,21 +169,23 @@ export default async function Page({
 
   return (
     <>
-  <script
-    type="application/ld+json"
-    dangerouslySetInnerHTML={{
-      __html: JSON.stringify(schema),
-    }}
-  />
+  <Script
+  id="product-schema"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(schema),
+  }}
+/>
 
-  <script
-    type="application/ld+json"
-    dangerouslySetInnerHTML={{
-      __html: JSON.stringify(
-        breadcrumbSchema
-      ),
-    }}
-  />
+  <Script
+  id="breadcrumb-schema"
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify(
+      breadcrumbSchema
+    ),
+  }}
+/>
 
   <ProductClient />
 </>

@@ -147,7 +147,7 @@ export default function RootLayout({
               logo: "https://mythstreet.com/logo.webp",
 
               description:
-                "Premium streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by anime and street culture.",
+  "Premium streetwear brand featuring oversized t-shirts, hoodies and sweatshirts crafted for modern street culture, everyday comfort and timeless style.",
 
               sameAs: [
                 "https://instagram.com/mythstreet",
@@ -155,6 +155,31 @@ export default function RootLayout({
             }),
           }}
         />
+
+        <Script
+  id="website-schema"
+  type="application/ld+json"
+  strategy="beforeInteractive"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+
+      "@type": "WebSite",
+
+      name: "MYTHSTREET",
+
+      url: "https://mythstreet.com",
+
+      description:
+        "Premium streetwear brand featuring oversized t-shirts, hoodies and sweatshirts crafted for modern street culture and everyday comfort.",
+
+      publisher: {
+        "@type": "Organization",
+        name: "MYTHSTREET",
+      },
+    }),
+  }}
+/>
 
         {/* RAZORPAY */}
         <Script
