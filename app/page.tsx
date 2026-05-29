@@ -14,7 +14,12 @@ export default async function Home() {
 
   return (
     <main className="space-y-2 md:space-y-3">
-      <Hero />
+
+  <h1 className="sr-only">
+    MYTHSTREET Premium Oversized Streetwear India
+  </h1>
+
+  <Hero />
 <CategorySection />
 <TrustBadges />
 

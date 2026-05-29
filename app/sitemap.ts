@@ -3,16 +3,16 @@ import type { MetadataRoute } from "next";
 const BASE_URL = "https://mythstreet.com";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static pages
+  // STATIC PAGES
   const staticRoutes = [
-  "",
-  "/about",
-  "/contact",
-  "/terms",
-  "/privacy",
-  "/returns",
-  "/support",
-];
+    "",
+    "/about",
+    "/contact",
+    "/terms",
+    "/privacy",
+    "/returns",
+    "/support",
+  ];
 
   const staticPages: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${BASE_URL}${route}`,
@@ -21,35 +21,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : 0.8,
   }));
 
-    const shopPages: MetadataRoute.Sitemap = [
+  // SHOP / COLLECTION PAGES
+  const shopPages: MetadataRoute.Sitemap = [
     {
-      url: `${BASE_URL}/shop/anime/oversized`,
+      url: `${BASE_URL}/shop/all/all`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/shop/anime/hoodie`,
+      url: `${BASE_URL}/shop/all/oversized-t-shirt`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/shop/anime/sweatshirt`,
+      url: `${BASE_URL}/shop/all/hoodie`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/shop/all/sweatshirt`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
   ];
 
-  // Fetch products
+  // PRODUCT PAGES
   let productPages: MetadataRoute.Sitemap = [];
 
   try {
     const response = await fetch(
       "https://mythstreet-backend.onrender.com/api/products",
       {
-        next: { revalidate: 3600 }, // refresh every 1 hour
+        next: { revalidate: 3600 },
       }
     );
 
@@ -57,13 +64,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     productPages = products.map((product: any) => ({
       url: `${BASE_URL}/product/${product.id}`,
-      lastModified: new Date(product.created_at),
+      lastModified: new Date(
+        product.created_at || Date.now()
+      ),
       changeFrequency: "weekly",
       priority: 0.9,
     }));
   } catch (error) {
-    console.error("Failed to fetch products for sitemap:", error);
+    console.error(
+      "Failed to fetch products for sitemap:",
+      error
+    );
   }
 
-  return [...staticPages, ...shopPages, ...productPages];
+  return [
+    ...staticPages,
+    ...shopPages,
+    ...productPages,
+  ];
 }

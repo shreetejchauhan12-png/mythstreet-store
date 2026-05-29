@@ -111,6 +111,7 @@ export default async function Page({
 
     offers: {
       "@type": "Offer",
+      url: `https://mythstreet.com/product/${id}`,
       priceCurrency: "INR",
       price: product.price,
       availability:
@@ -118,16 +119,60 @@ export default async function Page({
     },
   };
 
+  const breadcrumbSchema = {
+  "@context": "https://schema.org",
+
+  "@type": "BreadcrumbList",
+
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+
+      name: "Home",
+
+      item: "https://mythstreet.com",
+    },
+
+    {
+      "@type": "ListItem",
+      position: 2,
+
+      name: "Shop",
+
+      item: "https://mythstreet.com/shop/all/all",
+    },
+
+    {
+      "@type": "ListItem",
+      position: 3,
+
+      name: product.title,
+
+      item: `https://mythstreet.com/product/${id}`,
+    },
+  ],
+};
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema),
-        }}
-      />
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(schema),
+    }}
+  />
 
-      <ProductClient />
-    </>
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(
+        breadcrumbSchema
+      ),
+    }}
+  />
+
+  <ProductClient />
+</>
   );
 }
