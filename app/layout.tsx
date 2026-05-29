@@ -12,12 +12,12 @@ export const metadata = {
   metadataBase: new URL("https://mythstreet.com"),
 
   title: {
-    default: "MYTHSTREET - Premium Streetwear",
-    template: "%s | MYTHSTREET",
-  },
+  default: "MYTHSTREET - Premium Oversized Streetwear India",
+  template: "%s | MYTHSTREET",
+},
 
-  description:
-    "Premium streetwear brand featuring oversized t-shirts, hoodies, and sweatshirts inspired by anime and modern street culture.",
+description:
+  "Premium streetwear brand featuring oversized t-shirts, hoodies and sweatshirts crafted for modern street culture, everyday comfort and timeless style.",
 
   keywords: [
     "anime streetwear",
