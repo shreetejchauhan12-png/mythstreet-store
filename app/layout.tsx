@@ -34,10 +34,10 @@ description:
   },
 
   openGraph: {
-    title: "MYTHSTREET - Premium Streetwear",
+    title: "MYTHSTREET - Premium Oversized Streetwear India",
 
-    description:
-      "Premium streetwear inspired by anime and modern street culture.",
+description:
+  "Premium streetwear brand featuring oversized t-shirts, hoodies and sweatshirts crafted for modern street culture, everyday comfort and timeless style.",
 
     url: "https://mythstreet.com",
 
@@ -60,10 +60,10 @@ description:
   twitter: {
     card: "summary_large_image",
 
-    title: "MYTHSTREET - Premium Streetwear",
+    title: "MYTHSTREET - Premium Oversized Streetwear India",
 
-    description:
-      "Premium streetwear inspired by anime and modern street culture.",
+description:
+  "Premium streetwear brand featuring oversized t-shirts, hoodies and sweatshirts crafted for modern street culture, everyday comfort and timeless style.",
 
     images: ["/og-banner.webp"],
   },
