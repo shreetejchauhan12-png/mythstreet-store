@@ -11,7 +11,7 @@ export async function getDesignVariants(
       `${BASE_URL}/api/products/design/${designId}`,
       {
         next: {
-          revalidate: 300,
+          cache: "no-store",
         },
       }
     );
