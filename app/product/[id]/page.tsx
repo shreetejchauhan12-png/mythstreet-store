@@ -1,5 +1,6 @@
 import ProductClient from "./ProductClient";
 import Script from "next/script";
+import { getDesignVariants } from "@/app/data/getDesignVariants";
 
 type Props = {
   params: Promise<{
@@ -91,6 +92,13 @@ export default async function Page({
   const { id } = await params;
 
   const product = await getProduct(id);
+
+  const variants =
+  await getDesignVariants(
+    product.design_id
+  );
+
+  console.log(variants);
 
   const schema = {
     "@context": "https://schema.org",
