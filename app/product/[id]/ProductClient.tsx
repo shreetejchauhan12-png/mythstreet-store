@@ -443,67 +443,38 @@ function prevImage() {
 
 {designVariants.length > 1 && (
 
-  <div className="mt-8">
+  <div className="mb-5">
 
-    <h3 className="font-semibold text-lg mb-4">
-      Complete The Collection
-    </h3>
+    <p className="text-sm font-medium text-gray-600 mb-3">
+      Also Available In
+    </p>
 
-    <div className="grid grid-cols-2 gap-4">
+    <div className="flex flex-wrap gap-2">
 
-      {designVariants
-        .filter(
-          (variant) =>
-            variant.id !== item.id
-        )
-        .map((variant) => (
+      {designVariants.map((variant) => (
 
-          <button
-            key={variant.id}
-            onClick={() =>
-              router.push(
-                `/product/${variant.id}`
-              )
-            }
-            className="
-              overflow-hidden
-              border
-              rounded-2xl
-              text-left
-              bg-white
-              hover:border-[#680000]
-              hover:-translate-y-1
-              transition-all
-              duration-300
-            "
-          >
+        <button
+          key={variant.id}
 
-            <div className="relative aspect-[4/5]">
+          onClick={() =>
+            router.push(
+              `/product/${variant.id}`
+            )
+          }
 
-              <Image
-                src={`/${item.design}-${variant.variant_code}-1.webp`}
-                alt={variant.title}
-                fill
-                sizes="200px"
-                loading="lazy"
-                className="object-cover"
-              />
-
-            </div>
-
-            <div className="p-3">
-
-              <p className="font-medium text-sm line-clamp-1">
-                {variant.title}
-              </p>
-
-              <p className="text-[#680000] text-sm mt-1">
-                View Product →
-              </p>
-
-            </div>
-
-          </button>
+          className={`px-4 py-2 rounded-full border text-sm transition ${
+            variant.id === item.id
+              ? "bg-[#680000] text-white border-[#680000]"
+              : "bg-white hover:border-[#680000]"
+          }`}
+        >
+          {variant.type
+            .replace(/-/g, " ")
+            .replace(
+  /\b\w/g,
+  (c: string) => c.toUpperCase()
+)}
+        </button>
 
       ))}
 
@@ -653,11 +624,11 @@ hover:bg-[#680000]/5
 
   <div className="mt-8">
 
-    <h3 className="font-semibold mb-4">
+    <h3 className="font-semibold text-lg mb-4">
       Complete The Collection
     </h3>
 
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-4">
 
       {designVariants
         .filter(
@@ -674,24 +645,42 @@ hover:bg-[#680000]/5
               )
             }
             className="
+              overflow-hidden
               border
-              rounded-xl
-              p-4
+              rounded-2xl
               text-left
+              bg-white
               hover:border-[#680000]
-              transition
+              hover:-translate-y-1
+              transition-all
+              duration-300
             "
           >
 
-            <p className="font-medium">
-              {variant.type
-                .replace(/-/g, " ")
-                .replace(
-                  /\b\w/g,
-                  (c: string) =>
-                    c.toUpperCase()
-                )}
-            </p>
+            <div className="relative aspect-[5/6]">
+
+              <Image
+                src={`/${item.design}-${variant.variant_code}-1.webp`}
+                alt={variant.title}
+                fill
+                sizes="200px"
+                loading="lazy"
+                className="object-cover"
+              />
+
+            </div>
+
+            <div className="p-3">
+
+              <p className="font-medium text-sm line-clamp-1">
+                {variant.title}
+              </p>
+
+              <p className="text-[#680000] text-sm mt-1">
+                View Product →
+              </p>
+
+            </div>
 
           </button>
 
@@ -701,7 +690,7 @@ hover:bg-[#680000]/5
 
   </div>
 
-)} 
+)}
 
           </div>
         </div>
