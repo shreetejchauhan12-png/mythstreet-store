@@ -10,6 +10,7 @@ import { Share2 } from "lucide-react";
 import { reviews } from "@/app/data/reviews";
 import Image from "next/image";
 import Script from "next/script";
+import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 
 function ShareButton({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
@@ -267,7 +268,7 @@ function prevImage() {
 }
 
   if (!product) {
-  return null;
+  return <ProductSkeleton />;
 }
 
   return (
