@@ -10,6 +10,7 @@ import { Share2 } from "lucide-react";
 import { reviews } from "@/app/data/reviews";
 import Image from "next/image";
 import Script from "next/script";
+import RecentlyViewed from "@/app/components/ui/RecentlyViewed";
 
 function ShareButton({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
@@ -758,6 +759,8 @@ hover:bg-[#680000]/5
 
   </section>
 )}
+
+<RecentlyViewed />
       </main>
     </>
   );
