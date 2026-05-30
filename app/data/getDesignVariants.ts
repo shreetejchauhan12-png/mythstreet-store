@@ -10,9 +10,7 @@ export async function getDesignVariants(
     const res = await fetch(
       `${BASE_URL}/api/products/design/${designId}`,
       {
-        next: {
-          cache: "no-store",
-        },
+        cache: "no-store",
       }
     );
 
