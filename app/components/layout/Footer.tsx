@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-black text-white mt-16 overflow-hidden">
+    <footer className="relative bg-black text-white mt-16 overflow-hidden min-h-[450px]">
 
       {/* TOP GLOW */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#680000] to-transparent opacity-60" />
