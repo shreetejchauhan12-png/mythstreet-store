@@ -121,7 +121,6 @@ group
   fill
   sizes="(max-width: 768px) 50vw, 25vw"
   quality={75}
-  priority
   className="absolute inset-0 object-cover pointer-events-none transition-transform duration-500 ease-out group-hover:scale-[1.03]"
 />
 

@@ -34,20 +34,20 @@ export default function TrustBadges() {
             />
 
             <p className="text-[11px] mt-2 tracking-wide">
-              Premium Quality
-            </p>
+  7-Day Exchange
+</p>
           </div>
 
           {/* INDIA */}
           <div className="flex flex-col items-center flex-1">
-            <MapPinned
-              className="w-5 h-5 text-white"
-              strokeWidth={1.8}
-            />
+            <ShieldCheck
+  className="w-5 h-5 text-white"
+  strokeWidth={1.8}
+/>
 
-            <p className="text-[11px] mt-2 tracking-wide">
-              Pan India
-            </p>
+<p className="text-[11px] mt-2 tracking-wide">
+  Secure Payments
+</p>
           </div>
 
         </div>

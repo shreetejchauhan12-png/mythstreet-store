@@ -535,11 +535,18 @@ function prevImage() {
             <div className="flex gap-3 mb-4 min-w-0">
               <button
   onClick={handleAddToCart}
-  className={`py-3 min-w-0 flex-1 text-white transition active:scale-[0.98] hover:opacity-90 ${
-    size
-  ? "bg-[#680000]"
-  : "bg-[#680000]"
-  }`}
+  className="
+py-3
+min-w-0
+flex-1
+border
+border-[#680000]
+text-[#680000]
+bg-white
+transition
+active:scale-[0.98]
+hover:bg-[#680000]/5
+"
 >
   ADD TO CART
 </button>
@@ -557,11 +564,11 @@ function prevImage() {
             </div>
 
             <div className="bg-gray-50 border p-4 rounded-lg text-sm space-y-2 mb-6">
-              <p>🔒 Secure prepaid payment</p>
-              <p>🧵 Made to order product</p>
-              <p>🚚 Shipping in 4-6 days</p>
-              <p>📦 Replacement only for damaged items</p>
-            </div>
+  <p>🔒 Secure Payments</p>
+  <p>✨ Premium Quality Streetwear</p>
+  <p>🚚 Ships in 4–6 Days</p>
+  <p>🇮🇳 Pan India Delivery</p>
+</div>
 
             <p className="text-sm text-gray-600 leading-6">
               Premium quality streetwear designed for everyday comfort.

@@ -113,7 +113,6 @@ brand: {
 },
 
 category: product.type,
-identifier_exists: false,
 
 offers: {
   "@type": "Offer",

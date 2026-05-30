@@ -79,19 +79,64 @@ export default async function Page({
     },
   };
 
-  return (
-    <>
-      <Script
-        id="collection-schema"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(
-            collectionSchema
-          ),
-        }}
-      />
+  const breadcrumbSchema = {
+  "@context": "https://schema.org",
 
-      <ShopClient />
-    </>
-  );
+  "@type": "BreadcrumbList",
+
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+
+      name: "Home",
+
+      item: "https://mythstreet.com",
+    },
+
+    {
+      "@type": "ListItem",
+      position: 2,
+
+      name: "Shop",
+
+      item: "https://mythstreet.com/shop/all/all",
+    },
+
+    {
+      "@type": "ListItem",
+      position: 3,
+
+      name: `${category} ${type}`.replace(/-/g, " "),
+
+      item: `https://mythstreet.com/shop/${category}/${type}`,
+    },
+  ],
+};
+
+  return (
+  <>
+    <Script
+      id="collection-schema"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(
+          collectionSchema
+        ),
+      }}
+    />
+
+    <Script
+      id="breadcrumb-schema"
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(
+          breadcrumbSchema
+        ),
+      }}
+    />
+
+    <ShopClient />
+  </>
+);
 }

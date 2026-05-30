@@ -34,7 +34,7 @@ export async function getProducts(): Promise<Product[]> {
 
   try {
     const res = await fetch(`${BASE_URL}/api/products`, {
-      next: { revalidate: 300 },
+      next: { revalidate: 3600 },
     });
 
     if (res.ok) {
