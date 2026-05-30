@@ -60,12 +60,19 @@ function ShareButton({ title }: { title: string }) {
   );
 }
 
-export default function ProductPage() {
+type ProductClientProps = {
+  variants: any[];
+};
+
+export default function ProductPage({
+  variants,
+}: ProductClientProps) {
   const params = useParams();
 const id = params?.id;
   const router = useRouter();
 
   const [product, setProduct] = useState<any>(null);
+  const designVariants = variants || [];
 
   const addToCart = useCart((state) => state.addToCart);
 
@@ -431,6 +438,51 @@ function prevImage() {
               </h1>
               <ShareButton title={item.title} />
             </div>
+
+            {/* ALSO AVAILABLE IN */}
+
+{designVariants.length > 1 && (
+
+  <div className="mb-5">
+
+    <p className="text-sm font-medium text-gray-600 mb-3">
+      Also Available In
+    </p>
+
+    <div className="flex flex-wrap gap-2">
+
+      {designVariants.map((variant) => (
+
+        <button
+          key={variant.id}
+
+          onClick={() =>
+            router.push(
+              `/product/${variant.id}`
+            )
+          }
+
+          className={`px-4 py-2 rounded-full border text-sm transition ${
+            variant.id === item.id
+              ? "bg-[#680000] text-white border-[#680000]"
+              : "bg-white hover:border-[#680000]"
+          }`}
+        >
+          {variant.type
+            .replace(/-/g, " ")
+            .replace(
+  /\b\w/g,
+  (c: string) => c.toUpperCase()
+)}
+        </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+)}
 
             <p className="text-xl">₹{item.price}</p>
             {reviewData && (

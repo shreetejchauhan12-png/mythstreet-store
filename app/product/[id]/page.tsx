@@ -194,7 +194,7 @@ offers: {
   }}
 />
 
-  <ProductClient />
+  <ProductClient variants={variants} />
 </>
   );
 }
