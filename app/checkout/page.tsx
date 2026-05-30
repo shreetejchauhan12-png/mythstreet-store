@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useCart } from "@/app/store/cart";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 
 function CheckoutInner() {
   const [isBuyNow, setIsBuyNow] = useState(false);
@@ -680,8 +681,21 @@ if (user.id) {
 }
 export default function CheckoutPage() {
   return (
-    <Suspense fallback={<p className="text-center mt-10">Loading checkout...</p>}>
-      <CheckoutInner />
-    </Suspense>
+    <>
+      <Script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="lazyOnload"
+      />
+
+      <Suspense
+        fallback={
+          <p className="text-center mt-10">
+            Loading checkout...
+          </p>
+        }
+      >
+        <CheckoutInner />
+      </Suspense>
+    </>
   );
 }
