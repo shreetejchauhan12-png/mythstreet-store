@@ -619,6 +619,61 @@ hover:bg-[#680000]/5
             <p className="text-sm text-gray-600 leading-6">
               Premium quality streetwear designed for everyday comfort.
             </p>
+
+            {designVariants.length > 1 && (
+
+  <div className="mt-8">
+
+    <h3 className="font-semibold mb-4">
+      Complete The Collection
+    </h3>
+
+    <div className="grid grid-cols-2 gap-3">
+
+      {designVariants
+        .filter(
+          (variant) =>
+            variant.id !== item.id
+        )
+        .map((variant) => (
+
+          <button
+            key={variant.id}
+            onClick={() =>
+              router.push(
+                `/product/${variant.id}`
+              )
+            }
+            className="
+              border
+              rounded-xl
+              p-4
+              text-left
+              hover:border-[#680000]
+              transition
+            "
+          >
+
+            <p className="font-medium">
+              {variant.type
+                .replace(/-/g, " ")
+                .replace(
+                  /\b\w/g,
+                  (c: string) =>
+                    c.toUpperCase()
+                )}
+            </p>
+
+          </button>
+
+      ))}
+
+    </div>
+
+  </div>
+
+)} 
+
           </div>
         </div>
 
