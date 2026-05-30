@@ -73,7 +73,6 @@ const id = params?.id;
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
-  const [stockLeft, setStockLeft] = useState(5);
   const [touchStart, setTouchStart] = useState(0);
 const [touchEnd, setTouchEnd] = useState(0);
 
@@ -173,12 +172,6 @@ function prevImage() {
     );
   }
 }, [product]);
-
-  useEffect(() => {
-  setStockLeft(
-    Math.floor(Math.random() * 10) + 1
-  );
-}, []);
 
   // ✅ Recently viewed (cleaned)
   useEffect(() => {
@@ -456,11 +449,12 @@ function prevImage() {
 )}
 
             <div className="mt-2 mb-6 space-y-1 text-sm">
-              
-              <p className="text-red-500 font-medium">
-                🔥 Only {stockLeft} left in stock
-              </p>
-            </div>
+
+  <p className="text-[#680000] font-medium">
+    ⚡ Limited Production Batch
+  </p>
+
+</div>
 
             <div className="mb-2">
               <p className="font-medium mb-2">Select Size</p>
