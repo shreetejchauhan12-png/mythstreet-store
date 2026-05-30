@@ -180,27 +180,6 @@ function prevImage() {
   }
 }, [product]);
 
-  // ✅ Recently viewed (cleaned)
-  useEffect(() => {
-    if (!item) return;
-
-    let stored: any[] = [];
-
-    try {
-      stored = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-    } catch {
-      stored = [];
-    }
-
-    const filtered = stored.filter((p: any) => p?.id !== item?.id);
-    filtered.unshift(item);
-
-    localStorage.setItem(
-      "recentlyViewed",
-      JSON.stringify(filtered.slice(0, 8))
-    );
-  }, [item]);
-
   
   async function handleAddToCart() {
 
@@ -288,35 +267,7 @@ function prevImage() {
 }
 
   if (!product) {
-  return (
-    <main className="max-w-7xl mx-auto px-4 py-10 animate-pulse">
-
-      <div className="grid md:grid-cols-2 gap-10">
-
-        {/* LEFT */}
-        <div className="bg-gray-200 rounded-2xl aspect-[4/5]" />
-
-        {/* RIGHT */}
-        <div className="space-y-4">
-
-          <div className="h-10 w-3/4 bg-gray-200 rounded-xl" />
-
-          <div className="h-6 w-24 bg-gray-200 rounded-lg" />
-
-          <div className="h-5 w-40 bg-gray-200 rounded-lg" />
-
-          <div className="pt-6 space-y-3">
-            <div className="h-12 bg-gray-200 rounded-xl" />
-            <div className="h-12 bg-gray-200 rounded-xl" />
-            <div className="h-12 bg-gray-200 rounded-xl" />
-          </div>
-
-        </div>
-
-      </div>
-
-    </main>
-  );
+  return null;
 }
 
   return (
