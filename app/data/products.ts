@@ -34,7 +34,7 @@ export async function getProducts(): Promise<Product[]> {
 
   try {
     const res = await fetch(`${BASE_URL}/api/products`, {
-      cache: "no-store"
+      next: { revalidate: 3600 }
     });
 
     if (res.ok) {
