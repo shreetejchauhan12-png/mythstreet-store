@@ -2,7 +2,6 @@ import "./globals.css";
 
 import Header from "@/app/components/layout/Header";
 import Footer from "@/app/components/layout/Footer";
-import RecentPurchasePopup from "@/app/components/ui/RecentPurchasePopup";
 import Script from "next/script";
 import CartInitializer from "./CartInitializer";
 
@@ -128,7 +127,6 @@ export default function RootLayout({
         <Footer />
 
         {/* RECENT PURCHASE POPUP */}
-        <RecentPurchasePopup />
 
         {/* ORGANIZATION SCHEMA */}
         <Script
