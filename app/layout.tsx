@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/app/components/layout/Header";
 import Footer from "@/app/components/layout/Footer";
 import Script from "next/script";
+import GoogleAnalytics from "@/app/components/analytics/GoogleAnalytics";
 import CartInitializer from "./CartInitializer";
 
 import { Montserrat, Bebas_Neue } from "next/font/google";
@@ -113,6 +114,8 @@ export default function RootLayout({
           antialiased
         `}
       >
+
+      <GoogleAnalytics />
 
         {/* HEADER */}
         <Header />
