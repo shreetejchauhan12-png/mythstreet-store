@@ -114,9 +114,6 @@ export default function RootLayout({
         `}
       >
 
-        {/* CART LOADER */}
-        <CartInitializer />
-
         {/* HEADER */}
         <Header />
 
@@ -125,6 +122,9 @@ export default function RootLayout({
 
         {/* FOOTER */}
         <Footer />
+
+        {/* CART LOADER */}
+        <CartInitializer />
 
         {/* RECENT PURCHASE POPUP */}
 
