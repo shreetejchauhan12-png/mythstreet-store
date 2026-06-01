@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
 export default function OrderSuccessPage() {
   const [orderId, setOrderId] = useState("");
-  const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
+const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
+
+const searchParams = useSearchParams();
 
   useEffect(() => {
     const orders =
@@ -17,11 +20,11 @@ export default function OrderSuccessPage() {
       setPaymentType(latest.payment || "online");
     }
 
-    const id =
-      "MYTH-" +
-      Math.floor(100000 + Math.random() * 900000);
+    const realOrderId = searchParams.get("order_id");
 
-    setOrderId(id);
+if (realOrderId) {
+  setOrderId(realOrderId);
+}
   }, []);
 
   const isCOD = paymentType === "cod";
