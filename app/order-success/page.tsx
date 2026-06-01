@@ -3,22 +3,26 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export default function OrderSuccessPage() {
   const [orderId, setOrderId] = useState("");
-const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
-const [realOrderId, setRealOrderId] = useState("");
-const [orderData, setOrderData] = useState<any>(null);
-const [purchaseSent, setPurchaseSent] = useState(false);
-const [loadingOrder, setLoadingOrder] = useState(true);
-const [orderError, setOrderError] = useState(false);
-const [token, setToken] = useState("");
+  const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
+  const [realOrderId, setRealOrderId] = useState("");
+  const [orderData, setOrderData] = useState<any>(null);
+  const [purchaseSent, setPurchaseSent] = useState(false);
+  const [token, setToken] = useState("");
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-console.log("API_URL:", API_URL);
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
-    const orders =
-      JSON.parse(localStorage.getItem("myth_orders") || "[]");
+    const orders = JSON.parse(
+      localStorage.getItem("myth_orders") || "[]"
+    );
 
     const latest = orders[0];
 
@@ -26,85 +30,100 @@ console.log("API_URL:", API_URL);
       setPaymentType(latest.payment || "online");
     }
 
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(
+      window.location.search
+    );
 
-const orderIdParam = params.get("order_id");
+    const orderIdParam = params.get("order_id");
 
-if (orderIdParam) {
-  setRealOrderId(orderIdParam);
-  setOrderId("#" + orderIdParam);
+    if (orderIdParam) {
+      setRealOrderId(orderIdParam);
+      setOrderId("#" + orderIdParam);
 
-  const savedToken = localStorage.getItem("token");
+      const savedToken =
+        localStorage.getItem("token");
 
-  if (savedToken) {
-  setToken(savedToken);
-  console.log("TOKEN FOUND");
-} else {
-  console.log("NO TOKEN");
-}
-}
+      if (savedToken) {
+        setToken(savedToken);
+      }
+    }
   }, []);
 
-useEffect(() => {
-  console.log("realOrderId:", realOrderId);
-console.log("token:", token);
+  useEffect(() => {
+    if (!realOrderId || !token) return;
 
-if (!realOrderId || !token) {
-  console.log("FETCH BLOCKED");
-  return;
-}
+    const fetchOrder = async () => {
+      try {
+        const res = await fetch(
+          `${API_URL}/api/order/${realOrderId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-console.log("FETCH STARTING");
+        if (!res.ok) {
+          throw new Error("Failed to fetch order");
+        }
 
-  const fetchOrder = async () => {
-    try {
-      setLoadingOrder(true);
+        const data = await res.json();
 
-      console.log("REQUEST URL:", `${API_URL}/api/order/${realOrderId}`);
-
-const res = await fetch(
-  `${API_URL}/api/order/${realOrderId}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
-
-console.log("RESPONSE STATUS:", res.status);
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch order");
+        setOrderData({
+          order: data.order,
+          items: data.items,
+        });
+      } catch (error) {
+        console.error(
+          "Order fetch error:",
+          error
+        );
       }
+    };
 
-      const data = await res.json();
+    fetchOrder();
+  }, [realOrderId, token, API_URL]);
 
-      setOrderData({
-        order: data.order,
-        items: data.items,
+  useEffect(() => {
+    if (!orderData) return;
+    if (purchaseSent) return;
+
+    const order = orderData.order;
+    const items = orderData.items || [];
+
+    if (
+      typeof window !== "undefined" &&
+      typeof window.gtag === "function"
+    ) {
+      window.gtag("event", "purchase", {
+        transaction_id: String(order.id),
+        value: Number(order.total_amount),
+        currency: "INR",
+
+        items: items.map((item: any) => ({
+          item_id: String(item.product_id),
+          item_name: item.title,
+          price: Number(item.price),
+          quantity: Number(item.quantity),
+        })),
       });
 
-      setOrderError(false);
-    } catch (error) {
-      console.error("Order fetch error:", error);
-      setOrderError(true);
-    } finally {
-      setLoadingOrder(false);
+      console.log("GA4 PURCHASE SENT");
+
+      setPurchaseSent(true);
     }
-  };
+  }, [orderData, purchaseSent]);
 
-  fetchOrder();
-}, [realOrderId, token]);
+  const isCOD = paymentType === "cod";
 
-const isCOD = paymentType === "cod";
   return (
     <main className="max-w-3xl mx-auto px-4 py-24 text-center">
-
-      {/* icon */}
       <div className="flex justify-center mb-8">
         <div
           className={`w-20 h-20 rounded-full flex items-center justify-center text-white text-3xl ${
-            isCOD ? "bg-yellow-500" : "bg-green-500"
+            isCOD
+              ? "bg-yellow-500"
+              : "bg-green-500"
           }`}
         >
           {isCOD ? "₹" : "✓"}
@@ -112,7 +131,9 @@ const isCOD = paymentType === "cod";
       </div>
 
       <h1 className="text-3xl font-semibold mb-2 text-red-500">
-        {isCOD ? "Order Placed (COD)" : "Order Confirmed"}
+        {isCOD
+          ? "Order Placed (COD)"
+          : "Order Confirmed"}
       </h1>
 
       <p className="text-gray-600 mb-8">
@@ -122,8 +143,12 @@ const isCOD = paymentType === "cod";
       </p>
 
       <div className="border rounded-xl p-6 mb-8 bg-white shadow-sm">
-        <p className="text-sm text-gray-500 mb-1">Order ID</p>
-        <p className="text-xl font-semibold">{orderId}</p>
+        <p className="text-sm text-gray-500 mb-1">
+          Order ID
+        </p>
+        <p className="text-xl font-semibold">
+          {orderId}
+        </p>
       </div>
 
       <div className="text-sm text-gray-600 mb-10">
