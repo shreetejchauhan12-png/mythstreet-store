@@ -6,6 +6,7 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
+    trackPurchase?: (data: any) => void;
   }
 }
 
@@ -30,11 +31,15 @@ export default function GoogleAnalytics() {
 
           window.gtag = gtag;
 
-          gtag('js', new Date());
+window.trackPurchase = function(data) {
+  gtag('event', 'purchase', data);
+};
 
-          gtag('config', 'G-4KS5MG3XMJ', {
-            page_path: window.location.pathname,
-          });
+gtag('js', new Date());
+
+gtag('config', 'G-4KS5MG3XMJ', {
+  page_path: window.location.pathname,
+});
         `}
       </Script>
     </>

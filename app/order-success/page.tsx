@@ -6,6 +6,14 @@ import Link from "next/link";
 export default function OrderSuccessPage() {
   const [orderId, setOrderId] = useState("");
 const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
+const [realOrderId, setRealOrderId] = useState("");
+const [orderData, setOrderData] = useState<any>(null);
+const [purchaseSent, setPurchaseSent] = useState(false);
+const [loadingOrder, setLoadingOrder] = useState(true);
+const [orderError, setOrderError] = useState(false);
+const [token, setToken] = useState("");
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const orders =
@@ -19,15 +27,60 @@ const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
 
     const params = new URLSearchParams(window.location.search);
 
-const realOrderId = params.get("order_id");
+const orderIdParam = params.get("order_id");
 
-if (realOrderId) {
-  setOrderId("#" + realOrderId);
+if (orderIdParam) {
+  setRealOrderId(orderIdParam);
+  setOrderId("#" + orderIdParam);
+
+  const savedToken = localStorage.getItem("token");
+
+  if (savedToken) {
+    setToken(savedToken);
+  }
 }
   }, []);
 
-  const isCOD = paymentType === "cod";
+useEffect(() => {
+  if (!realOrderId || !token) return;
 
+  const fetchOrder = async () => {
+    try {
+      setLoadingOrder(true);
+
+      const res = await fetch(
+        `${API_URL}/api/order/${realOrderId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch order");
+      }
+
+      const data = await res.json();
+
+      setOrderData({
+        order: data.order,
+        items: data.items,
+      });
+
+      setOrderError(false);
+    } catch (error) {
+      console.error("Order fetch error:", error);
+      setOrderError(true);
+    } finally {
+      setLoadingOrder(false);
+    }
+  };
+
+  fetchOrder();
+}, [realOrderId, token]);
+
+const isCOD = paymentType === "cod";
   return (
     <main className="max-w-3xl mx-auto px-4 py-24 text-center">
 
