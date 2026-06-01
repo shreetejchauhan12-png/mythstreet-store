@@ -70,6 +70,29 @@ const finalItems =
     : cart.length > 0
     ? cart
     : tempCart;
+
+    useEffect(() => {
+  if (!finalItems.length) return;
+
+  window.gtag("event", "begin_checkout", {
+    currency: "INR",
+
+    value: finalItems.reduce(
+      (total: number, item: any) =>
+        total + item.price * item.quantity,
+      0
+    ),
+
+    items: finalItems.map((item: any) => ({
+      item_id: item.id,
+      item_name: item.title,
+      price: item.price,
+      quantity: item.quantity,
+    })),
+  });
+
+}, []);
+
     if (isBuyNow && !buyNowItem) {
   return <p className="text-center mt-10">Loading checkout...</p>;
 }

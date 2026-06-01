@@ -2,6 +2,13 @@
 
 import Script from "next/script";
 
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export default function GoogleAnalytics() {
   return (
     <>
@@ -21,11 +28,13 @@ export default function GoogleAnalytics() {
             dataLayer.push(arguments);
           }
 
+          window.gtag = gtag;
+
           gtag('js', new Date());
 
           gtag('config', 'G-4KS5MG3XMJ', {
-  page_path: window.location.pathname,
-});
+            page_path: window.location.pathname,
+          });
         `}
       </Script>
     </>
