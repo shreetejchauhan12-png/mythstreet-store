@@ -9,34 +9,23 @@ export default function TrendingBanner({
 }: {
   products: any[];
 }) {
-  const [slides, setSlides] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
 
-  // HERO PRODUCTS ONLY
-  useEffect(() => {
-    const clean = Array.isArray(products)
-      ? products
-      : [];
-
-    const heroProducts = clean.filter(
-      (p) => p.is_hero
-    );
-
-    setSlides(heroProducts);
-  }, [products]);
+  // ✅ DIRECT COMPUTATION (NO HYDRATION SHIFT)
+  const slides = Array.isArray(products)
+    ? products.filter((p) => p.is_hero)
+    : [];
 
   // AUTO SLIDE
   useEffect(() => {
     if (!slides.length) return;
 
     const timer = setInterval(() => {
-      setIndex((prev) =>
-        (prev + 1) % slides.length
-      );
+      setIndex((prev) => (prev + 1) % slides.length);
     }, 4500);
 
     return () => clearInterval(timer);
-  }, [slides]);
+  }, [slides.length]);
 
   if (!slides.length) return null;
 
@@ -45,7 +34,6 @@ export default function TrendingBanner({
   return (
     <section className="pt-0 pb-0">
 
-      {/* FULL WIDTH */}
       <div className="max-w-7xl mx-auto md:px-4">
 
         <Link href={`/product/${current.id}`}>
@@ -53,25 +41,25 @@ export default function TrendingBanner({
           <div className="group relative overflow-hidden bg-black cursor-pointer md:rounded-[28px] shadow-2xl">
 
             {/* HERO RATIO */}
-            <div className="pt-[45%] md:pt-[42%]" />
+            <div className="aspect-[21/9]" />
 
             {/* IMAGE */}
             <Image
-  src={current.banner || current.image}
-  alt={current.title}
-  fill
-  sizes="100vw"
-  className="
-    object-cover
-    transition-all duration-700
-    group-hover:scale-[1.03]
-  "
-/>
+              src={current.banner || current.image}
+              alt={current.title}
+              fill
+              sizes="100vw"
+              className="
+                object-cover
+                transition-all duration-700
+                group-hover:scale-[1.03]
+              "
+            />
 
             {/* OVERLAYS */}
             <div className="absolute inset-0 bg-black/15" />
 
-            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
             {/* MINI BUTTONS */}
             <div
@@ -80,8 +68,6 @@ export default function TrendingBanner({
                 flex gap-2
               "
             >
-
-              {/* SHOP */}
               <button
                 className="
                   bg-[#680000]/90
@@ -99,7 +85,6 @@ export default function TrendingBanner({
                 Shop
               </button>
 
-              {/* TAG */}
               <button
                 className="
                   bg-zinc-800/70
@@ -116,7 +101,6 @@ export default function TrendingBanner({
               >
                 Trending
               </button>
-
             </div>
 
             {/* DOTS */}
@@ -130,7 +114,6 @@ export default function TrendingBanner({
                 z-20
               "
             >
-
               {slides.map((_, i) => (
                 <div
                   key={i}
@@ -141,8 +124,8 @@ export default function TrendingBanner({
                   }`}
                 />
               ))}
-
             </div>
+
           </div>
 
         </Link>

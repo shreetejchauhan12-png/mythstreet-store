@@ -9,38 +9,26 @@ export default function LatestDropSlider({
 }: {
   products: any[];
 }) {
-  const [slides, setSlides] = useState<any[]>([]);
   const [index, setIndex] = useState(0);
 
-  // LATEST 3 PRODUCTS
-  useEffect(() => {
-    const clean = Array.isArray(products)
-      ? products
-      : [];
-
-    const sorted = [...clean].sort(
-      (a, b) => Number(b.id) - Number(a.id)
-    );
-
-    const heroProducts = sorted.filter(
-  (p) => p.is_hero
-);
-
-setSlides(heroProducts.slice(0, 3));
-  }, [products]);
+  // ✅ COMPUTE DIRECTLY (NO HYDRATION SHIFT)
+  const slides = Array.isArray(products)
+    ? [...products]
+        .sort((a, b) => Number(b.id) - Number(a.id))
+        .filter((p) => p.is_hero)
+        .slice(0, 3)
+    : [];
 
   // AUTO SLIDE
   useEffect(() => {
     if (!slides.length) return;
 
     const timer = setInterval(() => {
-      setIndex((prev) =>
-        (prev + 1) % slides.length
-      );
+      setIndex((prev) => (prev + 1) % slides.length);
     }, 4500);
 
     return () => clearInterval(timer);
-  }, [slides]);
+  }, [slides.length]);
 
   if (!slides.length) return null;
 
@@ -71,26 +59,26 @@ setSlides(heroProducts.slice(0, 3));
 
           <div className="group relative overflow-hidden bg-black cursor-pointer md:rounded-[28px] shadow-2xl">
 
-            {/* SAME RATIO AS HERO */}
-            <div className="pt-[45%] md:pt-[42%]" />
+            {/* HERO RATIO */}
+            <div className="aspect-[21/9]" />
 
             {/* IMAGE */}
             <Image
-  src={current.banner || current.image}
-  alt={current.title}
-  fill
-  sizes="100vw"
-  className="
-    object-cover
-    transition-all duration-700
-    group-hover:scale-[1.03]
-  "
-/>
+              src={current.banner || current.image}
+              alt={current.title}
+              fill
+              sizes="100vw"
+              className="
+                object-cover
+                transition-all duration-700
+                group-hover:scale-[1.03]
+              "
+            />
 
             {/* OVERLAYS */}
             <div className="absolute inset-0 bg-black/15" />
 
-            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
             {/* BUTTONS */}
             <div
@@ -100,7 +88,6 @@ setSlides(heroProducts.slice(0, 3));
               "
             >
 
-              {/* SHOP */}
               <button
                 className="
                   bg-[#680000]/90
@@ -118,7 +105,6 @@ setSlides(heroProducts.slice(0, 3));
                 Shop
               </button>
 
-              {/* TAG */}
               <button
                 className="
                   bg-zinc-800/70
