@@ -40,7 +40,7 @@ setOrderId(id);
         </div>
       </div>
 
-      <h1 className="text-3xl font-semibold mb-2">
+      <h1 className="text-3xl font-semibold mb-2 text-red-500">
         {isCOD ? "Order Placed (COD)" : "Order Confirmed"}
       </h1>
 
