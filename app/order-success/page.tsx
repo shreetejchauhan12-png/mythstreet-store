@@ -60,14 +60,18 @@ console.log("FETCH STARTING");
     try {
       setLoadingOrder(true);
 
-      const res = await fetch(
-        `${API_URL}/api/order/${realOrderId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      console.log("REQUEST URL:", `${API_URL}/api/order/${realOrderId}`);
+
+const res = await fetch(
+  `${API_URL}/api/order/${realOrderId}`,
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
+console.log("RESPONSE STATUS:", res.status);
 
       if (!res.ok) {
         throw new Error("Failed to fetch order");
