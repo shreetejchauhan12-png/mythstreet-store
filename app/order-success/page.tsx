@@ -46,7 +46,15 @@ if (orderIdParam) {
   }, []);
 
 useEffect(() => {
-  if (!realOrderId || !token) return;
+  console.log("realOrderId:", realOrderId);
+console.log("token:", token);
+
+if (!realOrderId || !token) {
+  console.log("FETCH BLOCKED");
+  return;
+}
+
+console.log("FETCH STARTING");
 
   const fetchOrder = async () => {
     try {
