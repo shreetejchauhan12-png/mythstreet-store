@@ -104,8 +104,30 @@ const finalItems =
 );
 
   const [paymentMethod, setPaymentMethod] = useState("online");
-  const codCharge = paymentMethod === "cod" ? 49 : 0;
-  const finalTotal = totalAmount + codCharge;
+
+useEffect(() => {
+  if (!finalItems.length) return;
+
+  window.gtag("event", "add_payment_info", {
+    currency: "INR",
+    value: finalTotal,
+
+    payment_type:
+      paymentMethod === "cod"
+        ? "Cash On Delivery"
+        : "Online Payment",
+
+    items: finalItems.map((item: any) => ({
+      item_id: item.id,
+      item_name: item.title,
+      price: item.price,
+      quantity: item.quantity,
+    })),
+  });
+}, [paymentMethod]);
+
+const codCharge = paymentMethod === "cod" ? 49 : 0;
+const finalTotal = totalAmount + codCharge;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
