@@ -12,6 +12,12 @@ import Image from "next/image";
 import Script from "next/script";
 import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
+
 function ShareButton({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
 
@@ -174,11 +180,26 @@ function prevImage() {
 };
 
   useEffect(() => {
-  if (product) {
-    setSelectedImage(
-      `/${product.design}-${product.variant_code}-1.webp`
-    );
-  }
+  if (!product) return;
+
+  setSelectedImage(
+    `/${product.design}-${product.variant_code}-1.webp`
+  );
+
+  window.gtag("event", "view_item", {
+    currency: "INR",
+
+    value: product.price,
+
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.title,
+        price: product.price,
+      },
+    ],
+  });
+
 }, [product]);
 
   
@@ -207,6 +228,22 @@ function prevImage() {
   price: item.price,
   image: `/${item.design}-${item.variant_code}-1.webp`,
   quantity: quantity,
+});
+
+window.gtag("event", "add_to_cart", {
+  currency: "INR",
+
+  value: item.price * quantity,
+
+  items: [
+    {
+      item_id: item.id,
+      item_name: item.title,
+      price: item.price,
+      quantity: quantity,
+      item_variant: size,
+    },
+  ],
 });
 
     // ✅ BACKEND SAVE
