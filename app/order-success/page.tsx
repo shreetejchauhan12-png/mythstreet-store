@@ -54,7 +54,7 @@ useEffect(() => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
+          }
         }
       );
 
