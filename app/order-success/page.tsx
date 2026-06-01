@@ -17,11 +17,13 @@ const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
       setPaymentType(latest.payment || "online");
     }
 
-    const id =
-  "MYTH-" +
-  Math.floor(100000 + Math.random() * 900000);
+    const params = new URLSearchParams(window.location.search);
 
-setOrderId(id);
+const realOrderId = params.get("order_id");
+
+if (realOrderId) {
+  setOrderId("#" + realOrderId);
+}
   }, []);
 
   const isCOD = paymentType === "cod";
