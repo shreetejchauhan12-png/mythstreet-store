@@ -37,8 +37,11 @@ if (orderIdParam) {
   const savedToken = localStorage.getItem("token");
 
   if (savedToken) {
-    setToken(savedToken);
-  }
+  setToken(savedToken);
+  console.log("TOKEN FOUND");
+} else {
+  console.log("NO TOKEN");
+}
 }
   }, []);
 
