@@ -213,18 +213,23 @@ border-b border-black/5
 shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 ">
 
-    <div className="w-full px-3 md:px-8">
+    <div className="w-full px-2 md:px-8">
 
   {/* TOP ROW */}
   {/* TOP ROW */}
 <div className="h-13 md:h-15 flex items-center">
 
   {/* LEFT */}
-  <div className="flex-1 flex items-center gap-4 md:gap-8">
+  <div className="w-[90px] flex items-center gap-3">
 
   <Menu
     className="w-6 h-6 cursor-pointer"
     onClick={() => setOpen(true)}
+  />
+
+  <Search
+    className="w-5 h-5 cursor-pointer"
+    onClick={() => setSearchOpen(true)}
   />
 
   {/* DESKTOP CATEGORY LINKS */}
@@ -284,7 +289,7 @@ hover:after:w-full
   priority
   className="
   w-auto
-  h-8 md:h-10
+  h-9 md:h-11
   object-contain
   transition duration-300
   hover:opacity-80
@@ -293,18 +298,19 @@ hover:after:w-full
   </Link>
 
   {/* RIGHT */}
-  <div className="flex-1 flex items-center justify-end gap-4 md:gap-5">
-
-    <Search
-      className="w-5 h-5 cursor-pointer"
-      onClick={() => setSearchOpen(true)}
-    />
+  <div className="
+w-[110px]
+flex
+items-center
+justify-end
+gap-2
+">
 
     {/* ACCOUNT */}
     <div className="relative" ref={accountRef}>
       <div
         onClick={() => setAccountOpen(!accountOpen)}
-       className="cursor-pointer p-1"
+       className="cursor-pointer"
       >
         {user ? (
           <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs">
@@ -375,7 +381,7 @@ hover:after:w-full
 
     {/* WISHLIST */}
     <div
-      className="relative cursor-pointer p-1"
+      className="relative cursor-pointer"
       onClick={() => setWishlistOpen(true)}
     >
       <Heart className="w-6 h-6" />
@@ -388,7 +394,7 @@ hover:after:w-full
 
     {/* CART */}
     <div
-      className="relative cursor-pointer p-1"
+      className="relative cursor-pointer"
       onClick={() => setCartOpen(true)}
     >
       <ShoppingBag className="w-6 h-6" />
