@@ -294,7 +294,7 @@ hover:after:w-full
   </Link>
 
   {/* RIGHT */}
-  <div className="flex-1 flex items-center justify-end gap-4 md:gap-5">
+  <div className="flex-1 flex items-center justify-end gap-2 md:gap-5">
 
     <Search
       className="w-5 h-5 cursor-pointer"
