@@ -220,7 +220,12 @@ shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 <div className="h-13 md:h-15 flex items-center">
 
   {/* LEFT */}
-  <div className="w-[90px] flex items-center gap-3">
+  <div className="
+w-[120px]
+flex
+items-center
+gap-3
+">
 
   <Menu
     className="w-6 h-6 cursor-pointer"
@@ -299,7 +304,7 @@ hover:after:w-full
 
   {/* RIGHT */}
   <div className="
-w-[110px]
+w-[120px]
 flex
 items-center
 justify-end
