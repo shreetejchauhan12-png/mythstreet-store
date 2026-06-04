@@ -221,7 +221,7 @@ shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 
   {/* LEFT */}
   <div className="
-w-[120px]
+w-30
 flex
 items-center
 gap-3
@@ -285,7 +285,7 @@ hover:after:w-full
 </div>
 
   {/* CENTER */}
-  <Link href="/" className="flex justify-center flex-shrink-0">
+  <Link href="/" className="flex justify-center shrink-0">
     <Image
   src="/logo.webp"
   alt="MythStreet"
@@ -304,7 +304,7 @@ hover:after:w-full
 
   {/* RIGHT */}
   <div className="
-w-[120px]
+w-3
 flex
 items-center
 justify-end
