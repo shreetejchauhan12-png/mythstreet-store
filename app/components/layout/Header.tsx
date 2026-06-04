@@ -285,7 +285,7 @@ hover:after:w-full
   priority
   className="
   w-auto
-  h-7 md:h-9
+  h-9 md:h-9
   object-contain
   transition duration-300
   hover:opacity-80
