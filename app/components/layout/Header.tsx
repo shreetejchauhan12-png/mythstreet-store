@@ -224,9 +224,14 @@ shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 
   {/* HAMBURGER */}
   <Menu
-    className="w-6 h-6 cursor-pointer"
-    onClick={() => setOpen(true)}
-  />
+  className="w-6 h-6 cursor-pointer"
+  onClick={() => setOpen(true)}
+/>
+
+<Search
+  className="w-5 h-5 cursor-pointer md:hidden"
+  onClick={() => setSearchOpen(true)}
+/>
 
   {/* DESKTOP CATEGORY LINKS */}
   <div className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -294,15 +299,15 @@ hover:after:w-full
   </Link>
 
   {/* RIGHT */}
-  <div className="flex-1 flex items-center justify-end gap-1 md:gap-5">
+<div className="flex-1 flex items-center justify-end gap-1 md:gap-5">
 
-    <Search
-      className="w-5 h-5 cursor-pointer"
-      onClick={() => setSearchOpen(true)}
-    />
+  <Search
+    className="hidden md:block w-5 h-5 cursor-pointer"
+    onClick={() => setSearchOpen(true)}
+  />
 
-    {/* ACCOUNT */}
-    <div className="relative" ref={accountRef}>
+  {/* ACCOUNT */}
+  <div className="relative" ref={accountRef}>
       <div
         onClick={() => setAccountOpen(!accountOpen)}
        className="cursor-pointer p-1"
