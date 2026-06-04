@@ -217,12 +217,11 @@ shadow-[0_4px_30px_rgba(0,0,0,0.03)]
 
   {/* TOP ROW */}
   {/* TOP ROW */}
-<div className="h-14 md:h-16 flex items-center">
+<div className="h-13 md:h-15 flex items-center">
 
   {/* LEFT */}
-  <div className="flex-1 flex items-center gap-3 md:gap-8">
+  <div className="flex-1 flex items-center gap-4 md:gap-8">
 
-  {/* HAMBURGER */}
   <Menu
     className="w-6 h-6 cursor-pointer"
     onClick={() => setOpen(true)}
@@ -285,7 +284,7 @@ hover:after:w-full
   priority
   className="
   w-auto
-  h-7 md:h-9
+  h-8 md:h-10
   object-contain
   transition duration-300
   hover:opacity-80
@@ -312,7 +311,7 @@ hover:after:w-full
             {user.name ? user.name.charAt(0).toUpperCase() : "U"}
           </div>
         ) : (
-          <User className="w-4.75 h-4.75" />
+          <User className="w-5 h-5" />
         )}
       </div>
 
@@ -379,7 +378,7 @@ hover:after:w-full
       className="relative cursor-pointer p-1"
       onClick={() => setWishlistOpen(true)}
     >
-      <Heart className="w-5 h-5" />
+      <Heart className="w-6 h-6" />
       {wishlist.length > 0 && (
         <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
           {wishlist.length}
@@ -392,7 +391,7 @@ hover:after:w-full
       className="relative cursor-pointer p-1"
       onClick={() => setCartOpen(true)}
     >
-      <ShoppingBag className="w-5 h-5" />
+      <ShoppingBag className="w-6 h-6" />
       {totalItems > 0 && (
         <span className="absolute -top-2 -right-2 bg-[#680000] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
           {totalItems}
