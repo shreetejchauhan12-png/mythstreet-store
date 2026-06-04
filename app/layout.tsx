@@ -5,6 +5,7 @@ import Footer from "@/app/components/layout/Footer";
 import Script from "next/script";
 import GoogleAnalytics from "@/app/components/analytics/GoogleAnalytics";
 import MicrosoftClarity from "@/app/components/analytics/MicrosoftClarity";
+import MetaPixel from "@/app/components/analytics/MetaPixel";
 import CartInitializer from "./CartInitializer";
 
 import { Montserrat, Bebas_Neue } from "next/font/google";
@@ -118,6 +119,7 @@ export default function RootLayout({
 
       <GoogleAnalytics />
       <MicrosoftClarity />
+      <MetaPixel />
       
 
         {/* HEADER */}
