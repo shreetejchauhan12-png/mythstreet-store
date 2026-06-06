@@ -31,30 +31,16 @@ export default function Footer() {
             {/* SOCIALS */}
             <div className="flex gap-5 text-sm tracking-wide">
 
-              <a
-  href="https://instagram.com/_myth.street_"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-white/50 hover:text-white transition"
->
-  INSTAGRAM
-</a>
+  <a
+    href="https://instagram.com/_myth.street_"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white/50 hover:text-white transition"
+  >
+    INSTAGRAM
+  </a>
 
-              <a
-                href="#"
-                className="text-white/50 hover:text-white transition"
-              >
-                X
-              </a>
-
-              <a
-                href="#"
-                className="text-white/50 hover:text-white transition"
-              >
-                YOUTUBE
-              </a>
-
-            </div>
+</div>
 
           </div>
 
