@@ -10,7 +10,8 @@ export default function Footer() {
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#680000] to-transparent opacity-60" />
 
       {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 py-10 md:py-20">
+        
 
         {/* TOP GRID */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16">

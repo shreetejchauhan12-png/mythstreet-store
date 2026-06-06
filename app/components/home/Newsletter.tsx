@@ -59,11 +59,11 @@ export default function Newsletter() {
     <section className="bg-[#680000] text-white py-6 md:py-14">
       <div className="max-w-4xl mx-auto px-4 text-center">
 
-        <h2 className="text-3xl md:text-4xl font-semibold mb-3">
+        <h2 className="text-3xl md:text-4xl font-semibold mb-2">
           Join The MythStreet
         </h2>
 
-        <p className="text-white/80 mb-6 text-sm md:text-base">
+        <p className="text-white/80 mb-5 text-sm md:text-base">
           Get early access to new drops & exclusive offers
         </p>
 
@@ -108,7 +108,7 @@ export default function Newsletter() {
         </div>
 
         {/* 🔥 MESSAGE */}
-        <div className="mt-3 h-6">
+        <div className="mt-2 h-5">
 
           <p
             className={`
