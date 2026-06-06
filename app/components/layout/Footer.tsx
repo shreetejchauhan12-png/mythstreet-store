@@ -4,13 +4,13 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-black text-white mt-16 overflow-hidden min-h-112.5">
+    <footer className="relative bg-black text-white mt-16 overflow-hidden">
 
       {/* TOP GLOW */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-[#680000] to-transparent opacity-60" />
 
       {/* MAIN */}
-      <div className="max-w-7xl mx-auto px-6 md:px-8 py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 py-12 md:py-24">
 
         {/* TOP GRID */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16">
