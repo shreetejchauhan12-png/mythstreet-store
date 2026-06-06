@@ -56,7 +56,7 @@ export default function Newsletter() {
   }
 
   return (
-    <section className="bg-[#680000] text-white py-20">
+    <section className="bg-[#680000] text-white py-12 md:py-20">
       <div className="max-w-4xl mx-auto px-4 text-center">
 
         <h2 className="text-3xl md:text-4xl font-semibold mb-3">
