@@ -74,11 +74,12 @@ export default function OrdersPage() {
   <div className="p-3 md:p-10">
       <h2 className="text-xl font-semibold mb-6">Orders</h2>
 
-      <div className="space-y-8">
+      <div>
         {orders.map((order: any) => (
           <Link
   href={`/account/orders/${order.id}`}
   key={order.id}
+  className="block mb-8"
 >
 
   <div
