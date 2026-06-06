@@ -77,7 +77,7 @@ export default function Newsletter() {
             placeholder="Enter your email"
             className="
               w-full sm:w-80
-              px-4 py-3
+              px-4 py-2.5
               rounded-md
               text-black
               bg-white
@@ -92,7 +92,7 @@ export default function Newsletter() {
             disabled={loading}
             className="
               w-full sm:w-auto
-              px-6 py-3
+              px-6 py-2.5
               rounded-md
               bg-white text-[#680000]
               font-semibold
