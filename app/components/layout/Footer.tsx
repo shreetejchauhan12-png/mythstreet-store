@@ -268,12 +268,12 @@ rel="noopener noreferrer"
 
 <div className="border-t border-white/10">
 
-  <div className="max-w-7xl mx-auto px-6 py-6">
+  <div className="max-w-7xl mx-auto px-6 py-8">
 
     <img
       src="/payments.webp"
       alt="Accepted Payment Methods"
-      className="h-8 opacity-80 mx-auto"
+      className="h-12 md:h-14 opacity-90 mx-auto"
     />
 
   </div>
