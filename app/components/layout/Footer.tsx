@@ -190,7 +190,7 @@ export default function Footer() {
 
   <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
 
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
 
       {/* SHIPPING */}
       <div>
@@ -199,9 +199,8 @@ export default function Footer() {
         </h3>
 
         <p className="text-sm text-white/55 leading-6">
-          Orders shipped across India.
-Blue Dart & Delhivery delivery network with live tracking.
-          Fast dispatch and live tracking available.
+          Orders shipped across India via Blue Dart & Delhivery.
+Fast dispatch and live tracking available.
         </p>
       </div>
 
@@ -273,7 +272,7 @@ rel="noopener noreferrer"
     <img
       src="/payments.webp"
       alt="Accepted Payment Methods"
-      className="h-12 md:h-14 opacity-90 mx-auto"
+      className="h-16 md:h-20 opacity-90 mx-auto"
     />
 
   </div>
