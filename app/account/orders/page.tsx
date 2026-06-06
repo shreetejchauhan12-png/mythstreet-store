@@ -71,10 +71,10 @@ export default function OrdersPage() {
 
   // ✅ Orders UI
   return (
-    <div className="p-10">
+  <div className="p-3 md:p-10">
       <h2 className="text-xl font-semibold mb-6">Orders</h2>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {orders.map((order: any) => (
           <Link
   href={`/account/orders/${order.id}`}
@@ -82,7 +82,7 @@ export default function OrdersPage() {
 >
 
   <div
-  className="border p-5 rounded-xl hover:shadow-lg transition cursor-pointer hover:border-black"
+  className="border p-4 md:p-5 rounded-xl hover:shadow-lg transition cursor-pointer hover:border-black bg-white"
 >
 
             {/* 🔹 Order Info */}
