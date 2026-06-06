@@ -11,7 +11,7 @@ export default function Footer() {
 
       {/* MAIN */}
       <div className="max-w-7xl mx-auto px-6 md:px-8 py-10 md:py-20">
-        
+
 
         {/* TOP GRID */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-16">
@@ -185,10 +185,103 @@ export default function Footer() {
 
       </div>
 
+      {/* TRUST + SUPPORT */}
+<div className="border-t border-white/10 mt-12">
+
+  <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+      {/* SHIPPING */}
+      <div>
+        <h3 className="text-sm tracking-[0.2em] text-white mb-3">
+          SHIPPING
+        </h3>
+
+        <p className="text-sm text-white/55 leading-6">
+          Orders shipped across India via Quiqup.
+          Fast dispatch and live tracking available.
+        </p>
+      </div>
+
+      {/* PAYMENTS */}
+      <div>
+        <h3 className="text-sm tracking-[0.2em] text-white mb-3">
+          SECURE PAYMENTS
+        </h3>
+
+        <p className="text-sm text-white/55 leading-6">
+          Razorpay secured payments.
+          UPI, Credit Cards, Debit Cards,
+          Net Banking & Wallets supported.
+        </p>
+      </div>
+
+      {/* CONTACT */}
+      <div>
+        <h3 className="text-sm tracking-[0.2em] text-white mb-3">
+          CONTACT
+        </h3>
+
+        <div className="text-sm text-white/55 leading-6">
+  <a
+    href="mailto:mythstreetstore@gmail.com"
+    className="block hover:text-white"
+  >
+    mythstreetstore@gmail.com
+  </a>
+
+  <a
+    href="tel:+919021943839"
+    className="block hover:text-white"
+  >
+    +91 90219 43839
+  </a>
+</div>
+      </div>
+
+      {/* WHATSAPP */}
+      <div>
+        <h3 className="text-sm tracking-[0.2em] text-white mb-3">
+          WHATSAPP SUPPORT
+        </h3>
+
+        <a
+          href="https://wa.me/919021943839"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-white/55 hover:text-white transition"
+        >
+          Chat with us →
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div className="border-t border-white/10">
+
+  <div className="max-w-7xl mx-auto px-6 py-6">
+
+    <img
+      src="/payments.webp"
+      alt="Accepted Payment Methods"
+      className="h-8 opacity-80 mx-auto"
+    />
+
+  </div>
+
+</div>
+
       {/* BOTTOM */}
       <div className="border-t border-white/10">
 
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+          
 
           <p className="text-xs tracking-wide text-white/40">
             © 2026 MYTHSTREET. ALL RIGHTS RESERVED.
