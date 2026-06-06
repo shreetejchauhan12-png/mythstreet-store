@@ -47,10 +47,10 @@ localStorage.removeItem("token");
         My Account
       </h1>
 
-      <div className="grid grid-cols-4 gap-10">
+      <div className="flex flex-col md:grid md:grid-cols-4 gap-6 md:gap-10">
 
         {/* SIDEBAR */}
-        <div className="col-span-1 border-r pr-6">
+        <div className="md:col-span-1 md:border-r md:pr-6">
 
           <Link href="/account" className={linkClass("/account")}>
             Profile
@@ -78,7 +78,7 @@ localStorage.removeItem("token");
         </div>
 
         {/* CONTENT */}
-        <div className="col-span-3">
+        <div className="md:col-span-3">
           {children}
         </div>
 
