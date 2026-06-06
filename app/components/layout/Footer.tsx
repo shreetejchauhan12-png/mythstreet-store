@@ -190,7 +190,7 @@ export default function Footer() {
 
   <div className="max-w-7xl mx-auto px-6 md:px-8 py-8">
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
 
       {/* SHIPPING */}
       <div>
@@ -199,7 +199,8 @@ export default function Footer() {
         </h3>
 
         <p className="text-sm text-white/55 leading-6">
-          Orders shipped across India via Quiqup.
+          Orders shipped across India.
+Blue Dart & Delhivery delivery network with live tracking.
           Fast dispatch and live tracking available.
         </p>
       </div>
@@ -226,13 +227,15 @@ export default function Footer() {
         <div className="text-sm text-white/55 leading-6">
   <a
     href="mailto:mythstreetstore@gmail.com"
-    className="block hover:text-white"
+    className="block hover:text-white break-all"
   >
     mythstreetstore@gmail.com
   </a>
 
   <a
-    href="tel:+919021943839"
+    href="https://wa.me/919021943839"
+target="_blank"
+rel="noopener noreferrer"
     className="block hover:text-white"
   >
     +91 90219 43839
