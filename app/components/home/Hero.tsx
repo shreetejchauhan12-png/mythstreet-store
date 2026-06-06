@@ -76,27 +76,9 @@ export default function Hero() {
     border border-white/10
   "
 >
-  Shop
+  Shop All
 </Link>
 
-            {/* CATEGORY */}
-            <Link
-  href="/shop/all/oversized-t-shirt"
-  className="
-    bg-zinc-800/70
-    backdrop-blur-xl
-    text-white
-    px-4 py-2
-    rounded-xl
-    text-[10px]
-    tracking-[0.18em]
-    uppercase
-    font-medium
-    border border-white/10
-  "
->
-  Oversized
-</Link>
 
           </div>
 
