@@ -32,11 +32,13 @@ export default function Footer() {
             <div className="flex gap-5 text-sm tracking-wide">
 
               <a
-                href="#"
-                className="text-white/50 hover:text-white transition"
-              >
-                INSTAGRAM
-              </a>
+  href="https://instagram.com/_myth.street_"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="text-white/50 hover:text-white transition"
+>
+  INSTAGRAM
+</a>
 
               <a
                 href="#"
@@ -199,8 +201,8 @@ export default function Footer() {
         </h3>
 
         <p className="text-sm text-white/55 leading-6">
-          Orders shipped across India via Blue Dart & Delhivery.
-Fast dispatch and live tracking available.
+          Orders shipped across India via Quiink logistics.
+Delivered through Blue Dart & Delhivery with live tracking.
         </p>
       </div>
 
@@ -226,15 +228,13 @@ Fast dispatch and live tracking available.
         <div className="text-sm text-white/55 leading-6">
   <a
     href="mailto:mythstreetstore@gmail.com"
-    className="block hover:text-white break-all"
+    className="block hover:text-white text-xs md:text-sm"
   >
     mythstreetstore@gmail.com
   </a>
 
   <a
-    href="https://wa.me/919021943839"
-target="_blank"
-rel="noopener noreferrer"
+    href="tel:+919021943839"
     className="block hover:text-white"
   >
     +91 90219 43839
@@ -254,7 +254,7 @@ rel="noopener noreferrer"
           rel="noopener noreferrer"
           className="text-sm text-white/55 hover:text-white transition"
         >
-          Chat with us →
+          Chat on WhatsApp →
         </a>
       </div>
 
