@@ -41,7 +41,7 @@ export default function TrendingBanner({
           <div className="group relative overflow-hidden bg-black cursor-pointer md:rounded-[28px] shadow-2xl">
 
             {/* HERO RATIO */}
-            <div className="aspect-[21/9]" />
+            <div className="aspect-[16/10]" />
 
             {/* IMAGE */}
             <Image
