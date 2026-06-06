@@ -256,10 +256,10 @@ Delivered through Blue Dart & Delhivery with live tracking.
   <div className="max-w-7xl mx-auto px-6 py-8">
 
     <img
-      src="/payments.webp"
-      alt="Accepted Payment Methods"
-      className="h-16 md:h-20 opacity-90 mx-auto"
-    />
+  src="/payments.webp"
+  alt="Accepted Payment Methods"
+  className="w-[280px] md:w-[520px] h-auto opacity-90 mx-auto"
+/>
 
   </div>
 
