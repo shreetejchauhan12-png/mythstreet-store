@@ -41,7 +41,7 @@ export default function TrendingBanner({
           <div className="group relative overflow-hidden bg-black cursor-pointer md:rounded-[28px] shadow-2xl">
 
             {/* HERO RATIO */}
-           <div className="h-[360px] md:h-[600px]" />
+           <div className="h-[420px] md:h-[650px]" />
 
             {/* IMAGE */}
             <Image
@@ -64,7 +64,7 @@ export default function TrendingBanner({
             {/* MINI BUTTONS */}
             <div
               className="
-                absolute bottom-4 left-4 z-20
+                absolute bottom-6 left-6 z-20
                 flex gap-2
               "
             >
@@ -73,9 +73,9 @@ export default function TrendingBanner({
                   bg-[#680000]/90
                   backdrop-blur-xl
                   text-white
-                  px-4 py-2
+                  px-5 py-3
                   rounded-xl
-                  text-[10px]
+                  text-xs
                   tracking-[0.18em]
                   uppercase
                   font-medium
@@ -90,9 +90,9 @@ export default function TrendingBanner({
                   bg-zinc-800/70
                   backdrop-blur-xl
                   text-white
-                  px-4 py-2
+                  px-5 py-3
                   rounded-xl
-                  text-[10px]
+                  text-xs
                   tracking-[0.18em]
                   uppercase
                   font-medium
