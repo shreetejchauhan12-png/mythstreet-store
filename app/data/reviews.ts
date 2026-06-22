@@ -78,4 +78,60 @@ export const reviews = {
     ],
   },
 
+  chaos: {
+    rating: 4.8,
+    count: 27,
+
+    reviews: [
+      {
+        name: "Aditya R.",
+        rating: 5,
+        text:
+          "The back print is insane. I've bought a lot of graphic tees before but this one easily stands out from the rest.",
+        date: "3 days ago",
+      },
+
+      {
+        name: "Rohan P.",
+        rating: 5,
+        text:
+          "Quality expected se better nikli. Print kaafi sharp hai aur oversized fit bhi perfect lag raha hai.",
+        date: "1 week ago",
+      },
+
+      {
+        name: "Yash K.",
+        rating: 4,
+        text:
+          "Design mast hai bhai. Delivery ek din late thi but product dekh ke mood sahi ho gaya 😂",
+        date: "2 weeks ago",
+      },
+
+      {
+        name: "Nikhil S.",
+        rating: 5,
+        text:
+          "Honestly wasn't expecting this level of quality. Fabric feels premium and the print placement is perfect.",
+        date: "3 weeks ago",
+      },
+
+      {
+        name: "Harsh V.",
+        rating: 5,
+        text:
+          "Pehli baar MythStreet se order kiya tha. Fit, print aur fabric tino badiya nikle.",
+        date: "1 month ago",
+      },
+
+      {
+        name: "Sagar M.",
+        rating: 5,
+        text:
+          "College me pehen ke gaya tha aur 3 logo ne pucha kaha se liya. Worth buying.",
+        date: "1 month ago",
+      },
+    ],
+  },
+
 };
+
