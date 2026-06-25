@@ -133,5 +133,64 @@ export const reviews = {
     ],
   },
 
+  tupac: {
+    rating: 4.9,
+    count: 34,
+
+    reviews: [
+      {
+        name: "Manav R.",
+        rating: 5,
+        text:
+          "Honestly this is the best backprint tee I've bought in a while. Print looks super clean in person.",
+        date: "2 days ago",
+      },
+
+      {
+        name: "Deep P.",
+        rating: 5,
+        text:
+          "Bhai quality dekh ke shock ho gaya. Online photos se bhi better lag raha hai.",
+        date: "5 days ago",
+      },
+
+      {
+        name: "Aman K.",
+        rating: 4,
+        text:
+          "Fit acha hai aur fabric bhi soft hai. Bas mujhe sleeves thodi aur loose pasand aati.",
+        date: "1 week ago",
+      },
+
+      {
+        name: "Sufiyan M.",
+        rating: 5,
+        text:
+          "Tupac fan hu isliye order kiya tha. No regrets. Print bilkul cheap nahi lagta.",
+        date: "2 weeks ago",
+      },
+
+      {
+        name: "Pratik J.",
+        rating: 5,
+        text:
+          "Wore this on a trip and literally 2 friends asked kaha se liya. Worth every rupee.",
+        date: "3 weeks ago",
+      },
+
+      {
+        name: "Rohit D.",
+        rating: 5,
+        text:
+          "Pehla order tha MythStreet se. Packaging, print, fitting sab mast nikla. Fir se order karunga.",
+        date: "1 month ago",
+      },
+    ],
+  },
+
 };
+
+
+
+
 
