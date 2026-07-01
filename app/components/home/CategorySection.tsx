@@ -6,7 +6,7 @@ export default function CategorySection() {
   const categories = [
     {
       name: "Oversized",
-      type: "oversized-t-shirt",
+      type: "oversized",
       image: "/pk1.webp",
     },
     {

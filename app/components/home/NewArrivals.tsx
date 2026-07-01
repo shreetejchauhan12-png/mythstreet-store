@@ -8,9 +8,16 @@ export default function NewArrivals({
 }) {
 
   // HERO PRODUCTS ONLY
-  const featured = [...products]
-    .filter((p) => p.is_hero)
-    .slice(0, 4);
+  const featured = [
+  ...new Map(
+    products
+      .filter((p) => p.is_hero)
+      .map((product) => [
+        `${product.design_id}-${product.garment_type_id}`,
+        product,
+      ])
+  ).values(),
+].slice(0, 4);
 
   if (!featured.length) return null;
 

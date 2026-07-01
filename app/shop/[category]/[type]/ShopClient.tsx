@@ -110,7 +110,16 @@ useEffect(() => {
     );
   }
 
-  return filtered;
+  const uniqueProducts = [
+  ...new Map(
+    filtered.map((product) => [
+      `${product.design_id}-${product.garment_type_id}`,
+      product,
+    ])
+  ).values(),
+];
+
+return uniqueProducts;
 
 }, [
   products,

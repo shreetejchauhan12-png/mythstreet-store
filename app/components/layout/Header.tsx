@@ -112,11 +112,18 @@ if (!result.user.name) {
 
     localStorage.setItem("user", JSON.stringify(updated.user));
     setUser(updated.user);
+
+    await fetchCart();
+await fetchWishlist(); 
+
   } else {
     setUser(result.user);
   }
 } else {
   setUser(result.user);
+
+  await fetchCart();
+  await fetchWishlist();
 }
 
 setAccountOpen(false);

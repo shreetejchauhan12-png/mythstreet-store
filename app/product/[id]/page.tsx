@@ -23,7 +23,9 @@ export async function generateMetadata({
       }
     );
 
-    const product = await res.json();
+    const response = await res.json();
+
+const product = response.data;
 
     return {
       title: product?.title
@@ -82,7 +84,9 @@ async function getProduct(id: string) {
     }
   );
 
-  return res.json();
+  const response = await res.json();
+
+return response.data;
 }
 
 export default async function Page({
@@ -97,8 +101,6 @@ export default async function Page({
   await getDesignVariants(
     product.design_id
   );
-
-  console.log(variants);
 
   const schema = {
     "@context": "https://schema.org",

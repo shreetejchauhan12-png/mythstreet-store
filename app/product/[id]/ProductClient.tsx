@@ -79,14 +79,21 @@ const id = params?.id;
   const router = useRouter();
 
   const [product, setProduct] = useState<any>(null);
-  const designVariants = variants || [];
+  const designVariants = Array.isArray(variants)
+  ? variants
+  : [];
 
   const addToCart = useCart((state) => state.addToCart);
 
   const [selectedImage, setSelectedImage] = useState("");
-  const [size, setSize] = useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState("");
+
+const [selectedColor, setSelectedColor] = useState("");
+
+const [size, setSize] = useState("");
+
+const [quantity, setQuantity] = useState(1);
+
+const [error, setError] = useState("");
   const [touchStart, setTouchStart] = useState(0);
 const [touchEnd, setTouchEnd] = useState(0);
 
@@ -108,9 +115,9 @@ const [touchEnd, setTouchEnd] = useState(0);
   `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`
 );
 
-const freshProduct = await res.json();
+const response = await res.json();
 
-      setProduct(freshProduct);
+setProduct(response.data);
 
     } catch (err) {
       console.error("❌ ERROR LOADING PRODUCT:", err);
@@ -121,10 +128,16 @@ const freshProduct = await res.json();
 }, [id]);
 
   const item = product;
-  const images = [1, 2, 3, 4, 5, 6].map(
-  (i) =>
-    `/${item?.design}-${item?.variant_code}-${i}.webp`
-);
+  const images = [
+  item?.main_image,
+  item?.image_2,
+  item?.image_3,
+  item?.image_4,
+  item?.image_5,
+  item?.image_6,
+]
+  .filter((img) => img)
+  .map((img) => `/${img}`);
 
 const currentIndex = images.indexOf(selectedImage);
 
@@ -183,8 +196,12 @@ function prevImage() {
   if (!product) return;
 
   setSelectedImage(
-    `/${product.design}-${product.variant_code}-1.webp`
-  );
+  product.main_image
+    ? `/${product.main_image}`
+    : "/placeholder.webp"
+);
+
+  setSelectedColor(product.color_name ?? "");
 
   window.gtag("event", "view_item", {
     currency: "INR",
@@ -226,7 +243,9 @@ function prevImage() {
   id: `${item.id}-${size}`,
   title: `${item.title} (${size})`,
   price: item.price,
-  image: `/${item.design}-${item.variant_code}-1.webp`,
+  image: item.main_image
+  ? `/${item.main_image}`
+  : "/placeholder.webp",
   quantity: quantity,
 });
 
@@ -262,7 +281,9 @@ window.gtag("event", "add_to_cart", {
 
   title: `${item.title} (${size})`,
   price: item.price,
-  image: `/${item.design}-${item.variant_code}-1.webp`,
+  image: item.main_image
+  ? `/${item.main_image}`
+  : "/placeholder.webp",
 }),
       }
     );
@@ -294,7 +315,9 @@ window.gtag("event", "add_to_cart", {
     id: `${item.id}-${size}`,
     title: `${item.title} - ${size}`,
     price: item.price,
-    image: `/${item.design}-${item.variant_code}-1.webp`,
+    image: item.main_image
+  ? `/${item.main_image}`
+  : "/placeholder.webp",
     quantity: quantity,
   };
 
@@ -386,36 +409,34 @@ window.gtag("event", "add_to_cart", {
 
 <div className="grid grid-cols-3 gap-3">
 
-  {[1, 2, 3, 4, 5, 6].map((i) => {
+  {images.map((img, index) => (
 
-    const img =
-      `/${item.design}-${item.variant_code}-${i}.webp`;
+  <div
+    key={img}
+    onClick={() => setSelectedImage(img)}
+    className={`cursor-pointer rounded-xl overflow-hidden border transition-all duration-300 ${
+      selectedImage === img
+        ? "border-[#680000] ring-2 ring-[#680000]/20 scale-[1.03] shadow-sm"
+        : ""
+    }`}
+  >
 
-    return (
-      <div
-        key={i}
-        onClick={() => setSelectedImage(img)}
-        className={`cursor-pointer rounded-xl overflow-hidden border transition-all duration-300 ${
-          selectedImage === img
-            ? "border-[#680000] ring-2 ring-[#680000]/20 scale-[1.03] shadow-sm"
-            : ""
-        }`}
-      >
+    <div className="pt-[125%] relative">
 
-        <div className="pt-[125%] relative">
-          <Image
-  src={img}
-  alt={`${item.title} view ${i} - Premium Streetwear by MYTHSTREET`}
-  fill
-  quality={70}
-  sizes="120px"
-  className="absolute inset-0 w-full h-full object-cover"
-/>
-        </div>
+      <Image
+        src={img}
+        alt={`${item.title} view ${index + 1} - Premium Streetwear by MYTHSTREET`}
+        fill
+        quality={70}
+        sizes="120px"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
 
-      </div>
-    );
-  })}
+    </div>
+
+  </div>
+
+))}
 
 </div>
           </div>
@@ -429,41 +450,39 @@ window.gtag("event", "add_to_cart", {
               <ShareButton title={item.title} />
             </div>
 
-            {/* ALSO AVAILABLE IN */}
+            {/* GARMENT TYPES */}
 
 {designVariants.length > 1 && (
 
   <div className="mb-5">
 
     <p className="text-sm font-medium text-gray-600 mb-3">
-      Also Available In
+      Garment Type
     </p>
 
     <div className="flex flex-wrap gap-2">
 
-      {designVariants.map((variant) => (
+      {[
+  ...new Map(
+    designVariants.map((variant) => [
+      variant.garment_type_id,
+      variant,
+    ])
+  ).values(),
+].map((variant) => (
 
         <button
           key={variant.id}
-
           onClick={() =>
-            router.push(
-              `/product/${variant.id}`
-            )
+            router.push(`/product/${variant.id}`)
           }
-
           className={`px-4 py-2 rounded-full border text-sm transition ${
             variant.id === item.id
               ? "bg-[#680000] text-white border-[#680000]"
               : "bg-white hover:border-[#680000]"
           }`}
         >
-          {variant.type
-            .replace(/-/g, " ")
-            .replace(
-  /\b\w/g,
-  (c: string) => c.toUpperCase()
-)}
+          {variant.garment_type}
         </button>
 
       ))}
@@ -473,6 +492,56 @@ window.gtag("event", "add_to_cart", {
   </div>
 
 )}
+
+{/* COLORS */}
+
+{designVariants.filter(
+  (v) => v.garment_type_id === item.garment_type_id
+).length > 0 && (
+
+  <div className="mb-6">
+
+    <p className="text-sm font-medium text-gray-600 mb-3">
+      Color
+    </p>
+
+    <div className="flex flex-wrap gap-3">
+
+      {designVariants
+        .filter(
+          (v) =>
+            v.garment_type_id === item.garment_type_id
+        )
+        .map((variant) => (
+
+          <button
+            key={variant.id}
+            onClick={() =>
+              router.push(`/product/${variant.id}`)
+            }
+            title={variant.color_name}
+            className={`w-10 h-10 rounded-full border-2 transition ${
+              variant.id === item.id
+                ? "border-black scale-110"
+                : "border-gray-300 hover:scale-105"
+            }`}
+            style={{
+              background: variant.hex_code,
+            }}
+          />
+
+        ))}
+
+    </div>
+
+    <p className="text-sm text-gray-600 mt-3">
+      {selectedColor}
+    </p>
+
+  </div>
+
+)}
+
 
             <p className="text-xl">₹{item.price}</p>
             {reviewData && (
@@ -506,25 +575,27 @@ window.gtag("event", "add_to_cart", {
     error ? "border border-red-500 p-2 rounded" : ""
   }`}
 >
-                {["S", "M", "L", "XL"].map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => {
-  setSize(s);
+                {(item.sizes ?? []).map((sizeOption: any) => (
 
-  if (error) {
-    setError("");
-  }
-}}
-                    className={`min-w-[56px] h-12 border rounded-lg transition active:scale-[0.97] ${
-                      size === s
-                        ? "bg-[#680000] text-white border-[#680000]"
-                        : ""
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
+  <button
+    key={sizeOption.id}
+    onClick={() => {
+      setSize(sizeOption.name);
+
+      if (error) {
+        setError("");
+      }
+    }}
+    className={`min-w-[56px] h-12 border rounded-lg transition active:scale-[0.97] ${
+      size === sizeOption.name
+        ? "bg-[#680000] text-white border-[#680000]"
+        : ""
+    }`}
+  >
+    {sizeOption.name}
+  </button>
+
+))}
               </div>
             </div>
 <div className="mb-6">
@@ -620,12 +691,19 @@ hover:bg-[#680000]/5
 
     <div className="grid grid-cols-2 gap-4">
 
-      {designVariants
-        .filter(
-          (variant) =>
-            variant.id !== item.id
-        )
-        .map((variant) => (
+      {[
+  ...new Map(
+    designVariants
+      .filter(
+        (variant) =>
+          variant.id !== item.id
+      )
+      .map((variant) => [
+        variant.garment_type_id,
+        variant,
+      ])
+  ).values(),
+].map((variant) => (
 
           <button
             key={variant.id}
@@ -650,7 +728,11 @@ hover:bg-[#680000]/5
             <div className="relative aspect-[5/6]">
 
               <Image
-                src={`/${item.design}-${variant.variant_code}-1.webp`}
+                src={
+  variant.main_image
+    ? `/${variant.main_image}`
+    : "/placeholder.webp"
+}
                 alt={variant.title}
                 fill
                 sizes="200px"

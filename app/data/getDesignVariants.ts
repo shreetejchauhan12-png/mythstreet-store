@@ -18,7 +18,9 @@ export async function getDesignVariants(
       return [];
     }
 
-    return await res.json();
+    const data = await res.json();
+
+return data.data ?? data;
 
   } catch (error) {
 

@@ -41,7 +41,16 @@ export default function SearchOverlay({
 
         const data = await res.json();
 
-        setFiltered(data);
+        setFiltered(
+  Array.from(
+    new Map(
+      data.map((item: any) => [
+        `${item.design_id}-${item.garment_type_id}`,
+        item,
+      ])
+    ).values()
+  )
+);
 
       } catch (error) {
 
@@ -211,7 +220,7 @@ hover:border-gray-200
 ">
 
                     <Image
-                      src={item.image}
+                      src={`/${item.design}-${item.variant_code}-1.webp`}
                       alt={item.title}
                       width={56}
                       height={64}

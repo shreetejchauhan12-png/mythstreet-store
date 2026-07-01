@@ -13,8 +13,17 @@ export default function TrendingBanner({
 
   // ✅ DIRECT COMPUTATION (NO HYDRATION SHIFT)
   const slides = Array.isArray(products)
-    ? products.filter((p) => p.is_hero)
-    : [];
+  ? [
+      ...new Map(
+        products
+          .filter((p) => p.is_hero)
+          .map((product) => [
+            `${product.design_id}-${product.garment_type_id}`,
+            product,
+          ])
+      ).values(),
+    ]
+  : [];
 
   // AUTO SLIDE
   useEffect(() => {

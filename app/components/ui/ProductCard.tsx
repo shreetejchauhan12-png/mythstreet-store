@@ -4,7 +4,6 @@ import { memo } from "react";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { useCart } from "@/app/store/cart";
 import { useWishlist } from "@/app/store/wishlist";
 
 type Product = {
@@ -39,54 +38,6 @@ function ProductCard({ product }: { product: Product }) {
 const isWishlisted = wishlistItems.some(
   (item: any) => item.id === product.id
 );
-
-  async function addItem(e: React.MouseEvent, size: string) {
-  e.preventDefault();
-
-  // ❌ REMOVE local addToCart here
-
-  // 🔐 TOKEN
-  const token = localStorage.getItem("token");
-
-  if (!token) {
-    alert("Please login first");
-    return;
-  }
-
-  try {
-    const res = await fetch(
-      `https://mythstreet-backend.onrender.com/api/products/cart`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-  product_id: product.id,
-  size: size,
-  title: product.title,
-  price: product.price,
-  image: `/${product.design}-${product.variant_code}-1.webp`,
-}),
-      }
-    );
-
-    const data = await res.json();
-
-    console.log("ADD TO CART:", data); // ✅ no popup
-
-    // 🔄 SYNC FROM DB
-    const fetchCart = useCart.getState().fetchCart;
-    await fetchCart();
-
-  } catch (error) {
-    console.error("ADD TO CART ERROR:", error);
-  }
-
-  // ✅ UI FEEDBACK
-
-}
 
   return (
     <Link
