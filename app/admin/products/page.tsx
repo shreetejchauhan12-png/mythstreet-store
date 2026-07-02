@@ -5,13 +5,18 @@ import Image from "next/image";
 
 type Product = {
   id: number;
-  title: string;
+
+  name: string;
+
   collection: string;
-  type: string;
-  color_name: string;
-  price: number;
-  is_hero: boolean;
-  main_image: string;
+
+  main_image: string | null;
+
+  total_variants: number;
+
+  starting_price: number;
+
+  has_hero: number;
 };
 
 const API =
@@ -26,7 +31,7 @@ export default function ProductsPage() {
 
   async function fetchProducts() {
     try {
-      const res = await fetch(`${API}/api/products`);
+      const res = await fetch(`${API}/api/designs`);
 
       const json = await res.json();
 
@@ -49,15 +54,13 @@ export default function ProductsPage() {
     const q = search.toLowerCase();
 
     setFiltered(
-      products.filter((p) => {
-        return (
-          p.title.toLowerCase().includes(q) ||
-          p.collection.toLowerCase().includes(q) ||
-          p.type.toLowerCase().includes(q) ||
-          p.color_name.toLowerCase().includes(q)
-        );
-      })
+  products.filter((p) => {
+    return (
+      p.name.toLowerCase().includes(q) ||
+      p.collection.toLowerCase().includes(q)
     );
+  })
+);
   }, [search, products]);
 
   if (loading) {
@@ -76,32 +79,32 @@ export default function ProductsPage() {
         <div>
 
           <h1 className="text-3xl font-bold">
-            Products
-          </h1>
+  Designs
+</h1>
 
           <p className="text-gray-500 mt-1">
-            Manage your MythStreet catalog
-          </p>
+  Manage your MythStreet designs
+</p>
 
         </div>
 
         <button
-          className="
-          bg-[#680000]
-          text-white
-          px-5
-          py-3
-          rounded-xl
-          hover:opacity-90
-          "
-        >
-          + Add Product
-        </button>
+  className="
+  bg-[#680000]
+  text-white
+  px-5
+  py-3
+  rounded-xl
+  hover:opacity-90
+  "
+>
+  + Add Design
+</button>
 
       </div>
 
       <input
-        placeholder="Search products..."
+        placeholder="Search designs..."
         value={search}
         onChange={(e) =>
           setSearch(e.target.value)
@@ -130,7 +133,7 @@ export default function ProductsPage() {
               </th>
 
               <th className="text-left p-4">
-                Product
+                Design
               </th>
 
               <th className="text-left p-4">
@@ -138,20 +141,16 @@ export default function ProductsPage() {
               </th>
 
               <th className="text-left p-4">
-                Garment
-              </th>
+  Variants
+</th>
 
               <th className="text-left p-4">
-                Color
-              </th>
+  Starting Price
+</th>
 
               <th className="text-left p-4">
-                Price
-              </th>
-
-              <th className="text-left p-4">
-                Hero
-              </th>
+  Hero Design
+</th>
 
             </tr>
 
@@ -169,48 +168,43 @@ export default function ProductsPage() {
                 <td className="p-4">
 
                   <Image
-                    src={`/${product.main_image}`}
-                    alt={product.title}
-                    width={60}
-                    height={70}
-                    className="rounded-lg object-cover"
-                  />
+  src={`/${product.main_image}`}
+  alt={product.name}
+  width={60}
+  height={70}
+  className="rounded-lg object-cover"
+/>
 
                 </td>
 
                 <td className="p-4 font-medium">
-                  {product.title}
-                </td>
+  {product.name}
+</td>
 
                 <td className="p-4">
                   {product.collection}
                 </td>
 
                 <td className="p-4">
-                  {product.type}
-                </td>
+  {product.total_variants}
+</td>
 
                 <td className="p-4">
-                  {product.color_name}
-                </td>
+  ₹{product.starting_price}
+</td>
 
                 <td className="p-4">
-                  ₹{product.price}
-                </td>
+  {product.has_hero ? (
+    <span className="text-green-600 font-medium">
+      Yes
+    </span>
+  ) : (
+    <span className="text-gray-400">
+      No
+    </span>
+  )}
+</td>
 
-                <td className="p-4">
-
-                  {product.is_hero ? (
-                    <span className="text-green-600 font-medium">
-                      Yes
-                    </span>
-                  ) : (
-                    <span className="text-gray-400">
-                      No
-                    </span>
-                  )}
-
-                </td>
 
               </tr>
 
