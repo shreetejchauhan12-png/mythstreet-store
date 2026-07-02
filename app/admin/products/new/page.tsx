@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Collection = {
   id: number;
@@ -13,6 +14,8 @@ const API =
   "https://mythstreet-backend.onrender.com";
 
 export default function NewDesignPage() {
+    const router = useRouter();
+
   const [name, setName] = useState("");
   const [collection, setCollection] = useState("");
   const [description, setDescription] = useState("");
@@ -21,6 +24,7 @@ export default function NewDesignPage() {
   const [seoDescription, setSeoDescription] = useState("");
 
   const [collections, setCollections] = useState<Collection[]>([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchCollections();
@@ -37,6 +41,50 @@ export default function NewDesignPage() {
       console.error(error);
     }
   }
+
+  async function saveDesign() {
+  if (!name.trim()) {
+    alert("Please enter Design Name");
+    return;
+  }
+
+  if (!collection) {
+    alert("Please select Collection");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const res = await fetch(`${API}/api/designs`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        collection_id: Number(collection),
+        description,
+        seo_title: seoTitle,
+        seo_description: seoDescription,
+      }),
+    });
+
+    const json = await res.json();
+
+    if (!json.success) {
+      throw new Error(json.message);
+    }
+
+    router.push(`/admin/products/${json.data.id}`);
+
+  } catch (error) {
+    console.error(error);
+    alert("Failed to create design.");
+  } finally {
+    setLoading(false);
+  }
+}
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -148,17 +196,21 @@ export default function NewDesignPage() {
         <div className="pt-4">
 
           <button
-            className="
-              bg-[#680000]
-              text-white
-              px-6
-              py-3
-              rounded-lg
-              hover:opacity-90
-            "
-          >
-            Save & Continue
-          </button>
+  onClick={saveDesign}
+  disabled={loading}
+  className="
+    bg-[#680000]
+    text-white
+    px-6
+    py-3
+    rounded-lg
+    hover:opacity-90
+    disabled:opacity-50
+    disabled:cursor-not-allowed
+  "
+>
+  {loading ? "Saving..." : "Save & Continue"}
+</button>
 
         </div>
 
