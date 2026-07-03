@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -163,11 +164,12 @@ export default function VariantsCard({
 
         <td className="px-4 py-4 text-right">
 
-          <button
-            className="text-blue-600 hover:underline"
-          >
-            Edit
-          </button>
+          <Link
+  href={`/admin/variants/${variant.id}`}
+  className="text-blue-600 hover:underline"
+>
+  Edit
+</Link>
 
         </td>
 
