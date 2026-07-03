@@ -1,11 +1,13 @@
 "use client";
 
 type Props = {
-  design: any;
+  form: any;
+  setForm: React.Dispatch<React.SetStateAction<any>>;
 };
 
 export default function BasicInfoCard({
-  design,
+  form,
+  setForm,
 }: Props) {
   return (
     <div className="bg-white rounded-xl shadow-sm border p-6">
@@ -26,7 +28,13 @@ export default function BasicInfoCard({
 
           <input
             type="text"
-            defaultValue={design?.name || ""}
+            value={form.name || ""}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                name: e.target.value,
+              })
+            }
             className="w-full border rounded-lg px-4 py-3"
           />
 
@@ -42,7 +50,7 @@ export default function BasicInfoCard({
 
           <input
             type="text"
-            defaultValue={design?.collection || ""}
+            value={form.collection || ""}
             className="w-full border rounded-lg px-4 py-3"
             readOnly
           />
@@ -61,7 +69,13 @@ export default function BasicInfoCard({
 
         <textarea
           rows={6}
-          defaultValue={design?.description || ""}
+          value={form.description || ""}
+          onChange={(e) =>
+            setForm({
+              ...form,
+              description: e.target.value,
+            })
+          }
           className="w-full border rounded-lg px-4 py-3 resize-none"
         />
 

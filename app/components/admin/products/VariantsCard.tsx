@@ -1,18 +1,61 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 type Props = {
-  designId: number;
+  design: any;
 };
 
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mythstreet-backend.onrender.com";
+
 export default function VariantsCard({
-  designId,
+  design,
 }: Props) {
+
+  const [variants, setVariants] = useState<any[]>([]);
+
+  useEffect(() => {
+
+    if (!design?.id) return;
+
+    fetchVariants();
+
+  }, [design]);
+
+  async function fetchVariants() {
+
+    try {
+
+      const res = await fetch(
+        `${API}/api/products/design/${design.id}`
+      );
+
+      const json = await res.json();
+
+      console.log("VARIANTS:", json.data);
+
+      setVariants(json.data);
+
+    } catch (error) {
+
+      console.error(
+        "FETCH VARIANTS ERROR:",
+        error
+      );
+
+    }
+
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-sm border p-6">
 
       <div className="flex items-center justify-between mb-6">
 
         <div>
+
           <h2 className="text-xl font-semibold">
             Variants
           </h2>
@@ -20,6 +63,7 @@ export default function VariantsCard({
           <p className="text-sm text-gray-500 mt-1">
             Manage all product variants for this design.
           </p>
+
         </div>
 
         <button
@@ -77,7 +121,7 @@ export default function VariantsCard({
                 colSpan={5}
                 className="text-center py-10 text-gray-500"
               >
-                No variants created yet.
+                {variants.length} variant(s) loaded.
               </td>
 
             </tr>
