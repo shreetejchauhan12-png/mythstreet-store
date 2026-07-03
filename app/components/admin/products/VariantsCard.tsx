@@ -1,76 +1,90 @@
 "use client";
 
 type Props = {
-  product?: any;
+  designId: number;
 };
 
 export default function VariantsCard({
-  product,
+  designId,
 }: Props) {
   return (
     <div className="bg-white rounded-xl shadow-sm border p-6">
 
-      <h2 className="text-xl font-semibold mb-6">
-        Variant Information
-      </h2>
+      <div className="flex items-center justify-between mb-6">
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-        {/* Garment Type */}
         <div>
-          <label className="block text-sm font-medium mb-2">
-            Garment Type
-          </label>
+          <h2 className="text-xl font-semibold">
+            Variants
+          </h2>
 
-          <input
-            type="text"
-            defaultValue={product?.type || ""}
-            placeholder="Oversized T-Shirt"
-            className="w-full border rounded-lg px-4 py-3"
-          />
+          <p className="text-sm text-gray-500 mt-1">
+            Manage all product variants for this design.
+          </p>
         </div>
 
-        {/* Color */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Color
-          </label>
+        <button
+          className="
+            bg-[#680000]
+            text-white
+            px-5
+            py-2.5
+            rounded-lg
+            hover:opacity-90
+          "
+        >
+          + Add Variant
+        </button>
 
-          <input
-            type="text"
-            defaultValue={product?.color_name || ""}
-            placeholder="Black"
-            className="w-full border rounded-lg px-4 py-3"
-          />
-        </div>
+      </div>
 
-        {/* Variant Code */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            SKU
-          </label>
+      <div className="border rounded-lg overflow-hidden">
 
-          <input
-            type="text"
-            defaultValue={product?.sku || ""}
-            placeholder="CHAOS-OV-BLK"
-            className="w-full border rounded-lg px-4 py-3"
-          />
-        </div>
+        <table className="w-full">
 
-        {/* Qikink Product ID */}
-        <div>
-          <label className="block text-sm font-medium mb-2">
-            Qikink Product ID
-          </label>
+          <thead className="bg-gray-50">
 
-          <input
-            type="text"
-            defaultValue={product?.qikink_product_id || ""}
-            placeholder="123456"
-            className="w-full border rounded-lg px-4 py-3"
-          />
-        </div>
+            <tr>
+
+              <th className="text-left px-4 py-3">
+                Garment
+              </th>
+
+              <th className="text-left px-4 py-3">
+                Color
+              </th>
+
+              <th className="text-left px-4 py-3">
+                Hero
+              </th>
+
+              <th className="text-left px-4 py-3">
+                Status
+              </th>
+
+              <th className="text-right px-4 py-3">
+                Action
+              </th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            <tr>
+
+              <td
+                colSpan={5}
+                className="text-center py-10 text-gray-500"
+              >
+                No variants created yet.
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
 
       </div>
 

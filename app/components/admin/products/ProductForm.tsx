@@ -1,49 +1,83 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import BasicInfoCard from "./BasicInfoCard";
-import PriceCard from "./PriceCard";
-import ImagesCard from "./ImagesCard";
 import VariantsCard from "./VariantsCard";
-import SizesCard from "./SizesCard";
 import SeoCard from "./SeoCard";
-import ActionButtons from "./ActionButtons";
 
 type Props = {
-  product?: any;
+  designId: number;
 };
 
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mythstreet-backend.onrender.com";
+
 export default function ProductForm({
-  product,
+  designId,
 }: Props) {
+
+  const [design, setDesign] = useState<any>(null);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDesign();
+  }, [designId]);
+
+  async function fetchDesign() {
+
+    try {
+
+      const res = await fetch(
+        `${API}/api/designs/${designId}`
+      );
+
+      const json = await res.json();
+
+      setDesign(json.data);
+
+      console.log("DESIGN:", json.data);
+
+    } catch (error) {
+
+      console.error(
+        "FETCH DESIGN ERROR:",
+        error
+      );
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  }
+
+  if (loading) {
+
+    return (
+      <div className="text-center py-10">
+        Loading Design...
+      </div>
+    );
+
+  }
+
   return (
     <div className="space-y-6">
 
       <BasicInfoCard
-        product={product}
-      />
-
-      <PriceCard
-        product={product}
-      />
-
-      <VariantsCard
-        product={product}
-      />
-
-      <ImagesCard
-        product={product}
-      />
-
-      <SizesCard
-        product={product}
+        design={design}
       />
 
       <SeoCard
-        product={product}
+        design={design}
       />
 
-      <ActionButtons
-        product={product}
+      <VariantsCard
+        design={design}
       />
 
     </div>
