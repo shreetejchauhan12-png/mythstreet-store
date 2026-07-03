@@ -115,18 +115,69 @@ export default function VariantsCard({
 
           <tbody>
 
-            <tr>
+  {variants.length === 0 ? (
 
-              <td
-                colSpan={5}
-                className="text-center py-10 text-gray-500"
-              >
-                {variants.length} variant(s) loaded.
-              </td>
+    <tr>
 
-            </tr>
+      <td
+        colSpan={5}
+        className="text-center py-10 text-gray-500"
+      >
+        No variants created yet.
+      </td>
 
-          </tbody>
+    </tr>
+
+  ) : (
+
+    variants.map((variant: any) => (
+
+      <tr
+        key={variant.id}
+        className="border-t"
+      >
+
+        <td className="px-4 py-4">
+          {variant.garment_type}
+        </td>
+
+        <td className="px-4 py-4">
+          {variant.color_name}
+        </td>
+
+        <td className="px-4 py-4">
+
+          {variant.is_hero
+            ? "✅ Hero"
+            : "-"}
+
+        </td>
+
+        <td className="px-4 py-4">
+
+          <span className="text-green-600">
+            Active
+          </span>
+
+        </td>
+
+        <td className="px-4 py-4 text-right">
+
+          <button
+            className="text-blue-600 hover:underline"
+          >
+            Edit
+          </button>
+
+        </td>
+
+      </tr>
+
+    ))
+
+  )}
+
+</tbody>
 
         </table>
 
