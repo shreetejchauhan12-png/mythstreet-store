@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: number;
@@ -28,6 +29,8 @@ export default function ProductsPage() {
   const [filtered, setFiltered] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const router = useRouter();
 
   async function fetchProducts() {
     try {
@@ -89,13 +92,16 @@ export default function ProductsPage() {
         </div>
 
         <button
+  onClick={() =>
+    router.push("/admin/products/new")
+  }
   className="
-  bg-[#680000]
-  text-white
-  px-5
-  py-3
-  rounded-xl
-  hover:opacity-90
+    bg-[#680000]
+    text-white
+    px-5
+    py-3
+    rounded-xl
+    hover:opacity-90
   "
 >
   + Add Design
@@ -161,9 +167,16 @@ export default function ProductsPage() {
             {filtered.map((product) => (
 
               <tr
-                key={product.id}
-                className="border-t hover:bg-gray-50"
-              >
+  key={product.id}
+  onClick={() =>
+    router.push(`/admin/products/${product.id}`)
+  }
+  className="
+    border-t
+    hover:bg-gray-50
+    cursor-pointer
+  "
+>
 
                 <td className="p-4">
 

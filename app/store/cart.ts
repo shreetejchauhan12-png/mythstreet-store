@@ -112,33 +112,89 @@ const size = sizeRaw === "nosize" ? null : sizeRaw;
 
   // 🔥 FETCH FROM BACKEND
   fetchCart: async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  try {
 
-      const data = await res.json();
+    const token = localStorage.getItem("token");
 
-      const formatted = data.cart.map((item: any) => ({
-        id: `${item.product_id}-${item.size ?? "nosize"}`,
-        title: item.size ? `${item.title} (${item.size})` : item.title,
-        price: item.price,
-        image: item.image,
-        quantity: item.quantity,
-      }));
+    if (!token) {
 
-      set({ cart: formatted });
+      set({ cart: [] });
 
-    } catch (error) {
-      console.error("Fetch cart error:", error);
+      return;
+
     }
-  },
+
+    const res = await fetch(
+
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
+
+      {
+
+        headers: {
+
+          Authorization: `Bearer ${token}`,
+
+        },
+
+      }
+
+    );
+
+    const data = await res.json();
+
+console.log("STATUS:", res.status);
+console.log("CART RESPONSE:", data);
+
+    if (!res.ok || !data.success) {
+
+      console.error("CART API:", data);
+
+      set({ cart: [] });
+
+      return;
+
+    }
+
+    const formatted = (data.cart || []).map((item: any) => ({
+
+      id: `${item.product_id}-${item.size ?? "nosize"}`,
+
+      title: item.size
+        ? `${item.title} (${item.size})`
+        : item.title,
+
+      price: item.price,
+
+      image: item.image,
+
+      quantity: item.quantity,
+
+    }));
+
+    set({
+
+      cart: formatted,
+
+    });
+
+  } catch (error) {
+
+    console.error(
+
+      "Fetch cart error:",
+
+      error
+
+    );
+
+    set({
+
+      cart: [],
+
+    });
+
+  }
+
+},
 }));

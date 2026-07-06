@@ -67,18 +67,19 @@ export default function VariantsCard({
 
         </div>
 
-        <button
-          className="
-            bg-[#680000]
-            text-white
-            px-5
-            py-2.5
-            rounded-lg
-            hover:opacity-90
-          "
-        >
-          + Add Variant
-        </button>
+        <Link
+  href={`/admin/designs/${design.id}/variants/new`}
+  className="
+    bg-[#680000]
+    text-white
+    px-5
+    py-2.5
+    rounded-lg
+    hover:opacity-90
+  "
+>
+  + Add Variant
+</Link>
 
       </div>
 

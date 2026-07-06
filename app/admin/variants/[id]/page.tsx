@@ -60,60 +60,60 @@ export default function VariantEditorPage() {
 
   async function saveVariant() {
 
-  try {
+    try {
 
-    setSaving(true);
+      setSaving(true);
 
-    console.log("PUT URL:", `${API}/api/products/${variantId}`);
+      const res = await fetch(
+        `${API}/api/products/${variantId}`,
+        {
+          method: "PUT",
 
-const res = await fetch(
-  `${API}/api/products/${variantId}`,
-  {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(form),
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify(form),
+        }
+      );
+
+      const json = await res.json();
+
+      console.log(
+        "UPDATED:",
+        json
+      );
+
+      if (!res.ok || !json.success) {
+
+        throw new Error(
+          json.message || "Update failed"
+        );
+
+      }
+
+      alert(
+        "Variant updated successfully ✅"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "SAVE VARIANT ERROR:",
+        error
+      );
+
+      alert(
+        "Failed to update variant ❌"
+      );
+
+    } finally {
+
+      setSaving(false);
+
+    }
+
   }
-);
-
-console.log("STATUS:", res.status);
-console.log("CONTENT TYPE:", res.headers.get("content-type"));
-
-const text = await res.text();
-
-console.log("RAW RESPONSE:");
-console.log(text);
-
-    const json = await res.json();
-
-    console.log(
-      "UPDATED:",
-      json
-    );
-
-    alert(
-      "Variant updated successfully ✅"
-    );
-
-  } catch (error) {
-
-    console.error(
-      "SAVE VARIANT ERROR:",
-      error
-    );
-
-    alert(
-      "Failed to update variant ❌"
-    );
-
-  } finally {
-
-    setSaving(false);
-
-  }
-
-}
 
   if (loading || !form) {
 
@@ -152,31 +152,31 @@ console.log(text);
       />
 
       <VariantSizesCard
-  form={form}
-  setForm={setForm}
-/>
+        form={form}
+        setForm={setForm}
+      />
 
-<div className="flex justify-end">
+      <div className="flex justify-end">
 
-  <button
-    onClick={saveVariant}
-    disabled={saving}
-    className="
-      bg-[#680000]
-      text-white
-      px-6
-      py-3
-      rounded-lg
-      hover:opacity-90
-      disabled:opacity-50
-    "
-  >
-    {saving
-      ? "Saving..."
-      : "Save Changes"}
-  </button>
+        <button
+          onClick={saveVariant}
+          disabled={saving}
+          className="
+            bg-[#680000]
+            text-white
+            px-6
+            py-3
+            rounded-lg
+            hover:opacity-90
+            disabled:opacity-50
+          "
+        >
+          {saving
+            ? "Saving..."
+            : "Save Changes"}
+        </button>
 
-</div>
+      </div>
 
     </div>
 

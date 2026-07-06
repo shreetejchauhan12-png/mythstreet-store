@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import BasicInfoCard from "./BasicInfoCard";
 import VariantsCard from "./VariantsCard";
 import SeoCard from "./SeoCard";
+import PublishingCard from "./PublishingCard";
 
 type Props = {
   designId: number;
@@ -42,7 +43,14 @@ export default function ProductForm({
 
       setDesign(json.data);
 
-      setForm(json.data);
+      setForm({
+  status: "draft",
+  featured: false,
+  trending: false,
+  latest_drop: false,
+  best_seller: false,
+  ...json.data,
+});
 
       console.log("DESIGN:", json.data);
 
@@ -64,6 +72,9 @@ export default function ProductForm({
   async function saveDesign() {
 
   try {
+
+    console.log("SAVE BUTTON CLICKED");
+console.log(form);
 
     setSaving(true);
 
@@ -126,9 +137,14 @@ export default function ProductForm({
   setForm={setForm}
 />
 
-      <VariantsCard
-        design={design}
-      />
+<PublishingCard
+  form={form}
+  setForm={setForm}
+/>
+
+<VariantsCard
+  design={design}
+/>
 
       <div className="flex justify-end">
 

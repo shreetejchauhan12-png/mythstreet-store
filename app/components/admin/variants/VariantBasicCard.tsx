@@ -3,13 +3,23 @@
 type Props = {
   form: any;
   setForm: React.Dispatch<React.SetStateAction<any>>;
+
+  garmentTypes?: any[];
+  colors?: any[];
+
+  createMode?: boolean;
 };
 
 export default function VariantBasicCard({
   form,
   setForm,
+  garmentTypes = [],
+  colors = [],
+  createMode = false,
 }: Props) {
+
   return (
+
     <div className="bg-white rounded-xl shadow-sm border p-6">
 
       <h2 className="text-xl font-semibold mb-6">
@@ -26,12 +36,46 @@ export default function VariantBasicCard({
             Garment Type
           </label>
 
-          <input
-            type="text"
-            value={form.type || ""}
-            readOnly
-            className="w-full border rounded-lg px-4 py-3 bg-gray-50"
-          />
+          {createMode ? (
+
+            <select
+              value={form.garment_type_id}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  garment_type_id: Number(e.target.value),
+                })
+              }
+              className="w-full border rounded-lg px-4 py-3"
+            >
+
+              <option value="">
+                Select Garment
+              </option>
+
+              {garmentTypes.map((garment: any) => (
+
+                <option
+                  key={garment.id}
+                  value={garment.id}
+                >
+                  {garment.name}
+                </option>
+
+              ))}
+
+            </select>
+
+          ) : (
+
+            <input
+              type="text"
+              value={form.type || ""}
+              readOnly
+              className="w-full border rounded-lg px-4 py-3 bg-gray-50"
+            />
+
+          )}
 
         </div>
 
@@ -43,12 +87,46 @@ export default function VariantBasicCard({
             Color
           </label>
 
-          <input
-            type="text"
-            value={form.color_name || ""}
-            readOnly
-            className="w-full border rounded-lg px-4 py-3 bg-gray-50"
-          />
+          {createMode ? (
+
+            <select
+              value={form.color_id}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  color_id: Number(e.target.value),
+                })
+              }
+              className="w-full border rounded-lg px-4 py-3"
+            >
+
+              <option value="">
+                Select Color
+              </option>
+
+              {colors.map((color: any) => (
+
+                <option
+                  key={color.id}
+                  value={color.id}
+                >
+                  {color.name}
+                </option>
+
+              ))}
+
+            </select>
+
+          ) : (
+
+            <input
+              type="text"
+              value={form.color_name || ""}
+              readOnly
+              className="w-full border rounded-lg px-4 py-3 bg-gray-50"
+            />
+
+          )}
 
         </div>
 
@@ -124,5 +202,7 @@ export default function VariantBasicCard({
       </div>
 
     </div>
+
   );
+
 }

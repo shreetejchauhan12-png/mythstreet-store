@@ -22,34 +22,87 @@ export const useWishlist = create<WishlistStore>((set, get) => ({
 
   // 🔄 FETCH FROM BACKEND
   fetchWishlist: async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) return;
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/wishlist`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+  try {
 
-      const data = await res.json();
+    const token = localStorage.getItem("token");
 
-      const formatted = data.wishlist.map((item: any) => ({
-        id: item.product_id,
-        title: item.title,
-        price: item.price,
-        image: item.image,
-      }));
+    if (!token) {
 
-      set({ wishlist: formatted });
+      set({ wishlist: [] });
 
-    } catch (error) {
-      console.error("❌ Fetch wishlist error:", error);
+      return;
+
     }
-  },
+
+    const res = await fetch(
+
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/wishlist`,
+
+      {
+
+        headers: {
+
+          Authorization: `Bearer ${token}`,
+
+        },
+
+      }
+
+    );
+
+    const data = await res.json();
+
+    console.log("WISHLIST STATUS:", res.status);
+console.log("WISHLIST RESPONSE:", data);
+
+    if (!res.ok || !data.success) {
+
+      console.error("WISHLIST API:", data);
+
+      set({ wishlist: [] });
+
+      return;
+
+    }
+
+    const formatted = (data.wishlist || []).map((item: any) => ({
+
+      id: item.product_id,
+
+      title: item.title,
+
+      price: item.price,
+
+      image: item.image,
+
+    }));
+
+    set({
+
+      wishlist: formatted,
+
+    });
+
+  } catch (error) {
+
+    console.error(
+
+      "❌ Fetch wishlist error:",
+
+      error
+
+    );
+
+    set({
+
+      wishlist: [],
+
+    });
+
+  }
+
+},
 
   // ❤️ ADD / REMOVE
   toggleWishlist: async (item) => {
