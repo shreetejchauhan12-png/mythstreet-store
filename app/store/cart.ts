@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { apiFetch } from "@/app/lib/api";
 
 type CartItem = {
   id: string;
@@ -62,23 +63,16 @@ increaseQty: async (id) => {
 
     if (!item) return;
 
-    await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          product_id: Number(product_id),
-          size,
-          title: item.title,
-          price: item.price,
-          image: item.image,
-        }),
-      }
-    );
+    await apiFetch("/api/products/cart", {
+  method: "POST",
+  body: JSON.stringify({
+    product_id: Number(product_id),
+    size,
+    title: item.title,
+    price: item.price,
+    image: item.image,
+  }),
+});
 
     await useCart.getState().fetchCart();
 
@@ -94,20 +88,13 @@ increaseQty: async (id) => {
       const [product_id, sizeRaw] = id.split("-");
 const size = sizeRaw === "nosize" ? null : sizeRaw;
 
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart/decrease`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            product_id: Number(product_id),
-            size: size,
-          }),
-        }
-      );
+      await apiFetch("/api/products/cart/decrease", {
+  method: "POST",
+  body: JSON.stringify({
+    product_id: Number(product_id),
+    size,
+  }),
+});
 
       // 🔄 refresh cart
       const fetchCart = useCart.getState().fetchCart;
@@ -126,20 +113,13 @@ const size = sizeRaw === "nosize" ? null : sizeRaw;
 
       const [product_id, size] = id.split("-");
 
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            product_id: Number(product_id),
-            size: size,
-          }),
-        }
-      );
+      await apiFetch("/api/products/cart", {
+  method: "DELETE",
+  body: JSON.stringify({
+    product_id: Number(product_id),
+    size,
+  }),
+});
 
       // 🔄 refresh cart
       const fetchCart = useCart.getState().fetchCart;
@@ -168,21 +148,7 @@ const size = sizeRaw === "nosize" ? null : sizeRaw;
 
     }
 
-    const res = await fetch(
-
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
-
-      {
-
-        headers: {
-
-          Authorization: `Bearer ${token}`,
-
-        },
-
-      }
-
-    );
+    const res = await apiFetch("/api/products/cart");
 
     const data = await res.json();
 

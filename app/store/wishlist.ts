@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { apiFetch } from "@/app/lib/api";
 
 export type WishlistItem = {
   id: number;
@@ -35,21 +36,7 @@ export const useWishlist = create<WishlistStore>((set, get) => ({
 
     }
 
-    const res = await fetch(
-
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/wishlist`,
-
-      {
-
-        headers: {
-
-          Authorization: `Bearer ${token}`,
-
-        },
-
-      }
-
-    );
+    const res = await apiFetch("/api/products/wishlist");
 
     const data = await res.json();
 
@@ -117,37 +104,23 @@ console.log("WISHLIST RESPONSE:", data);
 
       if (exists) {
         // ❌ REMOVE
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/products/wishlist`,
-          {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              product_id: item.id,
-            }),
-          }
-        );
+        await apiFetch("/api/products/wishlist", {
+  method: "DELETE",
+  body: JSON.stringify({
+    product_id: item.id,
+  }),
+});
       } else {
         // ➕ ADD
-        await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/products/wishlist`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              product_id: item.id,
-              title: item.title,
-              price: item.price,
-              image: item.image,
-            }),
-          }
-        );
+        await apiFetch("/api/products/wishlist", {
+  method: "POST",
+  body: JSON.stringify({
+    product_id: item.id,
+    title: item.title,
+    price: item.price,
+    image: item.image,
+  }),
+});
       }
 
       // 🔥 ALWAYS REFRESH FROM DB
