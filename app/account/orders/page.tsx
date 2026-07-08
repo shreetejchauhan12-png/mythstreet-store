@@ -1,20 +1,25 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/store/auth";
 import Link from "next/link";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const authUser = useAuth((state) => state.user);
+const loadUser = useAuth((state) => state.loadUser);
 
   useEffect(() => {
+  loadUser();
+}, []);
+
+useEffect(() => {
     if (typeof window === "undefined") return;
 
     const fetchOrders = async () => {
       try {
-        const user = JSON.parse(localStorage.getItem("user") || "{}");
-
-        if (!user.id) {
+        if (!authUser?.id) {
           setOrders([]);
           setLoading(false);
           return;
@@ -53,6 +58,53 @@ export default function OrdersPage() {
 
     fetchOrders();
   }, []);
+
+  const cancelOrder = async (
+  e: React.MouseEvent,
+  orderId: number
+) => {
+  e.preventDefault();
+
+  const confirmCancel = confirm(
+    "Are you sure you want to cancel this order?"
+  );
+
+  if (!confirmCancel) return;
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/order/${orderId}/cancel`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await res.json();
+
+    if (!data.success) {
+      alert(data.message || "Unable to cancel order");
+      return;
+    }
+
+    setOrders((prev) =>
+      prev.map((order) =>
+        order.id === orderId
+          ? { ...order, status: "cancelled" }
+          : order
+      )
+    );
+
+    alert("Order cancelled successfully ✅");
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong.");
+  }
+};
 
   // 🔄 Loading State
   if (loading) {
@@ -107,10 +159,16 @@ export default function OrdersPage() {
                 </p>
               </div>
 
-              <div>
-                <p className="text-sm text-gray-500">Total</p>
-                <p className="font-medium">₹{order.total_amount}</p>
-              </div>
+              {!["cancelled", "shipped", "out_for_delivery", "delivered"].includes(
+  order.status
+) && (
+  <button
+    onClick={(e) => cancelOrder(e, order.id)}
+    className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+  >
+    Cancel Order
+  </button>
+)}
             </div>
 
             {/* 🔹 Items */}
