@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/store/auth";
 
 declare global {
   interface Window {
@@ -11,6 +12,8 @@ declare global {
 
 export default function LoginPage() {
   const router = useRouter();
+
+  const login = useAuth((state) => state.login);
 
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
@@ -77,16 +80,7 @@ if (!phone) return alert("Enter phone number");
             return;
           }
 
-          // ✅🔥 FIXED STORAGE (VERY IMPORTANT)
-          localStorage.setItem("token", result.token);
-
-          localStorage.setItem(
-            "user",
-            JSON.stringify({
-              ...result.user,
-              token: result.token,
-            })
-          );
+          login(result.user, result.token);
 
           // 🔥 FETCH USER CART AFTER LOGIN
 const fetchCart = (
