@@ -1,17 +1,23 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useAuth } from "@/app/store/auth";
 
 export default function AccountPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
+  const authUser = useAuth((state) => state.user);
+  const loadUser = useAuth((state) => state.loadUser);
+  const login = useAuth((state) => state.login);
+
   useEffect(() => {
-    const saved = localStorage.getItem("user");
-    if (saved) {
-      setUser(JSON.parse(saved));
-    }
-  }, []);
+    loadUser();
+  }, [loadUser]);
+
+  useEffect(() => {
+    setUser(authUser);
+  }, [authUser]);
 
   const updateName = async () => {
     const name = prompt("Enter your name");
@@ -20,10 +26,10 @@ export default function AccountPage() {
     try {
       setLoading(true);
 
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token") || "";
 
       const res = await fetch(
-        "https://mythstreet-backend.onrender.com/api/auth/update-name",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-name`,
         {
           method: "POST",
           headers: {
@@ -41,8 +47,10 @@ export default function AccountPage() {
         return;
       }
 
-      // ✅ update localStorage + UI
-      localStorage.setItem("user", JSON.stringify(data.user));
+      // Update auth store
+      login(data.user, token);
+
+      // Update current page immediately
       setUser(data.user);
 
       alert("Name updated ✅");
@@ -72,7 +80,7 @@ export default function AccountPage() {
           <p className="text-sm text-gray-500">Name</p>
           <p className="font-medium">
             {user.name || "Not set"}
-          </p>
+          </p> 
         </div>
 
         <div>
@@ -82,7 +90,6 @@ export default function AccountPage() {
           </p>
         </div>
 
-        {/* 🔥 EDIT BUTTON */}
         <button
           onClick={updateName}
           disabled={loading}

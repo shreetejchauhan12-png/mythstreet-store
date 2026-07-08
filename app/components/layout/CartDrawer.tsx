@@ -14,6 +14,7 @@ type Props = {
   cart: any[];
   subtotal: number;
   addToCart: any;
+  increase: any;
   decrease: any;
   removeFromCart: any;
 };
@@ -24,6 +25,7 @@ export default function CartDrawer({
   cart,
   subtotal,
   addToCart,
+  increase,
   decrease,
   removeFromCart,
 }: Props) {
@@ -212,39 +214,7 @@ text-center
                     </span>
 
                     <button
-                      onClick={async () => {
-  const token = localStorage.getItem("token");
-
-  if (!token) return;
-
-  const [product_id, sizeRaw] =
-    item.id.split("-");
-
-  const size =
-    sizeRaw === "nosize"
-      ? null
-      : sizeRaw;
-
-  await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        product_id: Number(product_id),
-        size,
-        title: item.title,
-        price: item.price,
-        image: item.image,
-      }),
-    }
-  );
-
-  await useCart.getState().fetchCart();
-}}
+                      onClick={() => increase(item.id)}
                       className="
 w-8 h-8
 rounded-full

@@ -12,8 +12,13 @@ type CartStore = {
   cart: CartItem[];
 
   addToCart: (item: CartItem) => void;
+
+  increaseQty: (id: string) => Promise<void>;
+
   decreaseQty: (id: string) => Promise<void>;
+
   removeFromCart: (id: string) => Promise<void>;
+
   clearCart: () => void;
 
   fetchCart: () => Promise<void>;
@@ -42,7 +47,45 @@ export const useCart = create<CartStore>((set) => ({
       };
     }),
 
-  // ➖ DECREASE (SYNC WITH BACKEND)
+  // ➕ INCREASE (SYNC WITH BACKEND)
+increaseQty: async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const [product_id, sizeRaw] = id.split("-");
+    const size = sizeRaw === "nosize" ? null : sizeRaw;
+
+    const item = useCart
+      .getState()
+      .cart.find((i) => i.id === id);
+
+    if (!item) return;
+
+    await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          product_id: Number(product_id),
+          size,
+          title: item.title,
+          price: item.price,
+          image: item.image,
+        }),
+      }
+    );
+
+    await useCart.getState().fetchCart();
+
+  } catch (error) {
+    console.error("INCREASE ERROR:", error);
+  }
+},
   decreaseQty: async (id) => {
     try {
       const token = localStorage.getItem("token");

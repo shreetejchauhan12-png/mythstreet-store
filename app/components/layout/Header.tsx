@@ -17,6 +17,7 @@ import {
 import MobileMenu from "./MobileMenu";
 import { useCart } from "@/app/store/cart";
 import { useWishlist } from "@/app/store/wishlist";
+import { useAuth } from "@/app/store/auth";
 import { usePathname } from "next/navigation";
 
 const SearchOverlay = dynamic(
@@ -37,25 +38,27 @@ export default function Header() {
   // account
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement | null>(null);
-
-  const [user, setUser] = useState<any>(null);
   const fetchWishlist = useWishlist((s) => s.fetchWishlist);
 
+const fetchCart = useCart((state) => state.fetchCart);
+
+const user = useAuth((state) => state.user);
+const loadUser = useAuth((state) => state.loadUser);
+const login = useAuth((state) => state.login);
+const logoutStore = useAuth((state) => state.logout);
+
 useEffect(() => {
-  const storedUser = localStorage.getItem("user");
-  if (storedUser) {
-    setUser(JSON.parse(storedUser));
-  }
+  loadUser();
 
   const token = localStorage.getItem("token");
 
   if (token) {
     setTimeout(() => {
       fetchCart();
-      fetchWishlist(); // ✅ ADD THIS
+      fetchWishlist();
     }, 100);
   }
-}, []);
+}, [loadUser, fetchCart, fetchWishlist]);
   const startLogin = () => {
   if (!window.initSendOTP) {
     alert("OTP service not loaded. Refresh page.");
@@ -110,17 +113,16 @@ if (!result.user.name) {
 
     const updated = await res2.json();
 
-    localStorage.setItem("user", JSON.stringify(updated.user));
-    setUser(updated.user);
+    login(updated.user, result.token);
 
-    await fetchCart();
-await fetchWishlist(); 
+await fetchCart();
+await fetchWishlist();
 
   } else {
-    setUser(result.user);
+    login(result.user, result.token);
   }
 } else {
-  setUser(result.user);
+  login(result.user, result.token);
 
   await fetchCart();
   await fetchWishlist();
@@ -179,17 +181,15 @@ useEffect(() => {
 }, [accountOpen]);
 
   const logout = () => {
-  localStorage.removeItem("user");   // ✅ remove correct key
-  localStorage.removeItem("token");  // ✅ remove jwt
-  setUser(null);                     // ✅ clear state
+  logoutStore();
   setAccountOpen(false);
 };
 
   const cart = useCart((state) => state.cart);
-  const fetchCart = useCart((state) => state.fetchCart);
-  const addToCart = useCart((state) => state.addToCart);
-  const decrease = useCart((state) => state.decreaseQty);
-  const removeFromCart = useCart((state) => state.removeFromCart);
+const addToCart = useCart((state) => state.addToCart);
+const increase = useCart((state) => state.increaseQty);
+const decrease = useCart((state) => state.decreaseQty);
+const removeFromCart = useCart((state) => state.removeFromCart);
 
   const wishlist = useWishlist((state) => state.wishlist);
   const toggleWishlist = useWishlist((s) => s.toggleWishlist);
@@ -449,6 +449,7 @@ overflow-hidden
   cart={cart}
   subtotal={subtotal}
   addToCart={addToCart}
+  increase={increase}
   decrease={decrease}
   removeFromCart={removeFromCart}
 />
