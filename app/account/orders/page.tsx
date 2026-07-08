@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/store/auth";
+import { apiFetch } from "@/app/lib/api";
 import Link from "next/link";
 
 export default function OrdersPage() {
@@ -12,7 +13,7 @@ const loadUser = useAuth((state) => state.loadUser);
 
   useEffect(() => {
   loadUser();
-}, []);
+}, [authUser]);
 
 useEffect(() => {
     if (typeof window === "undefined") return;
@@ -25,28 +26,19 @@ useEffect(() => {
           return;
         }
 
-        const token = localStorage.getItem("token");
-
         let data = { orders: [] };
 
-        try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/order/my-orders`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+try {
+  const res = await apiFetch("/api/order/my-orders");
 
-          if (!res.ok) {
-            throw new Error("Failed to fetch orders");
-          }
+  if (!res.ok) {
+    throw new Error("Failed to fetch orders");
+  }
 
-          data = await res.json();
-        } catch (err) {
-          console.log("⚠️ Backend not reachable or error");
-        }
+  data = await res.json();
+} catch (err) {
+  console.log("⚠️ Backend not reachable or error");
+}
 
         setOrders(data.orders || []);
       } catch (error) {
@@ -72,17 +64,12 @@ useEffect(() => {
   if (!confirmCancel) return;
 
   try {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/order/${orderId}/cancel`,
-      {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await apiFetch(
+  `/api/order/${orderId}/cancel`,
+  {
+    method: "PUT",
+  }
+);
 
     const data = await res.json();
 
