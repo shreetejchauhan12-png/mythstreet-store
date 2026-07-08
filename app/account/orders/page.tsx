@@ -49,7 +49,7 @@ try {
     };
 
     fetchOrders();
-  }, []);
+  }, [authUser]);
 
   const cancelOrder = async (
   e: React.MouseEvent,
