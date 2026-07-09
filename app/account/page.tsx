@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/store/auth";
 import { apiFetch } from "@/app/lib/api";
+import type { User } from "@/app/types/user";
 
 export default function AccountPage() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
 
   const authUser = useAuth((state) => state.user);
