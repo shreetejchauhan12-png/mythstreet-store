@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAuth } from "@/app/store/auth";
+import { apiFetch } from "@/app/lib/api";
 
 export default function AccountPage() {
   const [user, setUser] = useState<any>(null);
@@ -24,36 +25,28 @@ export default function AccountPage() {
     if (!name) return;
 
     try {
-      setLoading(true);
+  setLoading(true);
 
-      const token = localStorage.getItem("token") || "";
+  const res = await apiFetch("/api/auth/update-name", {
+    method: "POST",
+    body: JSON.stringify({ name }),
+  });
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-name`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ name }),
-        }
-      );
+  const data = await res.json();
 
-      const data = await res.json();
+  if (!data.success) {
+    alert("Failed to update name");
+    return;
+  }
 
-      if (!data.success) {
-        alert("Failed to update name");
-        return;
-      }
+  // Keep existing token
+  const token = localStorage.getItem("token") || "";
 
-      // Update auth store
-      login(data.user, token);
+  login(data.user, token);
 
-      // Update current page immediately
-      setUser(data.user);
+  setUser(data.user);
 
-      alert("Name updated ✅");
+  alert("Name updated ✅");
 
     } catch (err) {
       console.log(err);

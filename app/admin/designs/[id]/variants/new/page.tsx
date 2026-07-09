@@ -8,6 +8,7 @@ import VariantImagesCard from "@/app/components/admin/variants/VariantImagesCard
 import VariantSizesCard from "@/app/components/admin/variants/VariantSizesCard";
 
 import { useLookups } from "@/hooks/useLookups";
+import { apiFetch } from "@/app/lib/api";
 
 export default function AddVariantPage() {
 
@@ -64,31 +65,13 @@ export default function AddVariantPage() {
 
   try {
 
-    const response = await fetch(
-
-      `${process.env.NEXT_PUBLIC_API_URL || "https://mythstreet-backend.onrender.com"}/api/products`,
-
-      {
-
-        method: "POST",
-
-        headers: {
-
-          "Content-Type": "application/json",
-
-        },
-
-        body: JSON.stringify({
-
-          ...form,
-
-          design_id: designId,
-
-        }),
-
-      }
-
-    );
+    const response = await apiFetch("/api/products", {
+  method: "POST",
+  body: JSON.stringify({
+    ...form,
+    design_id: designId,
+  }),
+});
 
     const json = await response.json();
 

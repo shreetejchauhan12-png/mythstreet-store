@@ -36,8 +36,8 @@ export default function SearchOverlay({
       try {
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/products/search?q=${search}`
-        );
+  `/api/products/search?q=${encodeURIComponent(search)}`
+);
 
         const data = await res.json();
 

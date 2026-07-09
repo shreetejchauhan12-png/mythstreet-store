@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/app/lib/api";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,14 +19,10 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/send-otp`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone }),
-        }
-      );
+      const res = await apiFetch("/api/auth/send-otp", {
+  method: "POST",
+  body: JSON.stringify({ phone }),
+});
 
       const data = await res.json();
 
@@ -48,14 +45,10 @@ export default function RegisterPage() {
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-otp`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ phone, otp }),
-        }
-      );
+      const res = await apiFetch("/api/auth/verify-otp", {
+  method: "POST",
+  body: JSON.stringify({ phone, otp }),
+});
 
       const data = await res.json();
 

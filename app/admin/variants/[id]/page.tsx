@@ -7,9 +7,6 @@ import VariantBasicCard from "@/app/components/admin/variants/VariantBasicCard";
 import VariantImagesCard from "@/app/components/admin/variants/VariantImagesCard";
 import VariantSizesCard from "@/app/components/admin/variants/VariantSizesCard";
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://mythstreet-backend.onrender.com";
 
 export default function VariantEditorPage() {
 
@@ -34,8 +31,8 @@ export default function VariantEditorPage() {
     try {
 
       const res = await fetch(
-        `${API}/api/products/${variantId}`
-      );
+  `/api/products/${variantId}`
+);
 
       const json = await res.json();
 
@@ -65,17 +62,17 @@ export default function VariantEditorPage() {
       setSaving(true);
 
       const res = await fetch(
-        `${API}/api/products/${variantId}`,
-        {
-          method: "PUT",
+  `/api/products/${variantId}`,
+  {
+    method: "PUT",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-          body: JSON.stringify(form),
-        }
-      );
+    body: JSON.stringify(form),
+  }
+);
 
       const json = await res.json();
 

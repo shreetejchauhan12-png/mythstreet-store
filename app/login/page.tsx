@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/store/auth";
+import { apiFetch } from "@/app/lib/api";
 
 declare global {
   interface Window {
@@ -56,20 +57,14 @@ if (!phone) return alert("Enter phone number");
         console.log("✅ VERIFIED:", data);
 
         try {
-          const res = await fetch(
-  `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-msg91`,
-  {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-  token: data.token || data.message,
-  name,
-  email,
-}),
-            }
-          );
+          const res = await apiFetch("/api/auth/verify-msg91", {
+  method: "POST",
+  body: JSON.stringify({
+    token: data.token || data.message,
+    name,
+    email,
+  }),
+});
 
           const result = await res.json();
           console.log("BACKEND RESULT:", result);

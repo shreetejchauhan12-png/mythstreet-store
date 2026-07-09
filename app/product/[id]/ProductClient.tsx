@@ -4,6 +4,7 @@ import PincodeChecker from "@/app/components/ui/PincodeChecker";
 import { useState, useEffect } from "react";
 
 import { useCart } from "@/app/store/cart";
+import { apiFetch } from "@/app/lib/api";
 
 import { useRouter, useParams } from "next/navigation";
 import { Share2 } from "lucide-react";
@@ -11,6 +12,7 @@ import { reviews } from "@/app/data/reviews";
 import Image from "next/image";
 import Script from "next/script";
 import ProductSkeleton from "@/app/components/ui/ProductSkeleton";
+
 
 declare global {
   interface Window {
@@ -111,9 +113,7 @@ const [touchEnd, setTouchEnd] = useState(0);
     try {
       setProduct(null); 
 
-      const res = await fetch(
-  `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`
-);
+      const res = await apiFetch(`/api/products/${id}`);
 
 const response = await res.json();
 
@@ -266,27 +266,19 @@ window.gtag("event", "add_to_cart", {
 });
 
     // ✅ BACKEND SAVE
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/cart`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-  product_id: item.id,
-  size: size,
-  quantity: quantity,
-
-  title: `${item.title} (${size})`,
-  price: item.price,
-  image: item.main_image
-  ? `/${item.main_image}`
-  : "/placeholder.webp",
-}),
-      }
-    );
+    const res = await apiFetch("/api/products/cart", {
+  method: "POST",
+  body: JSON.stringify({
+    product_id: item.id,
+    size,
+    quantity,
+    title: `${item.title} (${size})`,
+    price: item.price,
+    image: item.main_image
+      ? `/${item.main_image}`
+      : "/placeholder.webp",
+  }),
+});
 
     const data = await res.json();
 

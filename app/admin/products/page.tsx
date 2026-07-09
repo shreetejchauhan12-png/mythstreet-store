@@ -20,10 +20,6 @@ type Product = {
   has_hero: number;
 };
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://mythstreet-backend.onrender.com";
-
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filtered, setFiltered] = useState<Product[]>([]);
@@ -34,7 +30,7 @@ export default function ProductsPage() {
 
   async function fetchProducts() {
     try {
-      const res = await fetch(`${API}/api/designs`);
+      const res = await fetch("/api/designs");
 
       const json = await res.json();
 

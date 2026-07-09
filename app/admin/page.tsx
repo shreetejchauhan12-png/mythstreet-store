@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { apiFetch } from "@/app/lib/api";
+
 import {
   LineChart,
   Line,
@@ -44,18 +46,7 @@ const prepaidOrders = orders.filter(o => o.payment_method === "online");
   // 🔹 Fetch orders
   const fetchOrders = async () => {
   try {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(
-      "https://mythstreet-backend.onrender.com/api/order",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const res = await apiFetch("/api/order");
 
     if (!res.ok) {
       console.log("❌ FETCH FAILED:", res.status);
@@ -92,19 +83,10 @@ const quickUpdate = (id: number, status: string) => {
   // 🔹 Update status
   const updateStatus = async (id: number, status: string) => {
     try {
-      const token = localStorage.getItem("token"); // ✅ FIXED
-
-      await fetch(
-        `https://mythstreet-backend.onrender.com/api/order/${id}/status`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ FIXED
-          },
-          body: JSON.stringify({ status }),
-        }
-      );
+      await apiFetch(`/api/order/${id}/status`, {
+  method: "PUT",
+  body: JSON.stringify({ status }),
+});
 
       fetchOrders(); // refresh
     } catch (error) {

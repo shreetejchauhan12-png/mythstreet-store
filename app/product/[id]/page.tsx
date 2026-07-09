@@ -2,6 +2,10 @@ import ProductClient from "./ProductClient";
 import Script from "next/script";
 import { getDesignVariants } from "@/app/data/getDesignVariants";
 
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://mythstreet-backend.onrender.com";
+
 type Props = {
   params: Promise<{
     id: string;
@@ -17,11 +21,11 @@ export async function generateMetadata({
   try {
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
-      {
-        next: { revalidate: 3600 },
-      }
-    );
+  `${API}/api/products/${id}`,
+  {
+    next: { revalidate: 3600 },
+  }
+);
 
     const response = await res.json();
 
@@ -78,11 +82,11 @@ const product = response.data;
 async function getProduct(id: string) {
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`,
-    {
-      next: { revalidate: 3600 },
-    }
-  );
+  `${API}/api/products/${id}`,
+  {
+    next: { revalidate: 3600 },
+  }
+);
 
   const response = await res.json();
 

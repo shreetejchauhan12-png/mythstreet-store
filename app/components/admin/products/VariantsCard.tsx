@@ -7,10 +7,6 @@ type Props = {
   design: any;
 };
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://mythstreet-backend.onrender.com";
-
 export default function VariantsCard({
   design,
 }: Props) {
@@ -30,8 +26,8 @@ export default function VariantsCard({
     try {
 
       const res = await fetch(
-        `${API}/api/products/design/${design.id}`
-      );
+  `/api/products/design/${design.id}`
+);
 
       const json = await res.json();
 

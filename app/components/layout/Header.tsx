@@ -19,6 +19,7 @@ import { useCart } from "@/app/store/cart";
 import { useWishlist } from "@/app/store/wishlist";
 import { useAuth } from "@/app/store/auth";
 import { usePathname } from "next/navigation";
+import { apiFetch } from "@/app/lib/api";
 
 const SearchOverlay = dynamic(
   () => import("./SearchOverlay"),
@@ -73,15 +74,12 @@ useEffect(() => {
       console.log("MSG91 FULL RESPONSE:", JSON.stringify(data, null, 2));
 
       // 🔥 VERIFY WITH BACKEND
-      const res = await fetch(
-        
-        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/verify-msg91`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: data.token || data.message }),
-        }
-      );
+      const res = await apiFetch("/api/auth/verify-msg91", {
+  method: "POST",
+  body: JSON.stringify({
+    token: data.token || data.message,
+  }),
+});
 
       const result = await res.json();
 
@@ -99,17 +97,13 @@ if (!result.user.name) {
   const name = prompt("Enter your name");
 
   if (name) {
-    const res2 = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/auth/update-name`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${result.token}`,
-        },
-        body: JSON.stringify({ name }),
-      }
-    );
+    const res2 = await apiFetch("/api/auth/update-name", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${result.token}`,
+  },
+  body: JSON.stringify({ name }),
+});
 
     const updated = await res2.json();
 

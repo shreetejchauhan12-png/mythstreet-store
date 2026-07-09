@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import { apiFetch } from "@/app/lib/api";
 
 export default function OrderDetailsPage() {
   const params = useParams();
@@ -14,18 +15,9 @@ export default function OrderDetailsPage() {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const res = await apiFetch("/api/order");
 
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/order`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
+const data = await res.json();
 
         const foundOrder = data.orders.find(
           (o: any) => o.id.toString() === orderId

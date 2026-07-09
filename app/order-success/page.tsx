@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { apiFetch } from "@/app/lib/api";
 
 declare global {
   interface Window {
@@ -15,9 +16,6 @@ export default function OrderSuccessPage() {
   const [realOrderId, setRealOrderId] = useState("");
   const [orderData, setOrderData] = useState<any>(null);
   const [purchaseSent, setPurchaseSent] = useState(false);
-  const [token, setToken] = useState("");
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     const orders = JSON.parse(
@@ -39,50 +37,38 @@ export default function OrderSuccessPage() {
     if (orderIdParam) {
       setRealOrderId(orderIdParam);
       setOrderId("#" + orderIdParam);
-
-      const savedToken =
-        localStorage.getItem("token");
-
-      if (savedToken) {
-        setToken(savedToken);
-      }
     }
   }, []);
 
   useEffect(() => {
-    if (!realOrderId || !token) return;
+  if (!realOrderId) return;
 
-    const fetchOrder = async () => {
-      try {
-        const res = await fetch(
-          `${API_URL}/api/order/${realOrderId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+  const fetchOrder = async () => {
+    try {
+      const res = await apiFetch(
+        `/api/order/${realOrderId}`
+      );
 
-        if (!res.ok) {
-          throw new Error("Failed to fetch order");
-        }
-
-        const data = await res.json();
-
-        setOrderData({
-          order: data.order,
-          items: data.items,
-        });
-      } catch (error) {
-        console.error(
-          "Order fetch error:",
-          error
-        );
+      if (!res.ok) {
+        throw new Error("Failed to fetch order");
       }
-    };
 
-    fetchOrder();
-  }, [realOrderId, token, API_URL]);
+      const data = await res.json();
+
+      setOrderData({
+        order: data.order,
+        items: data.items,
+      });
+    } catch (error) {
+      console.error(
+        "Order fetch error:",
+        error
+      );
+    }
+  };
+
+  fetchOrder();
+}, [realOrderId]);
 
   useEffect(() => {
     if (!orderData) return;

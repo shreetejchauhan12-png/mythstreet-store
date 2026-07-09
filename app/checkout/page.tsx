@@ -2,8 +2,10 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useCart } from "@/app/store/cart";
+import { useAuth } from "@/app/store/auth";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
+import { apiFetch } from "@/app/lib/api";
 
 function CheckoutInner() {
   const [isBuyNow, setIsBuyNow] = useState(false);
@@ -234,28 +236,14 @@ useEffect(() => {
   // 🔥 CHECK TOKEN (MAIN LOGIN CHECK)
 if (typeof window === "undefined") return;
 
-const token = localStorage.getItem("token");
+const user = useAuth.getState().user;
 
-if (!token) {
-
+if (!user) {
   saveCheckoutData();
 
-  // 🔥 SAVE CART ALSO
   const cart = useCart.getState().cart;
   localStorage.setItem("tempCart", JSON.stringify(cart));
 
-  router.push("/login?redirect=checkout");
-  return;
-}
-
-// 🔥 OPTIONAL: get user after token check
-const userData =
-  typeof window !== "undefined"
-    ? localStorage.getItem("user")
-    : null;
-const user = userData ? JSON.parse(userData) : null;
-
-if (!user || !user.id) {
   router.push("/login?redirect=checkout");
   return;
 }
@@ -467,14 +455,10 @@ if (user.id) {
   };
 
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order`, {
-      method: "POST",
-      headers: {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${token}`,
-},
-      body: JSON.stringify(orderData),
-    });
+    const res = await apiFetch("/api/order", {
+  method: "POST",
+  body: JSON.stringify(orderData),
+});
 
     const data = await res.json();
 
@@ -502,18 +486,15 @@ if (user.id) {
       order_id: data.razorpay.id,
 
       handler: async function (response: any) {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/order/verify`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            razorpay_order_id: data.razorpay.id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            orderId: data.orderId,
-          }),
-        });
+        await apiFetch("/api/order/verify", {
+  method: "POST",
+  body: JSON.stringify({
+    razorpay_order_id: data.razorpay.id,
+    razorpay_payment_id: response.razorpay_payment_id,
+    razorpay_signature: response.razorpay_signature,
+    orderId: data.orderId,
+  }),
+});
 
         clearCart();
 

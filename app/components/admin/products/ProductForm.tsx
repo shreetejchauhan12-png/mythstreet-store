@@ -11,10 +11,6 @@ type Props = {
   designId: number;
 };
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://mythstreet-backend.onrender.com";
-
 export default function ProductForm({
   designId,
 }: Props) {
@@ -36,8 +32,8 @@ export default function ProductForm({
     try {
 
       const res = await fetch(
-        `${API}/api/designs/${designId}`
-      );
+  `/api/designs/${designId}`
+);
 
       const json = await res.json();
 
@@ -79,17 +75,17 @@ console.log(form);
     setSaving(true);
 
     const res = await fetch(
-      `${API}/api/designs/${designId}`,
-      {
-        method: "PUT",
+  `/api/designs/${designId}`,
+  {
+    method: "PUT",
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+    headers: {
+      "Content-Type": "application/json",
+    },
 
-        body: JSON.stringify(form),
-      }
-    );
+    body: JSON.stringify(form),
+  }
+);
 
     const json = await res.json();
 

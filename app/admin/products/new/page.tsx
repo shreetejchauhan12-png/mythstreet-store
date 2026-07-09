@@ -9,10 +9,6 @@ type Collection = {
   slug: string;
 };
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "https://mythstreet-backend.onrender.com";
-
 export default function NewDesignPage() {
     const router = useRouter();
 
@@ -32,7 +28,7 @@ export default function NewDesignPage() {
 
   async function fetchCollections() {
     try {
-      const res = await fetch(`${API}/api/collections`);
+      const res = await fetch("/api/collections");
 
       const json = await res.json();
 
@@ -56,7 +52,7 @@ export default function NewDesignPage() {
   setLoading(true);
 
   try {
-    const res = await fetch(`${API}/api/designs`, {
+    const res = await fetch("/api/designs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
