@@ -1,10 +1,12 @@
 "use client";
 
-import type { Variant } from "@/app/product/[id]/types/variant";
+import type { CreateVariantForm } from "@/app/types/createVariant";
 
 type Props = {
-  form: Variant;
-  setForm: React.Dispatch<React.SetStateAction<Variant | null>>;
+  form: CreateVariantForm;
+  setForm: React.Dispatch<
+    React.SetStateAction<CreateVariantForm>
+  >;
 
   garmentTypes?: any[];
   colors?: any[];
@@ -72,7 +74,7 @@ export default function VariantBasicCard({
 
             <input
               type="text"
-              value={form.garment_type || ""}
+              value=""
               readOnly
               className="w-full border rounded-lg px-4 py-3 bg-gray-50"
             />
@@ -123,7 +125,7 @@ export default function VariantBasicCard({
 
             <input
               type="text"
-              value={form.color_name || ""}
+              value=""
               readOnly
               className="w-full border rounded-lg px-4 py-3 bg-gray-50"
             />

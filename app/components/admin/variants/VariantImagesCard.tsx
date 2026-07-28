@@ -1,11 +1,11 @@
 "use client";
 
-import type { Variant } from "@/app/product/[id]/types/variant";
+import type { CreateVariantForm } from "@/app/types/createVariant";
 
 type Props = {
-  form: Variant;
+  form: CreateVariantForm;
   setForm: React.Dispatch<
-    React.SetStateAction<Variant | null>
+    React.SetStateAction<CreateVariantForm>
   >;
 };
 
@@ -16,7 +16,7 @@ export default function VariantImagesCard({
 
   function updateImage(
   key: keyof Pick<
-    Variant,
+    CreateVariantForm,
     | "main_image"
     | "image_2"
     | "image_3"

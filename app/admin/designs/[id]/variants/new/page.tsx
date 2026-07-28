@@ -9,6 +9,7 @@ import VariantSizesCard from "@/app/components/admin/variants/VariantSizesCard";
 
 import { useLookups } from "@/hooks/useLookups";
 import { apiFetch } from "@/app/lib/api";
+import type { CreateVariantForm } from "@/app/types/createVariant";
 
 export default function AddVariantPage() {
 
@@ -25,7 +26,7 @@ export default function AddVariantPage() {
     loading,
   } = useLookups();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<CreateVariantForm>({
 
     garment_type_id: "",
 
