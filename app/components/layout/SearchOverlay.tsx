@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import Image from "next/image";
+import type { Product } from "@/app/data/products";
 
 import {
   Search,
@@ -22,7 +23,7 @@ export default function SearchOverlay({
   const [search, setSearch] = useState("");
 
   const [filtered, setFiltered] =
-    useState<any[]>([]);
+  useState<Product[]>([]);
 
   useEffect(() => {
 
@@ -41,10 +42,12 @@ export default function SearchOverlay({
 
         const data = await res.json();
 
-        setFiltered(
+        const products = (data ?? []) as Product[];
+
+setFiltered(
   Array.from(
     new Map(
-      data.map((item: any) => [
+      products.map((item) => [
         `${item.design_id}-${item.garment_type_id}`,
         item,
       ])

@@ -1,8 +1,12 @@
 "use client";
 
+import type { Design } from "@/app/types/design";
+
 type Props = {
-  form: any;
-  setForm: React.Dispatch<React.SetStateAction<any>>;
+  form: Design;
+  setForm: React.Dispatch<
+    React.SetStateAction<Design | null>
+  >;
 };
 
 export default function SeoCard({

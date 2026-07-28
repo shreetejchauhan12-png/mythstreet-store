@@ -1,8 +1,15 @@
 "use client";
 
+import type {
+  Variant,
+  VariantSize,
+} from "@/app/product/[id]/types/variant";
+
 type Props = {
-  form: any;
-  setForm: React.Dispatch<React.SetStateAction<any>>;
+  form: Variant;
+  setForm: React.Dispatch<
+    React.SetStateAction<Variant | null>
+  >;
 };
 
 const ALL_SIZES = [
@@ -20,9 +27,9 @@ export default function VariantSizesCard({
 }: Props) {
 
   const selectedSizes =
-    form.sizes?.map(
-      (size: any) => size.name
-    ) || [];
+  form.sizes?.map(
+    (size: VariantSize) => size.size
+  ) || [];
 
   function toggleSize(
     sizeName: string
@@ -36,8 +43,8 @@ export default function VariantSizesCard({
     if (exists) {
 
       updated = form.sizes.filter(
-        (size: any) =>
-          size.name !== sizeName
+        (size: VariantSize) =>
+  size.size !== sizeName
       );
 
     } else {
@@ -45,9 +52,9 @@ export default function VariantSizesCard({
       updated = [
         ...form.sizes,
         {
-          id: null,
-          name: sizeName,
-        },
+  size: sizeName,
+  stock: 0,
+},
       ];
 
     }

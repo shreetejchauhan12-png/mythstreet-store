@@ -1,8 +1,12 @@
 "use client";
 
+import type { Variant } from "@/app/product/[id]/types/variant";
+
 type Props = {
-  form: any;
-  setForm: React.Dispatch<React.SetStateAction<any>>;
+  form: Variant;
+  setForm: React.Dispatch<
+    React.SetStateAction<Variant | null>
+  >;
 };
 
 export default function VariantImagesCard({
@@ -11,9 +15,18 @@ export default function VariantImagesCard({
 }: Props) {
 
   function updateImage(
-    key: string,
-    value: string
-  ) {
+  key: keyof Pick<
+    Variant,
+    | "main_image"
+    | "image_2"
+    | "image_3"
+    | "image_4"
+    | "image_5"
+    | "image_6"
+    | "banner_image"
+  >,
+  value: string
+) {
 
     setForm({
       ...form,

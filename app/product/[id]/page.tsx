@@ -200,7 +200,10 @@ offers: {
   }}
 />
 
-  <ProductClient variants={variants} />
+  <ProductClient
+    product={product}
+    variants={variants}
+/>
 </>
   );
 }

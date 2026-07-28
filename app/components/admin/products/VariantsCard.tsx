@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import type { Design } from "@/app/types/design";
+import type { Variant } from "@/app/product/[id]/types/variant";
 
 type Props = {
-  design: any;
+  design: Design;
 };
 
 export default function VariantsCard({
   design,
 }: Props) {
 
-  const [variants, setVariants] = useState<any[]>([]);
+  const [variants, setVariants] = useState<Variant[]>([]);
 
   useEffect(() => {
 
@@ -33,7 +35,7 @@ export default function VariantsCard({
 
       console.log("VARIANTS:", json.data);
 
-      setVariants(json.data);
+      setVariants((json.data ?? []) as Variant[]);
 
     } catch (error) {
 
@@ -128,7 +130,7 @@ export default function VariantsCard({
 
   ) : (
 
-    variants.map((variant: any) => (
+    variants.map((variant) => (
 
       <tr
         key={variant.id}

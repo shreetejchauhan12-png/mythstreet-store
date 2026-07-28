@@ -7,8 +7,19 @@ import { apiFetch } from "@/app/lib/api";
 
 declare global {
   interface Window {
-    initSendOTP: any;
-  }
+  initSendOTP: (
+    config: {
+      widgetId: string;
+      tokenAuth: string;
+      identifier: string;
+      success: (data: {
+        token?: string;
+        message?: string;
+      }) => void | Promise<void>;
+      failure: (err: unknown) => void;
+    }
+  ) => void;
+}
 }
 
 export default function LoginPage() {
@@ -53,7 +64,10 @@ if (!phone) return alert("Enter phone number");
       tokenAuth: "510536Txv5S33tx69e77c1eP1",
       identifier: "91" + phone,
 
-      success: async function (data: any) {
+      success: async function (data: {
+  token?: string;
+  message?: string;
+}) {
         console.log("✅ VERIFIED:", data);
 
         try {
@@ -105,7 +119,7 @@ await fetchCart();
         setLoading(false);
       },
 
-      failure: function (err: any) {
+      failure: function (err: unknown) {
         console.log("❌ ERROR:", err);
         alert("OTP failed");
         setLoading(false);

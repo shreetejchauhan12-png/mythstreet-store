@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
+import type { Order, OrderItem } from "@/app/types/order";
 
 export default function OrderDetailsPage() {
   const params = useParams();
   const orderId = params.id;
 
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,11 +20,11 @@ export default function OrderDetailsPage() {
 
 const data = await res.json();
 
-        const foundOrder = data.orders.find(
-          (o: any) => o.id.toString() === orderId
-        );
+        const foundOrder = (data.orders as Order[]).find(
+  (o) => o.id.toString() === orderId
+);
 
-        setOrder(foundOrder);
+        setOrder(foundOrder ?? null);
       } catch (err) {
         console.log(err);
       } finally {
@@ -307,7 +308,7 @@ const isCancelled =
         </h2>
 
         <div className="space-y-5">
-          {(order.items || []).map((item: any) => (
+          {(order.items || []).map((item: OrderItem) => (
             <div
               key={item.id}
               className="flex gap-5 border-b pb-5"

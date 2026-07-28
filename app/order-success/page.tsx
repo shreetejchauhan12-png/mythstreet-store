@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiFetch } from "@/app/lib/api";
+import type { Order, OrderItem } from "@/app/types/order";
 
 declare global {
   interface Window {
@@ -14,7 +15,10 @@ export default function OrderSuccessPage() {
   const [orderId, setOrderId] = useState("");
   const [paymentType, setPaymentType] = useState<"online" | "cod">("online");
   const [realOrderId, setRealOrderId] = useState("");
-  const [orderData, setOrderData] = useState<any>(null);
+  const [orderData, setOrderData] = useState<{
+  order: Order;
+  items: OrderItem[];
+} | null>(null);
   const [purchaseSent, setPurchaseSent] = useState(false);
 
   useEffect(() => {
@@ -86,7 +90,7 @@ export default function OrderSuccessPage() {
         value: Number(order.total_amount),
         currency: "INR",
 
-        items: items.map((item: any) => ({
+        items: items.map((item) => ({
           item_id: String(item.product_id),
           item_name: item.title,
           price: Number(item.price),

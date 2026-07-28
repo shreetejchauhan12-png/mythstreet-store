@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import VariantBasicCard from "@/app/components/admin/variants/VariantBasicCard";
 import VariantImagesCard from "@/app/components/admin/variants/VariantImagesCard";
 import VariantSizesCard from "@/app/components/admin/variants/VariantSizesCard";
+import type { Variant } from "@/app/product/[id]/types/variant";
 
 
 export default function VariantEditorPage() {
@@ -14,7 +15,7 @@ export default function VariantEditorPage() {
 
   const variantId = Number(params.id);
 
-  const [form, setForm] = useState<any>(null);
+  const [form, setForm] = useState<Variant | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -121,6 +122,7 @@ export default function VariantEditorPage() {
     );
 
   }
+  const variant = form;
 
   return (
 
@@ -139,19 +141,19 @@ export default function VariantEditorPage() {
       </div>
 
       <VariantBasicCard
-        form={form}
-        setForm={setForm}
-      />
+  form={variant}
+  setForm={setForm}
+/>
 
-      <VariantImagesCard
-        form={form}
-        setForm={setForm}
-      />
+<VariantImagesCard
+  form={variant}
+  setForm={setForm}
+/>
 
-      <VariantSizesCard
-        form={form}
-        setForm={setForm}
-      />
+<VariantSizesCard
+  form={variant}
+  setForm={setForm}
+/>
 
       <div className="flex justify-end">
 

@@ -6,6 +6,7 @@ import BasicInfoCard from "./BasicInfoCard";
 import VariantsCard from "./VariantsCard";
 import SeoCard from "./SeoCard";
 import PublishingCard from "./PublishingCard";
+import type { Design } from "@/app/types/design";
 
 type Props = {
   designId: number;
@@ -15,9 +16,9 @@ export default function ProductForm({
   designId,
 }: Props) {
 
-  const [design, setDesign] = useState<any>(null);
+  const [design, setDesign] = useState<Design | null>(null);
 
-  const [form, setForm] = useState<any>(null);
+const [form, setForm] = useState<Design | null>(null);
 
   const [loading, setLoading] = useState(true);
 
@@ -110,36 +111,33 @@ console.log(form);
 
 }
 
-  if (loading) {
+  if (!design || !form) {
+  return null;
+}
 
-    return (
-      <div className="text-center py-10">
-        Loading Design...
-      </div>
-    );
-
-  }
+const currentDesign = design;
+const currentForm = form;
 
   return (
     <div className="space-y-6">
 
       <BasicInfoCard
-  form={form}
+  form={currentForm}
   setForm={setForm}
 />
 
-      <SeoCard
-  form={form}
+<SeoCard
+  form={currentForm}
   setForm={setForm}
 />
 
 <PublishingCard
-  form={form}
+  form={currentForm}
   setForm={setForm}
 />
 
 <VariantsCard
-  design={design}
+  design={currentDesign}
 />
 
       <div className="flex justify-end">
