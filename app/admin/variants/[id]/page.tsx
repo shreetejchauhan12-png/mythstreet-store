@@ -15,7 +15,43 @@ export default function VariantEditorPage() {
 
   const variantId = Number(params.id);
 
-  const [form, setForm] = useState<Variant | null>(null);
+  const [form, setForm] = useState<Variant>({
+  id: 0,
+  design_id: 0,
+
+  title: "",
+  design: "",
+  design_slug: "",
+
+  garment_type_id: 0,
+  garment_type: "",
+  garment_slug: "",
+  gender_visibility: "",
+  hero_type: "",
+
+  color_id: 0,
+  color_name: "",
+  color_slug: "",
+  hex_code: "",
+
+  sku: "",
+  variant_code: "",
+  price: 0,
+
+  qikink_product_id: null,
+
+  is_hero: false,
+
+  main_image: "",
+  image_2: "",
+  image_3: "",
+  image_4: "",
+  image_5: "",
+  image_6: "",
+  banner_image: "",
+
+  sizes: [],
+});
 
   const [loading, setLoading] = useState(true);
 
@@ -113,15 +149,15 @@ export default function VariantEditorPage() {
 
   }
 
-  if (loading || !form) {
+  if (loading) {
 
-    return (
-      <div className="max-w-7xl mx-auto p-8">
-        Loading Variant...
-      </div>
-    );
+  return (
+    <div className="max-w-7xl mx-auto p-8">
+      Loading Variant...
+    </div>
+  );
 
-  }
+}
   const variant = form;
 
   return (
