@@ -9,7 +9,8 @@ import VariantSizesCard from "@/app/components/admin/variants/VariantSizesCard";
 
 import { useLookups } from "@/hooks/useLookups";
 import { apiFetch } from "@/app/lib/api";
-import type { CreateVariantForm } from "@/app/types/createVariant";
+
+import type { Variant } from "@/app/product/[id]/types/variant";
 
 export default function AddVariantPage() {
 
@@ -22,24 +23,41 @@ export default function AddVariantPage() {
   const {
     garmentTypes,
     colors,
-    sizes,
     loading,
   } = useLookups();
 
-  const [form, setForm] = useState<CreateVariantForm>({
+  const [form, setForm] = useState<Variant>({
 
-    garment_type_id: "",
+    // Identity
+    id: 0,
+    design_id: designId,
 
-    color_id: "",
+    // Design
+    title: "",
+    design: "",
+    design_slug: "",
 
+    // Garment
+    garment_type_id: 0,
+    garment_type: "",
+    garment_slug: "",
+    gender_visibility: "",
+    hero_type: "",
+
+    // Color
+    color_id: 0,
+    color_name: "",
+    color_slug: "",
+    hex_code: "",
+
+    // Variant
     sku: "",
-
+    variant_code: "",
     price: 0,
-
-    qikink_product_id: "",
-
+    qikink_product_id: null,
     is_hero: false,
 
+    // Images
     main_image: "",
     image_2: "",
     image_3: "",
@@ -48,6 +66,7 @@ export default function AddVariantPage() {
     image_6: "",
     banner_image: "",
 
+    // Sizes
     sizes: [],
 
   });
@@ -64,48 +83,52 @@ export default function AddVariantPage() {
 
   async function createVariant() {
 
-  try {
+    try {
 
-    const response = await apiFetch("/api/products", {
-  method: "POST",
-  body: JSON.stringify({
-    ...form,
-    design_id: designId,
-  }),
-});
+      const response = await apiFetch("/api/products", {
 
-    const json = await response.json();
+        method: "POST",
 
-    if (!response.ok || !json.success) {
+        body: JSON.stringify({
 
-      throw new Error(
-        json.message || "Failed to create variant"
+          ...form,
+
+          design_id: designId,
+
+        }),
+
+      });
+
+      const json = await response.json();
+
+      if (!response.ok || !json.success) {
+
+        throw new Error(
+          json.message || "Failed to create variant"
+        );
+
+      }
+
+      alert("Variant created successfully ✅");
+
+      router.push(
+        `/admin/designs/${designId}`
+      );
+
+    } catch (error) {
+
+      console.error(
+        "CREATE VARIANT ERROR:",
+        error
+      );
+
+      alert(
+        "Failed to create variant ❌"
       );
 
     }
 
-    alert(
-      "Variant created successfully ✅"
-    );
-
-    router.push(
-      `/admin/designs/${designId}`
-    );
-
-  } catch (error) {
-
-    console.error(
-      "CREATE VARIANT ERROR:",
-      error
-    );
-
-    alert(
-      "Failed to create variant ❌"
-    );
-
   }
-
-}
 
   return (
 
@@ -144,18 +167,18 @@ export default function AddVariantPage() {
       <div className="flex justify-end">
 
         <button
-  onClick={createVariant}
-  className="
-    bg-[#680000]
-    text-white
-    px-6
-    py-3
-    rounded-lg
-    hover:opacity-90
-  "
->
-  Create Variant
-</button>
+          onClick={createVariant}
+          className="
+            bg-[#680000]
+            text-white
+            px-6
+            py-3
+            rounded-lg
+            hover:opacity-90
+          "
+        >
+          Create Variant
+        </button>
 
       </div>
 
