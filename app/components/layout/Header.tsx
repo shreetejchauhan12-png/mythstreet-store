@@ -67,10 +67,12 @@ useEffect(() => {
   }
 
   window.initSendOTP({
-    widgetId: "3664756c466b393432373031",
-    tokenAuth: "510536Txv5S33tx69e77c1eP1",
+  widgetId: "3664756c466b393432373031",
+  tokenAuth: "510536Txv5S33tx69e77c1eP1",
 
-    success: async function (data: any) {
+  identifier: "login",
+
+  success: async function (data: any) {
       console.log("MSG91 FULL RESPONSE:", JSON.stringify(data, null, 2));
 
       // 🔥 VERIFY WITH BACKEND
