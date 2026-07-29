@@ -70,17 +70,19 @@ function ShareButton({ title }: { title: string }) {
 }
 
 type ProductClientProps = {
+  product: any;
   variants: any[];
 };
 
 export default function ProductPage({
+  product: initialProduct,
   variants,
 }: ProductClientProps) {
   const params = useParams();
 const id = params?.id;
   const router = useRouter();
 
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<any>(initialProduct);
   const designVariants = Array.isArray(variants)
   ? variants
   : [];
