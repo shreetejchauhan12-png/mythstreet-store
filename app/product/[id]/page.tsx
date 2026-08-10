@@ -21,7 +21,7 @@ export async function generateMetadata({
   try {
 
     const res = await fetch(
-  `${API}/api/products/${id}`,
+  `${API}/api/products-v2/${id}`,
   {
     next: { revalidate: 3600 },
   }
@@ -82,7 +82,7 @@ const product = response.data;
 async function getProduct(id: string) {
 
   const res = await fetch(
-  `${API}/api/products/${id}`,
+  `${API}/api/products-v2/${id}`,
   {
     next: { revalidate: 3600 },
   }

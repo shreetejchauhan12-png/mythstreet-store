@@ -20,6 +20,44 @@ declare global {
   }
 }
 
+// =====================================
+// V2 PRODUCT NORMALIZER
+// =====================================
+
+function normalizeImageUrl(url: string | null | undefined) {
+  if (!url) return null;
+
+  if (url.startsWith("http://") || url.startsWith("https://")) {
+    return url;
+  }
+
+  return url.startsWith("/") ? url : `/${url}`;
+}
+
+function normalizeProduct(raw: any) {
+  if (!raw) return raw;
+
+  const images = raw.images || {};
+
+  return {
+    ...raw,
+
+    // Keep the existing ProductClient UI compatible with V2.
+    main_image: normalizeImageUrl(images.main),
+    image_2: normalizeImageUrl(images.front),
+    image_3: normalizeImageUrl(images.back),
+    image_4: normalizeImageUrl(images.left),
+    image_5: normalizeImageUrl(images.right),
+    image_6: normalizeImageUrl(images.close_up),
+    image_7: normalizeImageUrl(images.lifestyle),
+
+    // Compatibility fields used by the existing UI.
+    design: raw.design || raw.design_slug,
+    category: raw.category || raw.collection_slug,
+    type: raw.type || raw.garment_code,
+  };
+}
+
 function ShareButton({ title }: { title: string }) {
   const [open, setOpen] = useState(false);
 
@@ -82,7 +120,9 @@ export default function ProductPage({
 const id = params?.id;
   const router = useRouter();
 
-  const [product, setProduct] = useState<any>(initialProduct);
+  const [product, setProduct] = useState<any>(
+    normalizeProduct(initialProduct)
+  );
   const designVariants = Array.isArray(variants)
   ? variants
   : [];
@@ -115,7 +155,7 @@ const [touchEnd, setTouchEnd] = useState(0);
     try {
       setProduct(null); 
 
-      const res = await apiFetch(`/api/products/${id}`);
+      const res = await apiFetch(`/api/products-v2/${id}`);
 
 const response = await res.json();
 
@@ -131,15 +171,14 @@ setProduct(response.data);
 
   const item = product;
   const images = [
-  item?.main_image,
-  item?.image_2,
-  item?.image_3,
-  item?.image_4,
-  item?.image_5,
-  item?.image_6,
-]
-  .filter((img) => img)
-  .map((img) => `/${img}`);
+    item?.main_image,
+    item?.image_2,
+    item?.image_3,
+    item?.image_4,
+    item?.image_5,
+    item?.image_6,
+    item?.image_7,
+  ].filter(Boolean);
 
 const currentIndex = images.indexOf(selectedImage);
 
@@ -198,10 +237,8 @@ function prevImage() {
   if (!product) return;
 
   setSelectedImage(
-  product.main_image
-    ? `/${product.main_image}`
-    : "/placeholder.webp"
-);
+    product.main_image || "/placeholder.webp"
+  );
 
   setSelectedColor(product.color_name ?? "");
 
@@ -245,9 +282,7 @@ function prevImage() {
   id: `${item.id}-${size}`,
   title: `${item.title} (${size})`,
   price: item.price,
-  image: item.main_image
-  ? `/${item.main_image}`
-  : "/placeholder.webp",
+  image: item.main_image || "/placeholder.webp",
   quantity: quantity,
 });
 
@@ -276,9 +311,7 @@ window.gtag("event", "add_to_cart", {
     quantity,
     title: `${item.title} (${size})`,
     price: item.price,
-    image: item.main_image
-      ? `/${item.main_image}`
-      : "/placeholder.webp",
+    image: item.main_image || "/placeholder.webp",
   }),
 });
 
@@ -309,9 +342,7 @@ window.gtag("event", "add_to_cart", {
     id: `${item.id}-${size}`,
     title: `${item.title} - ${size}`,
     price: item.price,
-    image: item.main_image
-  ? `/${item.main_image}`
-  : "/placeholder.webp",
+    image: item.main_image || "/placeholder.webp",
     quantity: quantity,
   };
 
