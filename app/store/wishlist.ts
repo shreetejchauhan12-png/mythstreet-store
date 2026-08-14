@@ -14,124 +14,330 @@ type WishlistStore = {
   wishlist: WishlistItem[];
 
   fetchWishlist: () => Promise<void>;
-  toggleWishlist: (item: WishlistItem) => Promise<void>;
-  isWishlisted: (id: number) => boolean;
+
+  toggleWishlist: (
+    item: WishlistItem
+  ) => Promise<void>;
+
+  isWishlisted: (
+    id: number
+  ) => boolean;
 };
 
-export const useWishlist = create<WishlistStore>((set, get) => ({
-  wishlist: [],
+export const useWishlist =
+  create<WishlistStore>((set, get) => ({
 
-  // 🔄 FETCH FROM BACKEND
-  fetchWishlist: async () => {
+    // =====================================
+    // INITIAL STATE
+    // =====================================
 
-  try {
+    wishlist: [],
 
-    const token = localStorage.getItem("token");
+    // =====================================
+    // FETCH WISHLIST FROM DATABASE
+    // =====================================
 
-    if (!token) {
+    fetchWishlist: async () => {
 
-      set({ wishlist: [] });
+      try {
 
-      return;
+        if (
+          typeof window === "undefined"
+        ) {
+          return;
+        }
 
-    }
+        const token =
+          localStorage.getItem("token");
 
-    const res = await apiFetch("/api/products/wishlist");
+        console.log(
+          "❤️ WISHLIST TOKEN:",
+          token
+            ? "FOUND"
+            : "MISSING"
+        );
 
-    const data = await res.json();
+        if (!token) {
 
-    console.log("WISHLIST STATUS:", res.status);
-console.log("WISHLIST RESPONSE:", data);
+          set({
+            wishlist: [],
+          });
 
-    if (!res.ok || !data.success) {
+          return;
+        }
 
-      console.error("WISHLIST API:", data);
+        const res =
+          await apiFetch(
+            "/api/products/wishlist"
+          );
 
-      set({ wishlist: [] });
+        const data =
+          await res.json();
 
-      return;
+        console.log(
+          "❤️ WISHLIST GET STATUS:",
+          res.status
+        );
 
-    }
+        console.log(
+          "❤️ WISHLIST GET RESPONSE:",
+          data
+        );
 
-    const formatted = (data.wishlist || []).map((item: any) => ({
+        if (!res.ok) {
 
-      id: item.product_id,
+          console.error(
+            "❌ WISHLIST GET FAILED:",
+            data
+          );
 
-      title: item.title,
+          return;
+        }
 
-      price: item.price,
+        if (!data.success) {
 
-      image: item.image,
+          console.error(
+            "❌ WISHLIST GET UNSUCCESSFUL:",
+            data
+          );
 
-    }));
+          return;
+        }
 
-    set({
+        const formatted =
+          Array.isArray(data.wishlist)
+            ? data.wishlist.map(
+                (item: any) => ({
+                  id: Number(
+                    item.product_id
+                  ),
 
-      wishlist: formatted,
+                  title:
+                    item.title ?? "",
 
-    });
+                  price:
+                    Number(
+                      item.price ?? 0
+                    ),
 
-  } catch (error) {
+                  image:
+                    item.image ?? "",
+                })
+              )
+            : [];
 
-    console.error(
+        console.log(
+          "❤️ FORMATTED WISHLIST:",
+          formatted
+        );
 
-      "❌ Fetch wishlist error:",
+        set({
+          wishlist: formatted,
+        });
 
-      error
+      } catch (error) {
 
-    );
+        console.error(
+          "❌ FETCH WISHLIST ERROR:",
+          error
+        );
 
-    set({
-
-      wishlist: [],
-
-    });
-
-  }
-
-},
-
-  // ❤️ ADD / REMOVE
-  toggleWishlist: async (item) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("Login first");
-        return;
       }
 
-      const exists = get().wishlist.find((i) => i.id === item.id);
+    },
 
-      if (exists) {
-        // ❌ REMOVE
-        await apiFetch("/api/products/wishlist", {
-  method: "DELETE",
-  body: JSON.stringify({
-    product_id: item.id,
-  }),
-});
-      } else {
-        // ➕ ADD
-        await apiFetch("/api/products/wishlist", {
-  method: "POST",
-  body: JSON.stringify({
-    product_id: item.id,
-    title: item.title,
-    price: item.price,
-    image: item.image,
-  }),
-});
+    // =====================================
+    // ADD / REMOVE WISHLIST
+    // =====================================
+
+    toggleWishlist: async (item) => {
+
+      try {
+
+        if (
+          typeof window === "undefined"
+        ) {
+          return;
+        }
+
+        const token =
+          localStorage.getItem("token");
+
+        console.log(
+          "❤️ TOGGLE WISHLIST"
+        );
+
+        console.log(
+          "❤️ TOKEN:",
+          token
+            ? "FOUND"
+            : "MISSING"
+        );
+
+        if (!token) {
+
+          alert(
+            "Please login first"
+          );
+
+          return;
+        }
+
+        const exists =
+          get().wishlist.some(
+            (wishlistItem) =>
+              wishlistItem.id === item.id
+          );
+
+        console.log(
+          "❤️ PRODUCT ID:",
+          item.id
+        );
+
+        console.log(
+          "❤️ ALREADY WISHLISTED:",
+          exists
+        );
+
+        // =================================
+        // REMOVE
+        // =================================
+
+        if (exists) {
+
+          console.log(
+            "❤️ REMOVING FROM WISHLIST..."
+          );
+
+          const res =
+            await apiFetch(
+              "/api/products/wishlist",
+              {
+                method: "DELETE",
+
+                body: JSON.stringify({
+                  product_id:
+                    item.id,
+                }),
+              }
+            );
+
+          const data =
+            await res.json();
+
+          console.log(
+            "❤️ DELETE STATUS:",
+            res.status
+          );
+
+          console.log(
+            "❤️ DELETE RESPONSE:",
+            data
+          );
+
+          if (!res.ok) {
+
+            throw new Error(
+              data?.message ||
+              "Failed to remove wishlist item"
+            );
+
+          }
+
+        }
+
+        // =================================
+        // ADD
+        // =================================
+
+        else {
+
+          console.log(
+            "❤️ ADDING TO WISHLIST..."
+          );
+
+          const res =
+            await apiFetch(
+              "/api/products/wishlist",
+              {
+                method: "POST",
+
+                body: JSON.stringify({
+                  product_id:
+                    item.id,
+
+                  title:
+                    item.title,
+
+                  price:
+                    item.price,
+
+                  image:
+                    item.image,
+                }),
+              }
+            );
+
+          const data =
+            await res.json();
+
+          console.log(
+            "❤️ ADD STATUS:",
+            res.status
+          );
+
+          console.log(
+            "❤️ ADD RESPONSE:",
+            data
+          );
+
+          if (!res.ok) {
+
+            throw new Error(
+              data?.message ||
+              "Failed to add wishlist item"
+            );
+
+          }
+
+        }
+
+        // =================================
+        // REFRESH FROM DATABASE
+        // =================================
+
+        console.log(
+          "❤️ REFRESHING WISHLIST..."
+        );
+
+        await get().fetchWishlist();
+
+      } catch (error) {
+
+        console.error(
+          "❌ WISHLIST TOGGLE ERROR:",
+          error
+        );
+
+        alert(
+          "Wishlist update failed. Check the browser console."
+        );
+
       }
 
-      // 🔥 ALWAYS REFRESH FROM DB
-      await get().fetchWishlist();
+    },
 
-    } catch (error) {
-      console.error("❌ Wishlist toggle error:", error);
-    }
-  },
+    // =====================================
+    // CHECK WISHLIST
+    // =====================================
 
-  // 🔍 CHECK
-  isWishlisted: (id) =>
-    get().wishlist.some((i) => i.id === id),
-}));
+    isWishlisted: (id) => {
+
+      return get().wishlist.some(
+        (item) =>
+          item.id === id
+      );
+
+    },
+
+  }));
