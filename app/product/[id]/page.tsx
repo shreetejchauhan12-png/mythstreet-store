@@ -80,17 +80,31 @@ const product = response.data;
 }
 
 async function getProduct(id: string) {
+  const url = `${API}/api/products-v2/${id}`;
 
-  const res = await fetch(
-  `${API}/api/products-v2/${id}`,
-  {
+  console.log("🔎 PRODUCT V2 URL:", url);
+
+  const res = await fetch(url, {
     next: { revalidate: 3600 },
+  });
+
+  console.log("🔎 PRODUCT V2 STATUS:", res.status);
+
+  const text = await res.text();
+
+  console.log("🔎 PRODUCT V2 RESPONSE:", text);
+
+  if (!res.ok) {
+    throw new Error(`Product API failed: ${res.status}`);
   }
-);
 
-  const response = await res.json();
+  const response = JSON.parse(text);
 
-return response.data;
+  if (!response.data) {
+    throw new Error("Product API returned no data");
+  }
+
+  return response.data;
 }
 
 export default async function Page({

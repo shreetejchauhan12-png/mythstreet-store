@@ -39,6 +39,30 @@ function normalizeProduct(raw: any) {
 
   const images = raw.images || {};
 
+  // V2 assets are the source of truth for the gallery.
+  // This also supports multiple Main Gallery (mg) images.
+  const galleryFromAssets = Array.isArray(raw.assets)
+    ? [...raw.assets]
+        .sort(
+          (a, b) =>
+            Number(a?.display_order ?? 0) -
+            Number(b?.display_order ?? 0)
+        )
+        .map((asset) => normalizeImageUrl(asset?.url))
+        .filter(Boolean)
+    : [];
+
+  const galleryFromImages = Array.isArray(images.gallery)
+    ? images.gallery
+        .map((url: string) => normalizeImageUrl(url))
+        .filter(Boolean)
+    : [];
+
+  const gallery =
+    galleryFromAssets.length > 0
+      ? galleryFromAssets
+      : galleryFromImages;
+
   return {
     ...raw,
 
@@ -50,6 +74,9 @@ function normalizeProduct(raw: any) {
     image_5: normalizeImageUrl(images.right),
     image_6: normalizeImageUrl(images.close_up),
     image_7: normalizeImageUrl(images.lifestyle),
+
+    // Complete V2 gallery, including multiple Main Gallery images.
+    gallery,
 
     // Compatibility fields used by the existing UI.
     design: raw.design || raw.design_slug,
@@ -159,7 +186,7 @@ const [touchEnd, setTouchEnd] = useState(0);
 
 const response = await res.json();
 
-setProduct(response.data);
+setProduct(normalizeProduct(response.data));
 
     } catch (err) {
       console.error("❌ ERROR LOADING PRODUCT:", err);
@@ -170,15 +197,23 @@ setProduct(response.data);
 }, [id]);
 
   const item = product;
-  const images = [
-    item?.main_image,
-    item?.image_2,
-    item?.image_3,
-    item?.image_4,
-    item?.image_5,
-    item?.image_6,
-    item?.image_7,
-  ].filter(Boolean);
+
+  const images: string[] =
+    Array.isArray(item?.gallery) && item.gallery.length > 0
+      ? item.gallery.filter(
+          (image: unknown): image is string => typeof image === "string"
+        )
+      : [
+          item?.main_image,
+          item?.image_2,
+          item?.image_3,
+          item?.image_4,
+          item?.image_5,
+          item?.image_6,
+          item?.image_7,
+        ].filter(
+          (image: unknown): image is string => typeof image === "string"
+        );
 
 const currentIndex = images.indexOf(selectedImage);
 
@@ -242,8 +277,9 @@ function prevImage() {
 
   setSelectedColor(product.color_name ?? "");
 
-  window.gtag("event", "view_item", {
-    currency: "INR",
+  if (typeof window.gtag === "function") {
+    window.gtag("event", "view_item", {
+      currency: "INR",
 
     value: product.price,
 
@@ -254,7 +290,8 @@ function prevImage() {
         price: product.price,
       },
     ],
-  });
+    });
+  }
 
 }, [product]);
 
@@ -286,8 +323,9 @@ function prevImage() {
   quantity: quantity,
 });
 
-window.gtag("event", "add_to_cart", {
-  currency: "INR",
+if (typeof window.gtag === "function") {
+  window.gtag("event", "add_to_cart", {
+    currency: "INR",
 
   value: item.price * quantity,
 
@@ -300,7 +338,8 @@ window.gtag("event", "add_to_cart", {
       item_variant: size,
     },
   ],
-});
+    });
+  }
 
     // ✅ BACKEND SAVE
     const res = await apiFetch("/api/products/cart", {
@@ -754,10 +793,11 @@ hover:bg-[#680000]/5
 
               <Image
                 src={
-  variant.main_image
-    ? `/${variant.main_image}`
-    : "/placeholder.webp"
-}
+                  normalizeImageUrl(
+                    variant?.images?.main ||
+                      variant?.main_image
+                  ) || "/placeholder.webp"
+                }
                 alt={variant.title}
                 fill
                 sizes="200px"

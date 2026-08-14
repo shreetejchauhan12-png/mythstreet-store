@@ -26,6 +26,7 @@ variant_code: string;
 };
 
 function ProductCard({ product }: { product: Product }) {
+  console.log("🖼️ PRODUCT CARD:", product);
 
   const toggleWishlist = useWishlist(
     (state) => state.toggleWishlist
@@ -67,7 +68,7 @@ group
 
             {/* BASE IMAGE */}
 <Image
-  src={`/${product.design}-${product.variant_code}-1.webp`}
+  src={product.image}
   alt={`${product.title} by MYTHSTREET premium streetwear`}
   fill
   sizes="(max-width: 768px) 50vw, 25vw"
