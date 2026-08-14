@@ -52,6 +52,30 @@ const BASE_URL =
 
 
 // ======================================
+// NORMALIZE IMAGE URL
+// ======================================
+
+function normalizeImageUrl(
+  url: string | null | undefined
+): string {
+  if (!url) {
+    return "/placeholder.webp";
+  }
+
+  // R2 / Cloudflare / external image
+  if (
+    url.startsWith("http://") ||
+    url.startsWith("https://")
+  ) {
+    return url;
+  }
+
+  // Local public-folder image
+  return `/${url.replace(/^\/+/, "")}`;
+}
+
+
+// ======================================
 // GET PRODUCTS
 // ======================================
 
@@ -92,41 +116,55 @@ export async function getProducts(): Promise<Product[]> {
         (item: any): Product => {
 
           // ==================================
-          // IMAGE VALUES
+          // IMAGE URLS
           // ==================================
 
           const mainImage =
-            item.main_image
-              ? `/${item.main_image.replace(/^\/+/, "")}`
-              : "/placeholder.webp";
+            normalizeImageUrl(
+              item.main_image
+            );
 
           const image2 =
             item.image_2
-              ? `/${item.image_2.replace(/^\/+/, "")}`
+              ? normalizeImageUrl(
+                  item.image_2
+                )
               : mainImage;
 
           const image3 =
             item.image_3
-              ? `/${item.image_3.replace(/^\/+/, "")}`
+              ? normalizeImageUrl(
+                  item.image_3
+                )
               : mainImage;
 
           const image4 =
             item.image_4
-              ? `/${item.image_4.replace(/^\/+/, "")}`
+              ? normalizeImageUrl(
+                  item.image_4
+                )
               : null;
 
           const image5 =
             item.image_5
-              ? `/${item.image_5.replace(/^\/+/, "")}`
+              ? normalizeImageUrl(
+                  item.image_5
+                )
               : null;
 
           const image6 =
             item.image_6
-              ? `/${item.image_6.replace(/^\/+/, "")}`
+              ? normalizeImageUrl(
+                  item.image_6
+                )
               : null;
 
 
           return {
+
+            // ==================================
+            // BASIC PRODUCT DATA
+            // ==================================
 
             id: Number(item.id),
 
@@ -227,9 +265,15 @@ export async function getProducts(): Promise<Product[]> {
             banner:
               item.is_hero &&
               item.banner_image
-                ? `/${item.banner_image.replace(/^\/+/, "")}`
+                ? normalizeImageUrl(
+                    item.banner_image
+                  )
                 : "",
 
+
+            // ==================================
+            // CREATED DATE
+            // ==================================
 
             createdAt:
               item.created_at ?? "",
