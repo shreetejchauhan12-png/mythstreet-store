@@ -23,14 +23,24 @@ export type Product = {
 
   design: string;
 
+  // OLD / COMPATIBILITY FIELDS
   image: string;
   hoverLeft: string;
   hoverRight: string;
+
+  // NEW MEDIA FIELDS
+  main_image: string | null;
+  image_2: string | null;
+  image_3: string | null;
+  image_4: string | null;
+  image_5: string | null;
+  image_6: string | null;
 
   banner: string;
 
   createdAt: string;
 };
+
 
 // ======================================
 // API URL
@@ -40,6 +50,7 @@ const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   "https://mythstreet-backend.onrender.com";
 
+
 // ======================================
 // GET PRODUCTS
 // ======================================
@@ -48,83 +59,182 @@ export async function getProducts(): Promise<Product[]> {
   let data: any[] = [];
 
   try {
-    const res = await fetch(`${BASE_URL}/api/products`, {
-      next: { revalidate: 3600 },
-    });
+    const res = await fetch(
+      `${BASE_URL}/api/products`,
+      {
+        next: {
+          revalidate: 3600,
+        },
+      }
+    );
 
     if (res.ok) {
       const response = await res.json();
+
       data = response.data ?? [];
     } else {
-      console.error("❌ API ERROR:", res.status);
+      console.error(
+        "❌ API ERROR:",
+        res.status
+      );
     }
+
   } catch (error) {
-    console.error("⚠️ Fetch failed:", error);
+    console.error(
+      "⚠️ Fetch failed:",
+      error
+    );
   }
 
+
   return Array.isArray(data)
-    ? data.map((item: any): Product => ({
-        id: Number(item.id),
+    ? data.map(
+        (item: any): Product => {
 
-        design_id: Number(item.design_id ?? item.id),
+          // ==================================
+          // IMAGE VALUES
+          // ==================================
 
-        garment_type_id: Number(item.garment_type_id ?? 0),
+          const mainImage =
+            item.main_image
+              ? `/${item.main_image.replace(/^\/+/, "")}`
+              : "/placeholder.webp";
 
-        color_id: Number(item.color_id ?? 0),
+          const image2 =
+            item.image_2
+              ? `/${item.image_2.replace(/^\/+/, "")}`
+              : mainImage;
 
-        variant_code: item.variant_code ?? "",
+          const image3 =
+            item.image_3
+              ? `/${item.image_3.replace(/^\/+/, "")}`
+              : mainImage;
 
-        is_hero: Boolean(item.is_hero),
+          const image4 =
+            item.image_4
+              ? `/${item.image_4.replace(/^\/+/, "")}`
+              : null;
 
-        gender_visibility:
-          item.gender_visibility ?? "unisex",
+          const image5 =
+            item.image_5
+              ? `/${item.image_5.replace(/^\/+/, "")}`
+              : null;
 
-        hero_type: item.hero_type ?? "",
+          const image6 =
+            item.image_6
+              ? `/${item.image_6.replace(/^\/+/, "")}`
+              : null;
 
-        title: item.title ?? "",
 
-        price: Number(item.price ?? 0),
+          return {
 
-        category: item.category ?? "",
+            id: Number(item.id),
 
-        type: item.type ?? "",
+            design_id: Number(
+              item.design_id ?? item.id
+            ),
 
-        collection: item.collection ?? "",
+            garment_type_id: Number(
+              item.garment_type_id ?? 0
+            ),
 
-        design: item.design ?? "",
+            color_id: Number(
+              item.color_id ?? 0
+            ),
 
-        color_name: item.color_name ?? "",
+            variant_code:
+              item.variant_code ?? "",
 
-        color_slug: item.color_slug ?? "",
+            is_hero:
+              Boolean(item.is_hero),
 
-        hex_code: item.hex_code ?? "",
+            gender_visibility:
+              item.gender_visibility ??
+              "unisex",
 
-        // ✅ Main Image
-        image: item.main_image
-          ? `/${item.main_image.replace(/^\/+/, "")}`
-          : "/placeholder.webp",
+            hero_type:
+              item.hero_type ?? "",
 
-        // ✅ Back Image
-        hoverLeft: item.image_2
-          ? `/${item.image_2.replace(/^\/+/, "")}`
-          : item.main_image
-          ? `/${item.main_image.replace(/^\/+/, "")}`
-          : "/placeholder.webp",
+            title:
+              item.title ?? "",
 
-        // ✅ Model Front
-        hoverRight: item.image_3
-          ? `/${item.image_3.replace(/^\/+/, "")}`
-          : item.main_image
-          ? `/${item.main_image.replace(/^\/+/, "")}`
-          : "/placeholder.webp",
+            price:
+              Number(item.price ?? 0),
 
-        // ✅ Hero Banner
-        banner:
-          item.is_hero && item.banner_image
-            ? `/${item.banner_image.replace(/^\/+/, "")}`
-            : "",
+            category:
+              item.category ?? "",
 
-        createdAt: item.created_at ?? "",
-      }))
+            type:
+              item.type ?? "",
+
+            collection:
+              item.collection ?? "",
+
+            design:
+              item.design ?? "",
+
+            color_name:
+              item.color_name ?? "",
+
+            color_slug:
+              item.color_slug ?? "",
+
+            hex_code:
+              item.hex_code ?? "",
+
+
+            // ==================================
+            // NEW MEDIA ENGINE
+            // ==================================
+
+            main_image:
+              mainImage,
+
+            image_2:
+              image2,
+
+            image_3:
+              image3,
+
+            image_4:
+              image4,
+
+            image_5:
+              image5,
+
+            image_6:
+              image6,
+
+
+            // ==================================
+            // OLD COMPATIBILITY FIELDS
+            // ==================================
+
+            image:
+              mainImage,
+
+            hoverLeft:
+              image2,
+
+            hoverRight:
+              image3,
+
+
+            // ==================================
+            // HERO BANNER
+            // ==================================
+
+            banner:
+              item.is_hero &&
+              item.banner_image
+                ? `/${item.banner_image.replace(/^\/+/, "")}`
+                : "",
+
+
+            createdAt:
+              item.created_at ?? "",
+          };
+        }
+      )
     : [];
 }
